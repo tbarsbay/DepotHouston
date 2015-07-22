@@ -1,33 +1,20 @@
-package com.tamerbarsbay.depothouston.data.entity;
-
-import com.google.gson.annotations.SerializedName;
+package com.tamerbarsbay.depothouston.domain;
 
 /**
  * Created by Tamer on 7/22/2015.
  */
-public class RouteEntity {
+public class Route {
 
-    @SerializedName("RouteId")
-    private String routeId;
-
-    @SerializedName("FinalStop0Id")
+    private final String routeId;
     private String finalStop0Id;
-
-    @SerializedName("FinalStop1Id")
     private String finalStop1Id;
-
-    @SerializedName("RouteName")
     private String routeName;
-
-    @SerializedName("LongName")
     private String longName;
-
-    @SerializedName("RouteType")
     private String routeType;
 
-    //TODO add links to other things like directions, arrivals, etc
-
-    public RouteEntity() {}
+    public Route(String routeId) {
+        this.routeId = routeId;
+    }
 
     public String getFinalStop0Id() {
         return finalStop0Id;
@@ -57,10 +44,6 @@ public class RouteEntity {
         return routeId;
     }
 
-    public void setRouteId(String routeId) {
-        this.routeId = routeId;
-    }
-
     public String getRouteName() {
         return routeName;
     }
@@ -80,5 +63,4 @@ public class RouteEntity {
     public boolean isBus() {
         return this.getRouteType().equals("Bus");
     }
-
 }

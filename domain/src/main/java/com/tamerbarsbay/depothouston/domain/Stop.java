@@ -1,54 +1,26 @@
-package com.tamerbarsbay.depothouston.data.entity;
-
-import com.google.gson.annotations.SerializedName;
+package com.tamerbarsbay.depothouston.domain;
 
 /**
  * Created by Tamer on 7/22/2015.
  */
-public class StopEntity {
+public class Stop {
 
-    @SerializedName("Id")
-    private String id;
-
-    @SerializedName("StopId")
+    private final String id; //TODO diff b/w id and stopId?
     private String stopId;
-
-    @SerializedName("DirectionId")
     private String directionId;
-
-    @SerializedName("RouteId")
     private String routeId;
-
-    @SerializedName("AgencyId")
     private String agencyId;
-
-    @SerializedName("Name")
     private String name;
-
-    @SerializedName("StopCode")
     private String stopCode;
-
-    /**
-     * Bus or train.
-     */
-    @SerializedName("Type")
     private String type;
-
-    @SerializedName("Lat")
     private double lat;
-
-    @SerializedName("Lon")
     private double lon;
-
-    @SerializedName("Ordinal")
     private String ordinal;
-
-    @SerializedName("OrdinalOnDirection")
     private String ordinalOnDirection;
 
-    //TODO add links to other stop things
-
-    public StopEntity() {}
+    public Stop(String id) {
+        this.id = id;
+    }
 
     public String getAgencyId() {
         return agencyId;
@@ -68,10 +40,6 @@ public class StopEntity {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public double getLat() {
