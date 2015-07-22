@@ -1,0 +1,54 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+    //Android
+    androidBuildToolsVersion = "22.0.1"
+    androidMinSdkVersion = 16
+    androidTargetSdkVersion = 22
+    androidCompileSdkVersion = 22
+
+    //Libraries
+    daggerVersion = '2.0'
+    butterKnifeVersion = '6.1.0'
+    recyclerViewVersion = '22.0.0'
+    rxJavaVersion = '1.0.3'
+    rxAndroidVersion = '0.24.0'
+    javaxAnnotationVersion = '10.0-b28'
+    gsonVersion = '2.3.1'
+    androidSupportLibVersion = '22.2.0'
+    androidDesignSupportLibVersion = '22.2.0'
+    okHttpVersion = '2.3.0'
+
+    presentationDependencies = [
+            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:             "com.google.dagger:dagger:${daggerVersion}",
+            butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
+            recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+            rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
+            javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            androidSupportLib:  "com.android.support:appcompat-v7:${androidSupportLibVersion}",
+            androidDesignSupportLib:    "com.android.support:design:${androidDesignSupportLibVersion}",
+    ]
+
+    domainDependencies = [
+            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:             "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+    ]
+
+    dataDependencies = [
+            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:             "com.google.dagger:dagger:${daggerVersion}",
+            gson:               "com.google.code.gson:gson:${gsonVersion}",
+            rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
+            okHttp:             "com.squareup.okhttp:okhttp:${okHttpVersion}",
+            javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+    ]
+}
