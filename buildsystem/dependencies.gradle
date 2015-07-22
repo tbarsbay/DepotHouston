@@ -19,9 +19,10 @@ ext {
     rxAndroidVersion = '0.24.0'
     javaxAnnotationVersion = '10.0-b28'
     gsonVersion = '2.3.1'
+    okHttpVersion = '2.3.0'
     androidSupportLibVersion = '22.2.0'
     androidDesignSupportLibVersion = '22.2.0'
-    okHttpVersion = '2.3.0'
+    androidAnnotationsVersion = '22.2.0'
 
     presentationDependencies = [
             daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -50,5 +51,6 @@ ext {
             rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
             okHttp:             "com.squareup.okhttp:okhttp:${okHttpVersion}",
             javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
     ]
 }

@@ -29,5 +29,6 @@ dependencies {
     compile dataDependencies.rxJava
     compile dataDependencies.rxAndroid
     compile dataDependencies.okHttp
+    compile dataDependencies.androidAnnotations
     provided dataDependencies.javaxAnnotation
 }
