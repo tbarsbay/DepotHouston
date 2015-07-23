@@ -18,12 +18,16 @@ public interface RestApi {
     static final String COMMUTER_API_BASE_URL = "http://services.commuterapi.com/TransitODataService.svc/";
 
     static final String JSON_FORMAT_PARAM = "$format=json";
+    static final String AUTH_KEY_PARAM = "&subscription-key=";
+    static final String AUTH_KEY_VALUE = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO temp remove this
 
-    static final String API_URL_GET_ROUTE_LIST = METRO_API_BASE_URL + "Routes?" + JSON_FORMAT_PARAM;
+    static final String EXTRAS = "?" + JSON_FORMAT_PARAM + AUTH_KEY_PARAM + AUTH_KEY_VALUE; //TODO temp
 
-    static final String API_URL_GET_ROUTE_DETAILS = METRO_API_BASE_URL + "Routes('%s')?" + JSON_FORMAT_PARAM;
+    static final String API_URL_GET_ROUTE_LIST = METRO_API_BASE_URL + "Routes" + EXTRAS;
 
-    static final String API_URL_GET_STOPS_BY_ROUTE = METRO_API_BASE_URL + "Routes('%s')/Stops?" + JSON_FORMAT_PARAM;
+    static final String API_URL_GET_ROUTE_DETAILS = METRO_API_BASE_URL + "Routes('%s')" + EXTRAS;
+
+    static final String API_URL_GET_STOPS_BY_ROUTE = METRO_API_BASE_URL + "Routes('%s')/Stops" + EXTRAS;
 
     Observable<List<RouteEntity>> getRouteList();
 
