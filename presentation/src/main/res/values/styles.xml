@@ -1,8 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:actionButtonStyle">@style/Toolbar.ActionButton</item>
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.NavigationIcon</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@color/primary</item>
     </style>
 
     <style name="AppTheme.ProgressBar">
@@ -19,6 +28,22 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="Toolbar"></style>
+
+    <style name="Toolbar.NavigationIcon"
+        parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+    </style>
+
+    <style name="Toolbar.ActionButton"
+        parent="@android:style/Widget.Holo.ActionButton">
+        <item name="android:minWidth">40dp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

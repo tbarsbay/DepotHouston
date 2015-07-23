@@ -23,9 +23,6 @@ public class BaseActivity extends ActionBarActivity {
     @Inject
     Navigator navigator;
 
-//    @Inject //TODO temporarily disabled
-//    SharedPreferences sharedPreferences;
-
     private Toolbar mActionBarToolbar;
 
     @Override
@@ -49,7 +46,7 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        //getActionBarToolbar(); //todo TEMP DISABLED
+        getActionBarToolbar();
     }
 
     protected ActivityModule getActivityModule() {
@@ -62,7 +59,7 @@ public class BaseActivity extends ActionBarActivity {
 
     protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
-            //mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar); //TODO temp disabled
+            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
             if (mActionBarToolbar != null) {
                 setSupportActionBar(mActionBarToolbar);
             }
