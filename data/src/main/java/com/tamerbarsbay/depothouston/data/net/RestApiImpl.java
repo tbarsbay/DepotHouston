@@ -120,14 +120,12 @@ public class RestApiImpl implements RestApi {
     }
 
     private String getRouteDetailsFromApi(String routeId) throws MalformedURLException {
-        String apiUrl = String.format(RestApi.API_URL_GET_ROUTE_DETAILS, routeId) +
-                "?" + JSON_FORMAT_PARAM;
+        String apiUrl = String.format(RestApi.API_URL_GET_ROUTE_DETAILS, routeId);
         return ApiConnection.createGET(apiUrl).requestSyncCall();
     }
 
     private String getStopListByRoute(String routeId) throws MalformedURLException {
-        String apiUrl = String.format(RestApi.API_URL_GET_STOPS_BY_ROUTE, routeId) +
-                "?" + JSON_FORMAT_PARAM;
+        String apiUrl = String.format(RestApi.API_URL_GET_STOPS_BY_ROUTE, routeId);
         return ApiConnection.createGET(apiUrl).requestSyncCall();
     }
 

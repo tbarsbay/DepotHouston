@@ -19,11 +19,11 @@ public interface RestApi {
 
     static final String JSON_FORMAT_PARAM = "$format=json";
 
-    static final String API_URL_GET_ROUTE_LIST = METRO_API_BASE_URL + "Routes";
+    static final String API_URL_GET_ROUTE_LIST = METRO_API_BASE_URL + "Routes?" + JSON_FORMAT_PARAM;
 
-    static final String API_URL_GET_ROUTE_DETAILS = METRO_API_BASE_URL + "Routes('%s')";
+    static final String API_URL_GET_ROUTE_DETAILS = METRO_API_BASE_URL + "Routes('%s')?" + JSON_FORMAT_PARAM;
 
-    static final String API_URL_GET_STOPS_BY_ROUTE = METRO_API_BASE_URL + "Routes('%s')/Stops";
+    static final String API_URL_GET_STOPS_BY_ROUTE = METRO_API_BASE_URL + "Routes('%s')/Stops?" + JSON_FORMAT_PARAM;
 
     Observable<List<RouteEntity>> getRouteList();
 

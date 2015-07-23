@@ -4,4 +4,9 @@
     <string name="exception_message_no_connection">No network connection</string>
     <string name="exception_message_stop_not_found">Error - stop not found.</string>
     <string name="exception_message_generic">Error</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_text_retry">Retry</string>
 </resources>

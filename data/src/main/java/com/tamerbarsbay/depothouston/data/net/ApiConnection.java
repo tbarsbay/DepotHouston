@@ -1,6 +1,7 @@
 package com.tamerbarsbay.depothouston.data.net;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -44,8 +45,11 @@ public class ApiConnection implements Callable<String> {
                 .get()
                 .build();
 
+        Log.d("ApiConnection", this.url.toString());
+
         try {
             this.response = okHttpClient.newCall(request).execute().body().string();
+            Log.d("ApiConnection", this.response);
         } catch (IOException e) {
             e.printStackTrace();
         }
