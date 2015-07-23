@@ -3,6 +3,7 @@ package com.tamerbarsbay.depothouston.presentation.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.RouteListPresenter;
 import com.tamerbarsbay.depothouston.presentation.view.RouteListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.RouteListAdapter;
-import com.tamerbarsbay.depothouston.presentation.view.adapter.RoutesLayoutManager;
 
 import java.util.Collection;
 
@@ -51,7 +51,7 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     Button btnRetry;
 
     private RouteListAdapter routesAdapter;
-    private RoutesLayoutManager routesLayoutManager;
+    private LinearLayoutManager routesLayoutManager;
 
     private RouteListListener routeListListener;
 
@@ -108,7 +108,7 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     }
 
     private void setupUI() {
-        this.routesLayoutManager = new RoutesLayoutManager(getActivity());
+        this.routesLayoutManager = new LinearLayoutManager(getActivity());
         this.rvRoutes.setLayoutManager(routesLayoutManager);
     }
 

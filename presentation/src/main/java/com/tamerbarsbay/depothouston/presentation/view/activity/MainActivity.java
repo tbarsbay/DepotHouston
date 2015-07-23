@@ -9,9 +9,11 @@ import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.HasComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerRouteComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.RouteComponent;
+import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.RouteListFragment;
 
-public class MainActivity extends BaseActivity implements HasComponent<RouteComponent> {
+public class MainActivity extends BaseActivity implements HasComponent<RouteComponent>,
+        RouteListFragment.RouteListListener {
 
     private RouteComponent routeComponent;
 
@@ -59,5 +61,10 @@ public class MainActivity extends BaseActivity implements HasComponent<RouteComp
     @Override
     public RouteComponent getComponent() {
         return this.routeComponent;
+    }
+
+    @Override
+    public void onRouteClicked(RouteModel routeModel) {
+        this.navigator.navigateToStopList(this, routeModel.getRouteId());
     }
 }

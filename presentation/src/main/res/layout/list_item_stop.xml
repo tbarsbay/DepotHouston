@@ -8,19 +8,7 @@
     android:background="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/route_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="16dp" />
-
-    <TextView
-        android:id="@+id/route_long_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="16dp" />
-
-    <TextView
-        android:id="@+id/route_type"
+        android:id="@+id/stop_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

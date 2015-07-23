@@ -5,6 +5,10 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -22,7 +26,24 @@ public class StopEntityJsonMapper {
         this.gson = new Gson();
     }
 
+    /**
+     * Get rid of some unneeded outer layers of the returned JSON object.
+     * @param jsonResponse
+     * @return Cleaned JSON string.
+     */
+    public String cleanJson(String jsonResponse) {
+        try {
+            JSONObject json = new JSONObject(jsonResponse);
+            JSONArray results = json.getJSONObject("d").getJSONArray("results");
+            return results.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public StopEntity transformStopEntity(String stopJsonResponse) throws JsonSyntaxException {
+        stopJsonResponse = cleanJson(stopJsonResponse);
         try {
             Type stopEntityType = new TypeToken<StopEntity>() {}.getType();
             StopEntity stopEntity = this.gson.fromJson(stopJsonResponse, stopEntityType);
@@ -33,6 +54,7 @@ public class StopEntityJsonMapper {
     }
 
     public List<StopEntity> transformStopEntityCollection(String stopListJsonResponse) throws JsonSyntaxException {
+        stopListJsonResponse = cleanJson(stopListJsonResponse);
         List<StopEntity> stopEntities;
         try {
             Type listOfStopEntitiesType = new TypeToken<List<StopEntity>>() {}.getType();

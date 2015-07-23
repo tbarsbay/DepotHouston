@@ -1,9 +1,13 @@
 package com.tamerbarsbay.depothouston.presentation.view.activity;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.AndroidApplication;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ApplicationComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.modules.ActivityModule;
@@ -23,6 +27,24 @@ public class BaseActivity extends ActionBarActivity {
 //    SharedPreferences sharedPreferences;
 
     private Toolbar mActionBarToolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.getApplicationComponent().inject(this);
+    }
+
+    /**
+     * Adds a {@link Fragment} to this activity's layout.
+     *
+     * @param containerViewId The container view to where add the fragment.
+     * @param fragment The fragment to be added.
+     */
+    protected void addFragment(int containerViewId, Fragment fragment) {
+        FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(containerViewId, fragment);
+        fragmentTransaction.commit();
+    }
 
     @Override
     public void setContentView(int layoutResID) {
@@ -54,7 +76,7 @@ public class BaseActivity extends ActionBarActivity {
 
     protected void setToolbarBackArrow() {
         final Toolbar toolbar = getActionBarToolbar();
-        //toolbar.setNavigationIcon(R.drawable.icon_arrow_back); //todo temp disabled
+        toolbar.setNavigationIcon(R.drawable.icon_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
