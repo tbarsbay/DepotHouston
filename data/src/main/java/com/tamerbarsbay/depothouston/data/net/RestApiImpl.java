@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
+import com.tamerbarsbay.depothouston.data.entity.IncidentEntity;
 import com.tamerbarsbay.depothouston.data.entity.ItineraryEntity;
 import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
@@ -291,6 +292,31 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<List<IncidentEntity>> getIncidents() {
+        return Observable.create(new Observable.OnSubscribe<List<IncidentEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<IncidentEntity>> subscriber) {
+                if (validNetworkConnection()) {
+                    try {
+                        String responseIncidentEntities = getIncidentsFromApi();
+                        if (responseIncidentEntities != null) {
+                            subscriber.onNext(incidentEntityJsonMapper
+                                .transformIncidentEntityCollection(responseIncidentEntities));
+                            subscriber.onCompleted();
+                        } else {
+                            subscriber.onError(new Exception("Null incident entities."));//TODO temp
+                        }
+                    } catch (Exception e) {
+                        subscriber.onError(e);
+                    }
+                } else {
+                    subscriber.onError(new NetworkConnectionException());
+                }
+            }
+        });
+    }
+
     private String getRouteListFromApi() throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(PATH_ROUTES);
@@ -318,21 +344,21 @@ public class RestApiImpl implements RestApi {
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String getArrivalsByStopFromApi(String stopId) throws MalformedURLException {
+    private String getArrivalsByStopFromApi(String stopId) throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(String.format(PATH_STOP_WITH_ID, stopId))
                 .appendPath(PATH_ARRIVALS);
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String getVehiclesByRouteFromApi(String routeId) throws MalformedURLException {
+    private String getVehiclesByRouteFromApi(String routeId) throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(PATH_VEHICLES)
                 .appendQueryParameter(PARAM_KEY_FILTER, String.format(PARAM_FILTER_ROUTE_ID, routeId));
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String calculateItineraryFromApi(double lat1, double lon1,
+    private String calculateItineraryFromApi(double lat1, double lon1,
                                             double lat2, double lon2) throws MalformedURLException{
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(PATH_CALCULATE_ITINERARY_BY_POINTS)
@@ -345,7 +371,7 @@ public class RestApiImpl implements RestApi {
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String calculateItineraryWithEndTimeFromApi(double lat1, double lon1,
+    private String calculateItineraryWithEndTimeFromApi(double lat1, double lon1,
                                                        double lat2, double lon2,
                                                        String endTime) throws MalformedURLException{
         Uri.Builder builder = getBaseUriBuilderMetro();
@@ -360,9 +386,15 @@ public class RestApiImpl implements RestApi {
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String getItineraryDetailsFromApi(String itineraryId) throws MalformedURLException {
+    private String getItineraryDetailsFromApi(String itineraryId) throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(String.format(PATH_ITINERARY_WITH_ID, itineraryId));
+        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
+    }
+
+    private String getIncidentsFromApi() throws MalformedURLException {
+        Uri.Builder builder = getBaseUriBuilderMetro();
+        builder.appendPath(PATH_INCIDENTS);
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 

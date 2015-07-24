@@ -1,6 +1,7 @@
 package com.tamerbarsbay.depothouston.data.net;
 
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
+import com.tamerbarsbay.depothouston.data.entity.IncidentEntity;
 import com.tamerbarsbay.depothouston.data.entity.ItineraryEntity;
 import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
@@ -27,7 +28,7 @@ public interface RestApi {
     static final String PATH_ROUTE_WITH_ID = "Routes(\'%s\')";
     static final String PATH_STOPS = "Stops";
     static final String PATH_STOP_WITH_ID = "Stops(\'%s\')";
-    static final String PATH_INCIDENT_WITH_ID = "Incidents(\'%s\')";
+    static final String PATH_INCIDENTS = "Incidents";
     static final String PATH_ITINERARY_WITH_ID = "Itineraries(guid\'%s\')";
     static final String PATH_FIND_NEARBY_STOPS = "FindStopsInArea";
     static final String PATH_FIND_NEARBY_ROUTES = "FindRoutesInArea";
@@ -80,5 +81,5 @@ public interface RestApi {
 
     Observable<ItineraryEntity> getItineraryDetails(final String itineraryId);
 
-    //TODO getIncidents
+    Observable<List<IncidentEntity>> getIncidents();
 }

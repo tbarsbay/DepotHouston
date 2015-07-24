@@ -24,8 +24,8 @@ import rx.functions.Func1;
 @Singleton
 public class ArrivalDataRepository implements ArrivalRepository {
 
-    Context context;
-    ArrivalEntityDataMapper arrivalEntityDataMapper;
+    private Context context;
+    private ArrivalEntityDataMapper arrivalEntityDataMapper;
 
     private final Func1<List<ArrivalEntity>, List<Arrival>> arrivalEntityListMapper =
             new Func1<List<ArrivalEntity>, List<Arrival>>() {
@@ -51,6 +51,8 @@ public class ArrivalDataRepository implements ArrivalRepository {
 
     @Override
     public Observable<List<Arrival>> getArrivalsByStop(String stopId) {
+        // Arrival lists will always come from the Metro API and not the local cache.
+        // Therefore we can skip the creation of an ArrivalDataStore and just use the RestApi.
         ArrivalEntityJsonMapper arrivalEntityJsonMapper = new ArrivalEntityJsonMapper();
         RestApi restApi = new RestApiImpl(this.context, arrivalEntityJsonMapper);
         return restApi.getArrivalsByStop(stopId).map(arrivalEntityListMapper);
