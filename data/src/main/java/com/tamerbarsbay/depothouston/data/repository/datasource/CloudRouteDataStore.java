@@ -33,6 +33,7 @@ public class CloudRouteDataStore implements RouteDataStore {
 
     @Override
     public Observable<List<RouteEntity>> getRouteList() {
+        //TODO also put in cache?
         return this.restApi.getRouteList();
     }
 

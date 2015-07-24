@@ -71,10 +71,14 @@ public interface RestApi {
 
     Observable<List<ArrivalEntity>> getArrivalsByStop(final String stopId);
 
-    Observable<ItineraryEntity> getItinerary(final double lat1, final double lon1,
-                                             final double lat2, final double lon2);
+    Observable<ItineraryEntity> calculateItinerary(final double lat1, final double lon1,
+                                                   final double lat2, final double lon2);
 
-    Observable<ItineraryEntity> getItineraryWithEndTime(final double lat1, final double lon1,
-                                                       final double lat2, final double lon2,
-                                                       final String endTime); //TODO String or Date object?
+    Observable<ItineraryEntity> calculateItineraryWithEndTime(final double lat1, final double lon1,
+                                                              final double lat2, final double lon2,
+                                                              final String endTime); //TODO String or Date object?
+
+    Observable<ItineraryEntity> getItineraryDetails(final String itineraryId);
+
+    //TODO getIncidents
 }

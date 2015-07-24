@@ -212,14 +212,14 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<ItineraryEntity> getItinerary(final double lat1, final double lon1,
-                                                    final double lat2, final double lon2) {
+    public Observable<ItineraryEntity> calculateItinerary(final double lat1, final double lon1,
+                                                          final double lat2, final double lon2) {
         return Observable.create(new Observable.OnSubscribe<ItineraryEntity>() {
             @Override
             public void call(Subscriber<? super ItineraryEntity> subscriber) {
                 if (validNetworkConnection()) {
                     try {
-                        String responseItineraryEntity = getItineraryFromApi(
+                        String responseItineraryEntity = calculateItineraryFromApi(
                                 lat1, lon1, lat2, lon2);
                         if (responseItineraryEntity != null) {
                             subscriber.onNext(itineraryEntityJsonMapper.transformItineraryEntity(
@@ -239,19 +239,44 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<ItineraryEntity> getItineraryWithEndTime(final double lat1, final double lon1,
-                                                               final double lat2, final double lon2,
-                                                               final String endTime) {
+    public Observable<ItineraryEntity> calculateItineraryWithEndTime(final double lat1, final double lon1,
+                                                                     final double lat2, final double lon2,
+                                                                     final String endTime) {
         return Observable.create(new Observable.OnSubscribe<ItineraryEntity>() {
             @Override
             public void call(Subscriber<? super ItineraryEntity> subscriber) {
                 if (validNetworkConnection()) {
                     try {
-                        String responseItineraryEntity = getItineraryWithEndTimeFromApi(
+                        String responseItineraryEntity = calculateItineraryWithEndTimeFromApi(
                                 lat1, lon1, lat2, lon2, endTime);
                         if (responseItineraryEntity != null) {
                             subscriber.onNext(itineraryEntityJsonMapper.transformItineraryEntity(
                                     responseItineraryEntity));
+                            subscriber.onCompleted();
+                        } else {
+                            subscriber.onError(new Exception("Null itinerary entity.")); //TODO temp
+                        }
+                    } catch (Exception e) {
+                        subscriber.onError(e);
+                    }
+                } else {
+                    subscriber.onError(new NetworkConnectionException());
+                }
+            }
+        });
+    }
+
+    @Override
+    public Observable<ItineraryEntity> getItineraryDetails(final String itineraryId) {
+        return Observable.create(new Observable.OnSubscribe<ItineraryEntity>() {
+            @Override
+            public void call(Subscriber<? super ItineraryEntity> subscriber) {
+                if (validNetworkConnection()) {
+                    try {
+                        String responseItineraryEntity = getItineraryDetailsFromApi(itineraryId);
+                        if (responseItineraryEntity != null) {
+                            subscriber.onNext(itineraryEntityJsonMapper
+                                    .transformItineraryEntity(responseItineraryEntity));
                             subscriber.onCompleted();
                         } else {
                             subscriber.onError(new Exception("Null itinerary entity.")); //TODO temp
@@ -307,8 +332,8 @@ public class RestApiImpl implements RestApi {
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String getItineraryFromApi(double lat1, double lon1,
-                                      double lat2, double lon2) throws MalformedURLException{
+    public String calculateItineraryFromApi(double lat1, double lon1,
+                                            double lat2, double lon2) throws MalformedURLException{
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(PATH_CALCULATE_ITINERARY_BY_POINTS)
                 .appendQueryParameter(PARAM_KEY_LAT1, String.valueOf(lat1))
@@ -320,9 +345,9 @@ public class RestApiImpl implements RestApi {
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
-    public String getItineraryWithEndTimeFromApi(double lat1, double lon1,
-                                                 double lat2, double lon2,
-                                                 String endTime) throws MalformedURLException{
+    public String calculateItineraryWithEndTimeFromApi(double lat1, double lon1,
+                                                       double lat2, double lon2,
+                                                       String endTime) throws MalformedURLException{
         Uri.Builder builder = getBaseUriBuilderMetro();
         builder.appendPath(PATH_CALCULATE_ITINERARY_ARRIVING_AT)
                 .appendQueryParameter(PARAM_KEY_LAT1, String.valueOf(lat1))
@@ -332,6 +357,12 @@ public class RestApiImpl implements RestApi {
                 .appendQueryParameter(PARAM_KEY_ORDERBY, PARAM_ORDERBY_ENDTIME)
                 .appendQueryParameter(PARAM_KEY_END_TIME, endTime)
                 .appendQueryParameter(PARAM_KEY_EXPAND, PARAM_EXPAND_LEGS);
+        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
+    }
+
+    public String getItineraryDetailsFromApi(String itineraryId) throws MalformedURLException {
+        Uri.Builder builder = getBaseUriBuilderMetro();
+        builder.appendPath(String.format(PATH_ITINERARY_WITH_ID, itineraryId));
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 

@@ -7,4 +7,7 @@ import com.tamerbarsbay.depothouston.domain.Incident;
  * Created by Tamer on 7/24/2015.
  */
 public interface IncidentRepository {
+
+    //TODO get incidents
+
 }
