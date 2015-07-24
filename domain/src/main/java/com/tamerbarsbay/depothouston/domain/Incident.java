@@ -1,39 +1,24 @@
-package com.tamerbarsbay.depothouston.data.entity;
-
-import com.google.gson.annotations.SerializedName;
+package com.tamerbarsbay.depothouston.domain;
 
 import java.util.Date;
 
 /**
  * Created by Tamer on 7/23/2015.
  */
-public class IncidentEntity {
+public class Incident {
 
-    @SerializedName("Id")
     private String incidentId;
-
-    @SerializedName("Status")
     private String status;
-
-    @SerializedName("AffectedFrom")
     private Date affectedFrom;
-
-    @SerializedName("AffectedTo")
     private Date affectedTo;
-
-    @SerializedName("Severity")
     private String severity;
-
-    @SerializedName("Description")
     private String description;
-
-    @SerializedName("EmergencyText")
     private String emergencyText;
-
-    @SerializedName("Duration")
     private String duration;
 
-    public IncidentEntity() {}
+    public Incident(String incidentId) {
+        this.incidentId = incidentId;
+    }
 
     public Date getAffectedFrom() {
         return affectedFrom;
@@ -75,6 +60,10 @@ public class IncidentEntity {
         this.emergencyText = emergencyText;
     }
 
+    public String getIncidentId() {
+        return incidentId;
+    }
+
     public String getSeverity() {
         return severity;
     }
@@ -89,13 +78,5 @@ public class IncidentEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getIncidentId() {
-        return incidentId;
-    }
-
-    public void setIncidentId(String incidentId) {
-        this.incidentId = incidentId;
     }
 }
