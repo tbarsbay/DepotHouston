@@ -4,7 +4,7 @@ package com.tamerbarsbay.depothouston.domain;
  * Created by Tamer on 7/23/2015.
  */
 public class Vehicle {
-    private String vehicleId;
+    private final String vehicleId;
     private String routeId;
     private String routeName;
     private String directionName;
@@ -94,10 +94,6 @@ public class Vehicle {
 
     public String getVehicleId() {
         return vehicleId;
-    }
-
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
     }
 
     public String getVehicleReportTime() {

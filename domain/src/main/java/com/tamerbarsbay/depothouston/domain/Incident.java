@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Incident {
 
-    private String incidentId;
+    private final String incidentId;
     private String status;
     private Date affectedFrom;
     private Date affectedTo;

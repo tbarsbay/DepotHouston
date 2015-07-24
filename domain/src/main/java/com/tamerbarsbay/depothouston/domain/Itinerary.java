@@ -1,72 +1,35 @@
-package com.tamerbarsbay.depothouston.data.entity;
-
-import com.google.gson.annotations.SerializedName;
+package com.tamerbarsbay.depothouston.domain;
 
 import java.util.Date;
 
 /**
- * Created by Tamer on 7/23/2015.
+ * Created by Tamer on 7/24/2015.
  */
-public class ItineraryEntity {
+public class Itinerary {
 
-    @SerializedName("ItineraryId")
-    private String itineraryId;
-
-    @SerializedName("Created")
+    private final String itineraryId;
     private Date created;
-
-    @SerializedName("StartTime")
     private Date startTime;
-
-    @SerializedName("EndTime")
     private Date endTime;
-
-    @SerializedName("AdjustedStartTime")
     private Date adjustedStartTime;
-
-    @SerializedName("AdjustedEndTime")
     private Date adjustedEndTime;
-
-    @SerializedName("StartStopName")
     private String startStopName;
-
-    @SerializedName("EndStopName")
     private String endStopName;
-
-    @SerializedName("StartStopId")
     private String startStopId;
-
-    @SerializedName("EndStopId")
     private String endStopId;
-
-    @SerializedName("StartAddress")
     private String startAddress;
-
-    @SerializedName("EndAddress")
     private String endAddress;
-
-    @SerializedName("TransferCount")
     private String transferCount;
-
-    @SerializedName("TravelTypes")
     private String travelTypes;
-
-    @SerializedName("WalkDistance")
     private double walkDistance;
-
-    @SerializedName("StartLat")
     private double startLat;
-
-    @SerializedName("StartLon")
     private double startLon;
-
-    @SerializedName("EndLat")
     private double endLat;
-
-    @SerializedName("EndLon")
     private double endLon;
 
-    public ItineraryEntity() {}
+    public Itinerary(String itineraryId) {
+        this.itineraryId = itineraryId;
+    }
 
     public Date getAdjustedEndTime() {
         return adjustedEndTime;
@@ -142,10 +105,6 @@ public class ItineraryEntity {
 
     public String getItineraryId() {
         return itineraryId;
-    }
-
-    public void setItineraryId(String itineraryId) {
-        this.itineraryId = itineraryId;
     }
 
     public String getStartAddress() {

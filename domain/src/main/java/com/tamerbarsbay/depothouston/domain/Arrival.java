@@ -6,7 +6,8 @@ import java.util.Date;
  * Created by Tamer on 7/23/2015.
  */
 public class Arrival {
-    private String arrivalId;
+
+    private final String arrivalId;
     private Date localArrivalTime;
     private Date localDepartureTime;
     private Date utcArrivalTime;
@@ -28,10 +29,6 @@ public class Arrival {
 
     public String getArrivalId() {
         return arrivalId;
-    }
-
-    public void setArrivalId(String arrivalId) {
-        this.arrivalId = arrivalId;
     }
 
     public int getDelaySeconds() {

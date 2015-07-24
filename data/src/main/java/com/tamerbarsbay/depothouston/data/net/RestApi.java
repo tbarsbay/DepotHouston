@@ -36,6 +36,7 @@ public interface RestApi {
     static final String PATH_FINAL_STOP = "FinalStop";
     static final String PATH_ARRIVALS = "Arrivals";
     static final String PATH_VEHICLES = "Vehicles";
+    static final String PATH_LEGS = "Legs";
 
     static final String PARAM_KEY_FORMAT = "$format";
     static final String PARAM_KEY_AUTH_TOKEN = "subscription-key";
