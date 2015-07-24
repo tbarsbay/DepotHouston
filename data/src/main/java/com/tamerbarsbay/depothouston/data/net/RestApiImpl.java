@@ -124,20 +124,20 @@ public class RestApiImpl implements RestApi {
 
     private String getRouteDetailsFromApi(String routeId) throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_ROUTES_WITH_ID, routeId));
+        builder.appendPath(String.format(PATH_ROUTE_WITH_ID, routeId));
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
     private String getStopListByRoute(String routeId) throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_ROUTES_WITH_ID, routeId))
+        builder.appendPath(String.format(PATH_ROUTE_WITH_ID, routeId))
                 .appendPath(PATH_STOPS);
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
     private String getStopListByRouteAndDirection(String routeId, String dir) throws MalformedURLException {
         Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_ROUTES_WITH_ID, routeId))
+        builder.appendPath(String.format(PATH_ROUTE_WITH_ID, routeId))
                 .appendPath(PATH_STOPS)
                 .appendQueryParameter(PARAM_KEY_FILTER, String.format(PARAM_FILTER_DIRECTION, routeId, dir));
         return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
@@ -148,7 +148,7 @@ public class RestApiImpl implements RestApi {
         builder.scheme(SCHEME_HTTPS)
                 .authority(AUTHORITY_METRO)
                 .appendPath(PATH_DATA)
-                .appendQueryParameter(PARAM_KEY_FORMAT, PARAM_JSON)
+                .appendQueryParameter(PARAM_KEY_FORMAT, PARAM_FORMAT)
                 .appendQueryParameter(PARAM_KEY_AUTH_TOKEN, PARAM_AUTH_TOKEN);
         return builder;
     }
@@ -157,7 +157,8 @@ public class RestApiImpl implements RestApi {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(SCHEME_HTTPS)
                 .authority(AUTHORITY_COMMUTER)
-                .appendPath(PATH_TRANSIT_SERVICE);
+                .appendPath(PATH_TRANSIT_SERVICE)
+                .appendQueryParameter(PARAM_KEY_FORMAT, PARAM_FORMAT);
         return builder;
     }
 
