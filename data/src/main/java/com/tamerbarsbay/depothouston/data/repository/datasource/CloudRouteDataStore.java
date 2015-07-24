@@ -20,9 +20,9 @@ public class CloudRouteDataStore implements RouteDataStore {
     private final Action1<RouteEntity> saveToCacheAction = new Action1<RouteEntity>() {
         @Override
         public void call(RouteEntity routeEntity) {
-            if (routeEntity != null) {
-                //CloudRouteDataStore.this.routeCache.put(routeEntity); //TODO uncomment
-            }
+        if (routeEntity != null) {
+            CloudRouteDataStore.this.routeCache.put(routeEntity);
+        }
         }
     };
 

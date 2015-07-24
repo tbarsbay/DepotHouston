@@ -21,7 +21,7 @@ public class CloudStopDataStore implements StopDataStore {
         @Override
         public void call(StopEntity stopEntity) {
             if (stopEntity != null) {
-                //StopCloudDataStore.this.stopCache.put(stopEntity); //TODO uncomment
+                CloudStopDataStore.this.stopCache.put(stopEntity);
             }
         }
     };

@@ -18,9 +18,9 @@ public class CloudItineraryDataStore implements ItineraryDataStore {
     private final Action1<ItineraryEntity> saveToCacheAction = new Action1<ItineraryEntity>() {
         @Override
         public void call(ItineraryEntity itineraryEntity) {
-            if (itineraryEntity != null) {
-                //CloudItineraryDataStore.this.itineraryCache.put(itineraryEntity); //TODO uncomment
-            }
+        if (itineraryEntity != null) {
+            CloudItineraryDataStore.this.itineraryCache.put(itineraryEntity);
+        }
         }
     };
 
