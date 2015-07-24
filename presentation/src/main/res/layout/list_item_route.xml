@@ -11,17 +11,20 @@
         android:id="@+id/route_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="16dp" />
+        android:paddingRight="16dp"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/route_long_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="16dp" />
+        android:paddingRight="16dp"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/route_type"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/black" />
 
 </LinearLayout>

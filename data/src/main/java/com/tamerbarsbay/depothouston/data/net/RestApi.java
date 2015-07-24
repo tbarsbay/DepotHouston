@@ -14,20 +14,22 @@ public interface RestApi {
 
     //TODO docs
 
-    static final String METRO_API_BASE_URL = "https://api.ridemetro.org/data/";
-    static final String COMMUTER_API_BASE_URL = "http://services.commuterapi.com/TransitODataService.svc/";
+    // Used for building Uris for querying the Houston Metro APIs
+    static final String SCHEME_HTTPS = "https";
+    static final String AUTHORITY_METRO = "api.ridemetro.org";
+    static final String AUTHORITY_COMMUTER = "services.commuterapi.com";
+    static final String PATH_TRANSIT_SERVICE = "TransitODataService.svc";
+    static final String PATH_DATA = "data";
+    static final String PATH_ROUTES = "Routes";
+    static final String PATH_ROUTES_WITH_ID = "Routes(\'%s\')";
+    static final String PATH_STOPS = "Stops";
 
-    static final String JSON_FORMAT_PARAM = "$format=json";
-    static final String AUTH_KEY_PARAM = "&subscription-key=";
-    static final String AUTH_KEY_VALUE = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO temp remove this
-
-    static final String EXTRAS = "?" + JSON_FORMAT_PARAM + AUTH_KEY_PARAM + AUTH_KEY_VALUE; //TODO temp
-
-    static final String API_URL_GET_ROUTE_LIST = METRO_API_BASE_URL + "Routes" + EXTRAS;
-
-    static final String API_URL_GET_ROUTE_DETAILS = METRO_API_BASE_URL + "Routes('%s')" + EXTRAS;
-
-    static final String API_URL_GET_STOPS_BY_ROUTE = METRO_API_BASE_URL + "Routes('%s')/Stops" + EXTRAS;
+    static final String PARAM_KEY_FORMAT = "$format";
+    static final String PARAM_JSON = "json";
+    static final String PARAM_KEY_AUTH_TOKEN = "subscription-key";
+    static final String PARAM_AUTH_TOKEN = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO remove later
+    static final String PARAM_KEY_FILTER = "$filter";
+    static final String PARAM_FILTER_DIRECTION = "DirectionId eq \'%s_%s\'";
 
     Observable<List<RouteEntity>> getRouteList();
 

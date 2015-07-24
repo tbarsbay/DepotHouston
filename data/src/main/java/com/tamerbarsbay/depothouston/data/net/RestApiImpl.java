@@ -3,6 +3,7 @@ package com.tamerbarsbay.depothouston.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 
 import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
@@ -97,7 +98,7 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super List<StopEntity>> subscriber) {
                 if (validNetworkConnection()) {
                     try {
-                        String responseStopEntities = getStopListByRoute(routeId);
+                        String responseStopEntities = getStopListByRouteAndDirection(routeId, "0"); //TODO temp
                         if (responseStopEntities != null) {
                             subscriber.onNext(stopEntityJsonMapper.transformStopEntityCollection(
                                     responseStopEntities));
@@ -116,17 +117,48 @@ public class RestApiImpl implements RestApi {
     }
 
     private String getRouteListFromApi() throws MalformedURLException {
-        return ApiConnection.createGET(RestApi.API_URL_GET_ROUTE_LIST).requestSyncCall();
+        Uri.Builder builder = getBaseUriBuilderMetro();
+        builder.appendPath(PATH_ROUTES);
+        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
     private String getRouteDetailsFromApi(String routeId) throws MalformedURLException {
-        String apiUrl = String.format(RestApi.API_URL_GET_ROUTE_DETAILS, routeId);
-        return ApiConnection.createGET(apiUrl).requestSyncCall();
+        Uri.Builder builder = getBaseUriBuilderMetro();
+        builder.appendPath(String.format(PATH_ROUTES_WITH_ID, routeId));
+        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
     private String getStopListByRoute(String routeId) throws MalformedURLException {
-        String apiUrl = String.format(RestApi.API_URL_GET_STOPS_BY_ROUTE, routeId);
-        return ApiConnection.createGET(apiUrl).requestSyncCall();
+        Uri.Builder builder = getBaseUriBuilderMetro();
+        builder.appendPath(String.format(PATH_ROUTES_WITH_ID, routeId))
+                .appendPath(PATH_STOPS);
+        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
+    }
+
+    private String getStopListByRouteAndDirection(String routeId, String dir) throws MalformedURLException {
+        Uri.Builder builder = getBaseUriBuilderMetro();
+        builder.appendPath(String.format(PATH_ROUTES_WITH_ID, routeId))
+                .appendPath(PATH_STOPS)
+                .appendQueryParameter(PARAM_KEY_FILTER, String.format(PARAM_FILTER_DIRECTION, routeId, dir));
+        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
+    }
+
+    private Uri.Builder getBaseUriBuilderMetro() {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(SCHEME_HTTPS)
+                .authority(AUTHORITY_METRO)
+                .appendPath(PATH_DATA)
+                .appendQueryParameter(PARAM_KEY_FORMAT, PARAM_JSON)
+                .appendQueryParameter(PARAM_KEY_AUTH_TOKEN, PARAM_AUTH_TOKEN);
+        return builder;
+    }
+
+    private Uri.Builder getBaseUriBuilderCommuter() {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(SCHEME_HTTPS)
+                .authority(AUTHORITY_COMMUTER)
+                .appendPath(PATH_TRANSIT_SERVICE);
+        return builder;
     }
 
     private boolean validNetworkConnection() {
