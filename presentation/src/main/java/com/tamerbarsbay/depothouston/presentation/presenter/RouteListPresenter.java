@@ -53,9 +53,6 @@ public class RouteListPresenter extends DefaultSubscriber<List<Route>> implement
         this.loadRouteList();
     }
 
-    /**
-     * Loads all routes.
-     */
     private void loadRouteList() {
         this.hideViewRetry();
         this.showViewLoading();
