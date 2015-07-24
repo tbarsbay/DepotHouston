@@ -1,7 +1,10 @@
 package com.tamerbarsbay.depothouston.data.net;
 
+import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
+import com.tamerbarsbay.depothouston.data.entity.ItineraryEntity;
 import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
+import com.tamerbarsbay.depothouston.data.entity.VehicleEntity;
 
 import java.util.List;
 
@@ -29,8 +32,10 @@ public interface RestApi {
     static final String PATH_FIND_NEARBY_STOPS = "FindStopsInArea";
     static final String PATH_FIND_NEARBY_ROUTES = "FindRoutesInArea";
     static final String PATH_CALCULATE_ITINERARY_BY_POINTS = "CalculateItineraryByPoints";
+    static final String PATH_CALCULATE_ITINERARY_ARRIVING_AT = "CalculateItineraryArrivingAt";
     static final String PATH_FINAL_STOP = "FinalStop";
     static final String PATH_ARRIVALS = "Arrivals";
+    static final String PATH_VEHICLES = "Vehicles";
 
     static final String PARAM_KEY_FORMAT = "$format";
     static final String PARAM_KEY_AUTH_TOKEN = "subscription-key";
@@ -51,6 +56,7 @@ public interface RestApi {
     static final String PARAM_AUTH_TOKEN = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO remove later
     static final String PARAM_FILTER_DIRECTION = "DirectionId eq \'%s_%s\'";
     static final String PARAM_FILTER_ROUTE_NAME = "RouteName eq \'%s\'";
+    static final String PARAM_FILTER_ROUTE_ID = "RouteId eq \'%s\'";
     static final String PARAM_ORDERBY_ENDTIME = "EndTime";
     static final String PARAM_EXPAND_LEGS = "Legs";
 
@@ -59,4 +65,15 @@ public interface RestApi {
     Observable<RouteEntity> getRouteDetails(final String routeId);
 
     Observable<List<StopEntity>> getStopsByRoute(final String routeId);
+
+    Observable<List<VehicleEntity>> getVehiclesByRoute(final String routeId);
+
+    Observable<List<ArrivalEntity>> getArrivalsByStop(final String stopId);
+
+    Observable<ItineraryEntity> getItinerary(final double lat1, final double lon1,
+                                             final double lat2, final double lon2);
+
+    Observable<ItineraryEntity> getItineraryWithEndTime(final double lat1, final double lon1,
+                                                       final double lat2, final double lon2,
+                                                       final String endTime); //TODO String or Date object?
 }
