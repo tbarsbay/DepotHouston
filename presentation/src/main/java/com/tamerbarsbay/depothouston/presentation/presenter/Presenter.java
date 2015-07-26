@@ -5,17 +5,17 @@ package com.tamerbarsbay.depothouston.presentation.presenter;
  */
 public interface Presenter {
     /**
-     * This should be called in the Activity's or Fragment's onResume() method.
+     * Called in the Activity/Fragment onResume() method.
      */
     void resume();
 
     /**
-     * This should be called in the Activity's or Fragment's onPause() method.
+     * Called in the Activity/Fragment onPause() method.
      */
     void pause();
 
     /**
-     * This should be called in the Activity's or Fragment's onDestroy() method.
+     * Called in the Activity/Fragment onDestroy() method.
      */
     void destroy();
 }
