@@ -7,6 +7,7 @@ import com.tamerbarsbay.depothouston.data.repository.datasource.ItineraryDataSto
 import com.tamerbarsbay.depothouston.domain.Itinerary;
 import com.tamerbarsbay.depothouston.domain.repository.ItineraryRepository;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
@@ -29,6 +30,14 @@ public class ItineraryDataRepository implements ItineraryRepository {
                             .itineraryEntityDataMapper.transform(itineraryEntity);
                 }
             };
+
+    @Inject
+    public ItineraryDataRepository(
+            ItineraryDataStoreFactory itineraryDataStoreFactory,
+            ItineraryEntityDataMapper routeEntityDataMapper) {
+        this.itineraryDataStoreFactory = itineraryDataStoreFactory;
+        this.itineraryEntityDataMapper = itineraryEntityDataMapper;
+    }
 
     @Override
     public Observable<Itinerary> calculateItinerary(double lat1, double lon1, double lat2, double lon2) {

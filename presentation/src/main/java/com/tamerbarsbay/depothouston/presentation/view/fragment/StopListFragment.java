@@ -84,7 +84,8 @@ public class StopListFragment extends BaseFragment implements StopListView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_stop_list, container, false);
         ButterKnife.inject(this, fragmentView);
         setupUI();

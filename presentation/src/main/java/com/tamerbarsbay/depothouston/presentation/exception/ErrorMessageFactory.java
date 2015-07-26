@@ -29,6 +29,8 @@ public class ErrorMessageFactory {
             message = context.getString(R.string.exception_message_no_connection);
         } else if (exception instanceof StopNotFoundException) {
             message = context.getString(R.string.exception_message_stop_not_found);
+        } else {
+            message = exception.getMessage();
         }
 
         return message;

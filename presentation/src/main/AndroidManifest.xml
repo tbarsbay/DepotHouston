@@ -28,6 +28,10 @@
             android:name=".presentation.view.activity.RouteListActivity"
             android:label="@string/title_activity_route_list" >
         </activity>
+        <activity
+            android:name=".presentation.view.activity.ArrivalListActivity"
+            android:label="@string/title_activity_arrival_list" >
+        </activity>
     </application>
 
 </manifest>

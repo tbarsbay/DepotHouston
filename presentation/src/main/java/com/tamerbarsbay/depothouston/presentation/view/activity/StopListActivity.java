@@ -76,11 +76,9 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -91,6 +89,6 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
 
     @Override
     public void onStopClicked(StopModel stopModel) {
-        //TODO open arrivals screen
+        this.navigator.navigateToArrivalList(this, stopModel.getStopId());
     }
 }
