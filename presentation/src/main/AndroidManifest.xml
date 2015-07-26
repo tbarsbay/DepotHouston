@@ -24,6 +24,10 @@
             android:name=".presentation.view.activity.StopListActivity"
             android:label="@string/title_activity_stop_list" >
         </activity>
+        <activity
+            android:name=".presentation.view.activity.RouteListActivity"
+            android:label="@string/title_activity_route_list" >
+        </activity>
     </application>
 
 </manifest>

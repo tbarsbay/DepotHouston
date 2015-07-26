@@ -91,6 +91,6 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
 
     @Override
     public void onStopClicked(StopModel stopModel) {
-        //TODO
+        //TODO open arrivals screen
     }
 }

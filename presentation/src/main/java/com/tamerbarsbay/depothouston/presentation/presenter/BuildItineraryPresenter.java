@@ -12,6 +12,10 @@ public class BuildItineraryPresenter extends DefaultSubscriber<Itinerary> implem
 
     //TODO
 
+    //TODO this initialize has to have parameters because they can't come from the activity
+    //TODO or we can just make it so that the dagger module injection doesn't happen until the user clicks "build" or whatever
+    //TODO but we'd have to do null checks around anything with the presenter or just move it around
+
     @Override
     public void resume() {
 

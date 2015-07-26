@@ -3,6 +3,7 @@ package com.tamerbarsbay.depothouston.presentation.navigation;
 import android.content.Context;
 import android.content.Intent;
 
+import com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity;
 
 import javax.inject.Inject;
@@ -16,6 +17,17 @@ public class Navigator {
 
     @Inject
     public Navigator() {};
+
+    /**
+     * Navigate to the route list screen.
+     * @param context Context.
+     */
+    public void navigateToRouteList(Context context) {
+        if (context != null) {
+            Intent intent = RouteListActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
+    }
 
     /**
      * Navigate to the stop list screen.

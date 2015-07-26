@@ -4,14 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.tamerbarsbay.depothouston.presentation.view.activity.MainActivity">
+    tools:context="com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity">
 
     <include layout="@layout/toolbar" />
 
-    <Button
-        android:id="@+id/btn_main_goto_route_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ROUTE LIST"/>
+    <FrameLayout
+        android:id="@+id/fl_route_list_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
