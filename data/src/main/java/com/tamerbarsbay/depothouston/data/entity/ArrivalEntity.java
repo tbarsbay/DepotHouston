@@ -13,16 +13,16 @@ public class ArrivalEntity {
     private String arrivalId;
 
     @SerializedName("LocalArrivalTime")
-    private Date localArrivalTime;
+    private String localArrivalTimeString;
 
     @SerializedName("LocalDepartureTime")
-    private Date localDepartureTime;
+    private String localDepartureTimeString;
 
     @SerializedName("UtcArrivalTime")
-    private Date utcArrivalTime;
+    private String utcArrivalTimeString;
 
     @SerializedName("UtcDepartureTime")
-    private Date utcDepartureTime;
+    private String utcDepartureTimeString;
 
     @SerializedName("DestinationName")
     private String destinationName;
@@ -53,6 +53,11 @@ public class ArrivalEntity {
 
     @SerializedName("IsRealTime")
     private boolean isRealTime;
+
+    private Date localArrivalTime;
+    private Date localDepartureTime;
+    private Date utcArrivalTime;
+    private Date utcDepartureTime;
 
     public ArrivalEntity() {}
 
@@ -97,7 +102,9 @@ public class ArrivalEntity {
     }
 
     public Date getLocalArrivalTime() {
-        return localArrivalTime;
+        return localArrivalTime == null
+                ? parseStringAsDate(localArrivalTimeString)
+                : localArrivalTime;
     }
 
     public void setLocalArrivalTime(Date localArrivalTime) {
@@ -105,11 +112,33 @@ public class ArrivalEntity {
     }
 
     public Date getLocalDepartureTime() {
-        return localDepartureTime;
+        return localDepartureTime == null
+                ? parseStringAsDate(localDepartureTimeString)
+                : localDepartureTime;
     }
 
     public void setLocalDepartureTime(Date localDepartureTime) {
         this.localDepartureTime = localDepartureTime;
+    }
+
+    public Date getUtcArrivalTime() {
+        return utcArrivalTime == null
+                ? parseStringAsDate(utcArrivalTimeString)
+                : utcArrivalTime;
+    }
+
+    public void setUtcArrivalTime(Date utcArrivalTime) {
+        this.utcArrivalTime = utcArrivalTime;
+    }
+
+    public Date getUtcDepartureTime() {
+        return utcDepartureTime == null
+                ? parseStringAsDate(utcDepartureTimeString)
+                : utcDepartureTime;
+    }
+
+    public void setUtcDepartureTime(Date utcDepartureTime) {
+        this.utcDepartureTime = utcDepartureTime;
     }
 
     public String getRouteId() {
@@ -160,19 +189,16 @@ public class ArrivalEntity {
         this.stopSequence = stopSequence;
     }
 
-    public Date getUtcArrivalTime() {
-        return utcArrivalTime;
-    }
-
-    public void setUtcArrivalTime(Date utcArrivalTime) {
-        this.utcArrivalTime = utcArrivalTime;
-    }
-
-    public Date getUtcDepartureTime() {
-        return utcDepartureTime;
-    }
-
-    public void setUtcDepartureTime(Date utcDepartureTime) {
-        this.utcDepartureTime = utcDepartureTime;
+    public Date parseStringAsDate(String s) {
+        // Things in the json are formatted like this: "\/Date(0000000000000)/".
+        // Where all the 0s are some date in milliseconds. We have to parse
+        // those numbers as a long and construct a Date object from them.
+        try {
+            String millisString = s.substring(s.indexOf("(") + 1, s.lastIndexOf(")"));
+            return new Date(Long.parseLong(millisString));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
