@@ -21,14 +21,16 @@ import butterknife.InjectView;
  */
 public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.ArrivalViewHolder> {
 
-public interface OnItemClickListener {
-    void onArrivalItemClicked(ArrivalModel arrivalModel);
-}
+    public interface OnItemClickListener {
+        void onArrivalItemClicked(ArrivalModel arrivalModel);
+    }
 
-private List<ArrivalModel> arrivalModels;
-private final LayoutInflater layoutInflater;
+    private List<ArrivalModel> arrivalModels;
+    private final LayoutInflater layoutInflater;
 
-private OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
+
+    private static final String ARRIVAL_IN_MINS_TEMPLATE = "%sm";
 
     public ArrivalListAdapter(Context context, Collection<ArrivalModel> arrivalModels) {
         this.validateArrivalModels(arrivalModels);
@@ -52,7 +54,9 @@ private OnItemClickListener onItemClickListener;
     @Override
     public void onBindViewHolder(ArrivalListAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
-        arrivalViewHolder.tvArrivalTime.setText(arrivalModel.getLocalArrivalTime().toString()); //TODO temp
+        String arrivalTime = arrivalModel.getMinsUntilArrival(arrivalModel.getUtcArrivalTime());
+        //TODO handle 0, 1m with "Arriving now"
+        arrivalViewHolder.tvArrivalTime.setText(String.format(ARRIVAL_IN_MINS_TEMPLATE, arrivalTime));
         arrivalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

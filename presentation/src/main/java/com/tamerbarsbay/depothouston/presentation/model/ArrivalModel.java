@@ -1,6 +1,7 @@
 package com.tamerbarsbay.depothouston.presentation.model;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Tamer on 7/23/2015.
@@ -144,5 +145,11 @@ public class ArrivalModel {
 
     public void setUtcDepartureTime(Date utcDepartureTime) {
         this.utcDepartureTime = utcDepartureTime;
+    }
+
+    public String getMinsUntilArrival(Date utcArrivalTime) {
+        long diff = utcArrivalTime.getTime() - System.currentTimeMillis();
+        long diffInMins = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
+        return String.valueOf(diffInMins);
     }
 }
