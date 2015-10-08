@@ -16,6 +16,7 @@
         <TextView
             android:layout_weight="@integer/arrival_route_name_weight"
             android:text="@string/route"
+            android:gravity="center_horizontal"
             style="@style/ArrivalList.Headings"/>
 
         <TextView
@@ -24,9 +25,9 @@
             style="@style/ArrivalList.Headings"/>
 
         <TextView
-            android:layout_weight="@integer/arrival_minutes_until_arrival_weight"
+            android:layout_weight="@integer/arrival_time_weight"
             android:text="@string/arriving"
-            android:gravity="right"
+            android:gravity="center_horizontal"
             style="@style/ArrivalList.Headings"/>
 
     </LinearLayout>

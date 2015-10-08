@@ -72,6 +72,7 @@
         <item name="android:layout_weight">@integer/arrival_route_name_weight</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="ArrivalItem.DestinationName">
@@ -82,13 +83,18 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="ArrivalItem.ArrivalTime">
-        <item name="android:layout_width">0dp</item>
+    <style name="ArrivalItem.MinutesUntilArrival">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">@integer/arrival_minutes_until_arrival_weight</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:gravity">right</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ArrivalItem.ArrivalTime">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#444444</item>
     </style>
 
 </resources>

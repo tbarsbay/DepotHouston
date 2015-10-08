@@ -2,6 +2,7 @@ package com.tamerbarsbay.depothouston.presentation.model;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -150,6 +151,11 @@ public class ArrivalModel {
         long diff = getUtcArrivalTime().getTime() - System.currentTimeMillis();
         long diffInMins = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
         return diffInMins;
+    }
+
+    public String getFormattedTime(Date time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+        return formatter.format(time);
     }
 
     private String trimLeadingZeros(String s) {

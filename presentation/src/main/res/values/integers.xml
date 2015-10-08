@@ -2,5 +2,5 @@
 <resources>
     <integer name="arrival_route_name_weight">1</integer>
     <integer name="arrival_destination_name_weight">3</integer>
-    <integer name="arrival_minutes_until_arrival_weight">1</integer>
+    <integer name="arrival_time_weight">1</integer>
 </resources>

@@ -53,8 +53,10 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     @Override
     public void onBindViewHolder(ArrivalListAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
-        arrivalViewHolder.tvArrivalTime.setText(getArrivalTextToShow(arrivalModel));
-        arrivalViewHolder.tvArrivalTime.setTextColor(getArrivalTextColor(arrivalModel));
+        arrivalViewHolder.tvMinutesUntilArrival.setText(getArrivalTextToShow(arrivalModel));
+        arrivalViewHolder.tvMinutesUntilArrival.setTextColor(getArrivalTextColor(arrivalModel));
+        //TODO this is wrong, it should be getLocalArrivalTime but that was giving the wrong times
+        arrivalViewHolder.tvArrivalTime.setText(arrivalModel.getFormattedTime(arrivalModel.getUtcArrivalTime()));
         arrivalViewHolder.tvRouteName.setText(arrivalModel.getRouteName());
         arrivalViewHolder.tvDestinationName.setText(arrivalModel.getDestinationName());
         arrivalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -104,8 +106,8 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     }
 
 static class ArrivalViewHolder extends RecyclerView.ViewHolder {
-    @InjectView(R.id.arrival_time)
-    TextView tvArrivalTime;
+    @InjectView(R.id.arrival_minutes_until_arrival)
+    TextView tvMinutesUntilArrival;
 
     @InjectView(R.id.arrival_route_name)
     TextView tvRouteName;
@@ -113,7 +115,8 @@ static class ArrivalViewHolder extends RecyclerView.ViewHolder {
     @InjectView(R.id.arrival_destination_name)
     TextView tvDestinationName;
     
-    //TODO
+    @InjectView(R.id.arrival_time)
+    TextView tvArrivalTime;
 
     public ArrivalViewHolder(View itemView) {
         super(itemView);

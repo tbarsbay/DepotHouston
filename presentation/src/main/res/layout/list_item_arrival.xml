@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="16dp"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical">
@@ -19,9 +19,23 @@
         tools:text="Destination Name"
         style="@style/ArrivalItem.DestinationName"/>
 
-    <TextView
-        android:id="@+id/arrival_time"
-        tools:text="22m"
-        style="@style/ArrivalItem.ArrivalTime"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@integer/arrival_time_weight"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/arrival_minutes_until_arrival"
+            tools:text="22m"
+            style="@style/ArrivalItem.MinutesUntilArrival"/>
+
+        <TextView
+            android:id="@+id/arrival_time"
+            tools:text="9:56pm"
+            style="@style/ArrivalItem.ArrivalTime"/>
+
+    </LinearLayout>
 
 </LinearLayout>
