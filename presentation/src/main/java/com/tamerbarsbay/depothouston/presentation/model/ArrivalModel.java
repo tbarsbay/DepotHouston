@@ -94,7 +94,7 @@ public class ArrivalModel {
     }
 
     public String getRouteName() {
-        return routeName;
+        return trimLeadingZeros(routeName);
     }
 
     public void setRouteName(String routeName) {
@@ -153,5 +153,12 @@ public class ArrivalModel {
         long diff = getUtcArrivalTime().getTime() - System.currentTimeMillis();
         long diffInMins = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
         return diffInMins;
+    }
+
+    private String trimLeadingZeros(String s) {
+        while (s.length() > 1 && s.charAt(0) == '0') {
+            s = s.substring(1);
+        }
+        return s;
     }
 }

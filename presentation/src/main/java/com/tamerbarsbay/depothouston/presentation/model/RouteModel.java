@@ -2,9 +2,6 @@ package com.tamerbarsbay.depothouston.presentation.model;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class RouteModel {
 
     private final String routeId;
@@ -47,7 +44,7 @@ public class RouteModel {
     }
 
     public String getRouteName() {
-        return WordUtils.capitalizeFully(routeName);
+        return trimLeadingZeros(routeName);
     }
 
     public void setRouteName(String routeName) {
@@ -64,5 +61,12 @@ public class RouteModel {
 
     public boolean isBus() {
         return this.getRouteType().equals("Bus");
+    }
+
+    private String trimLeadingZeros(String s) {
+        while (s.length() > 1 && s.charAt(0) == '0') {
+            s = s.substring(1);
+        }
+        return s;
     }
 }

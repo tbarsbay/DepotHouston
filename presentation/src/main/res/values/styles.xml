@@ -79,7 +79,7 @@
         <item name="android:layout_weight">@integer/arrival_minutes_until_arrival_weight</item>
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">right</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/primary</item>
     </style>
 
 </resources>
