@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:gravity="center_vertical"
-    android:background="?android:attr/selectableItemBackground">
+    style="@style/DefaultCardView">
 
-    <TextView
-        android:id="@+id/route_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingRight="16dp"
-        android:textSize="20sp"
-        android:textColor="@color/primary"
-        android:gravity="center_horizontal"
-        tools:text="4"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/route_long_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:paddingRight="16dp"
-        android:textColor="@color/black"
-        tools:text="Route Long Name"/>
+        <TextView
+            android:id="@+id/route_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/primary"
+            android:gravity="center_horizontal"
+            tools:text="4"/>
 
-    <TextView
-        android:id="@+id/route_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/route_long_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:paddingRight="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="Route Long Name"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/route_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

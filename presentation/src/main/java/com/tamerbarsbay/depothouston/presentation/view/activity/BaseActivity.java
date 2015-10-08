@@ -15,9 +15,6 @@ import com.tamerbarsbay.depothouston.presentation.navigation.Navigator;
 
 import javax.inject.Inject;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class BaseActivity extends ActionBarActivity {
 
     @Inject

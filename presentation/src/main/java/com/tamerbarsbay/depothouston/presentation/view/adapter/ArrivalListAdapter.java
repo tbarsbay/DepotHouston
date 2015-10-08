@@ -22,6 +22,7 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
         void onArrivalItemClicked(ArrivalModel arrivalModel);
     }
 
+    private final Context context;
     private List<ArrivalModel> arrivalModels;
     private final LayoutInflater layoutInflater;
 
@@ -34,6 +35,7 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
         this.layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.arrivalModels = (List<ArrivalModel>) arrivalModels;
+        this.context = context;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     public void onBindViewHolder(ArrivalListAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
         arrivalViewHolder.tvArrivalTime.setText(getArrivalTextToShow(arrivalModel));
+        arrivalViewHolder.tvArrivalTime.setTextColor(getArrivalTextColor(arrivalModel));
         arrivalViewHolder.tvRouteName.setText(arrivalModel.getRouteName());
         arrivalViewHolder.tvDestinationName.setText(arrivalModel.getDestinationName());
         arrivalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +65,12 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
                 }
             }
         });
+    }
+
+    private int getArrivalTextColor(ArrivalModel arrivalModel) {
+        return arrivalModel.isRealTime() ?
+                context.getResources().getColor(R.color.prediction_real_time) :
+                context.getResources().getColor(R.color.prediction_scheduled);
     }
 
     private String getArrivalTextToShow(ArrivalModel arrivalModel) {

@@ -38,6 +38,7 @@ dependencies {
     compile presentationDependencies.dagger
     compile presentationDependencies.butterKnife
     compile presentationDependencies.recyclerView
+    compile presentationDependencies.cardView
     compile presentationDependencies.rxJava
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.androidSupportLib

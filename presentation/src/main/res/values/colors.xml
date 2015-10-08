@@ -5,6 +5,9 @@
     <color name="primary_dark">@color/light_blue_800</color>
     <color name="accent">@color/primary_dark</color>
 
+    <color name="prediction_real_time">@color/black</color>
+    <color name="prediction_scheduled">@color/primary</color>
+
     <!-- Material Design colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>

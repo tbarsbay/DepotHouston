@@ -5,9 +5,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class ArrivalModel {
     private String arrivalId;
     private Date localArrivalTime;
