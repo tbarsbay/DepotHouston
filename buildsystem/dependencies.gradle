@@ -11,18 +11,21 @@ ext {
     androidTargetSdkVersion = 22
     androidCompileSdkVersion = 22
 
+    //Android libraries
+    androidSupportLibVersion = '22.2.0'
+    androidDesignSupportLibVersion = '22.2.0'
+    androidAnnotationsVersion = '22.2.0'
+    recyclerViewVersion = '22.0.0'
+
     //Libraries
     daggerVersion = '2.0'
     butterKnifeVersion = '6.1.0'
-    recyclerViewVersion = '22.0.0'
     rxJavaVersion = '1.0.3'
     rxAndroidVersion = '0.24.0'
     javaxAnnotationVersion = '10.0-b28'
     gsonVersion = '2.3.1'
     okHttpVersion = '2.3.0'
-    androidSupportLibVersion = '22.2.0'
-    androidDesignSupportLibVersion = '22.2.0'
-    androidAnnotationsVersion = '22.2.0'
+    commonsLangVersion = '3.4'
 
     presentationDependencies = [
             daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -34,6 +37,7 @@ ext {
             javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
             androidSupportLib:  "com.android.support:appcompat-v7:${androidSupportLibVersion}",
             androidDesignSupportLib:    "com.android.support:design:${androidDesignSupportLibVersion}",
+            commonsLang:        "org.apache.commons:commons-lang3:${commonsLangVersion}",
     ]
 
     domainDependencies = [

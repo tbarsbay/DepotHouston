@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/arrival_route_name"
+        tools:text="4"
+        style="@style/ArrivalItem.RouteName"/>
+
+    <TextView
+        android:id="@+id/arrival_destination_name"
+        tools:text="Destination Name"
+        style="@style/ArrivalItem.DestinationName"/>
 
     <TextView
         android:id="@+id/arrival_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        tools:text="22m"
+        style="@style/ArrivalItem.ArrivalTime"/>
 
 </LinearLayout>

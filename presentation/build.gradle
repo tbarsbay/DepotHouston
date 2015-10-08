@@ -42,5 +42,6 @@ dependencies {
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.androidSupportLib
     compile presentationDependencies.androidDesignSupportLib
+    compile presentationDependencies.commonsLang
     provided presentationDependencies.javaxAnnotation
 }

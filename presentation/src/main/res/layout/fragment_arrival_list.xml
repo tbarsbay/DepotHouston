@@ -1,18 +1,44 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.tamerbarsbay.depothouston.presentation.view.fragment.ArrivalListFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/light_blue_100">
+
+        <TextView
+            android:layout_weight="@integer/arrival_route_name_weight"
+            android:text="@string/route"
+            style="@style/ArrivalList.Headings"/>
+
+        <TextView
+            android:layout_weight="@integer/arrival_destination_name_weight"
+            android:text="@string/destination"
+            style="@style/ArrivalList.Headings"/>
+
+        <TextView
+            android:layout_weight="@integer/arrival_minutes_until_arrival_weight"
+            android:text="@string/arriving_in"
+            style="@style/ArrivalList.Headings"/>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_arrival_list"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/list_item_arrival"/>
 
     <include layout="@layout/view_progress" />
 
     <include layout="@layout/view_retry" />
 
-</RelativeLayout>
+</LinearLayout>

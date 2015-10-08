@@ -16,9 +16,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-/**
- * Created by Tamer on 7/26/2015.
- */
 public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.ArrivalViewHolder> {
 
     public interface OnItemClickListener {
@@ -54,9 +51,11 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     @Override
     public void onBindViewHolder(ArrivalListAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
-        String arrivalTime = arrivalModel.getMinsUntilArrival(arrivalModel.getUtcArrivalTime());
+        String arrivalTime = arrivalModel.getMinsUntilArrival();
         //TODO handle 0, 1m with "Arriving now"
         arrivalViewHolder.tvArrivalTime.setText(String.format(ARRIVAL_IN_MINS_TEMPLATE, arrivalTime));
+        arrivalViewHolder.tvRouteName.setText(arrivalModel.getRouteName());
+        arrivalViewHolder.tvDestinationName.setText(arrivalModel.getDestinationName());
         arrivalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +90,12 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
 static class ArrivalViewHolder extends RecyclerView.ViewHolder {
     @InjectView(R.id.arrival_time)
     TextView tvArrivalTime;
+
+    @InjectView(R.id.arrival_route_name)
+    TextView tvRouteName;
+
+    @InjectView(R.id.arrival_destination_name)
+    TextView tvDestinationName;
     
     //TODO
 

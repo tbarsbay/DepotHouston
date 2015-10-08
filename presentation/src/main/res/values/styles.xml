@@ -46,4 +46,40 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="ArrivalList"></style>
+
+    <style name="ArrivalList.Headings">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ArrivalItem"></style>
+
+    <style name="ArrivalItem.RouteName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@integer/arrival_route_name_weight</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ArrivalItem.DestinationName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@integer/arrival_destination_name_weight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ArrivalItem.ArrivalTime">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@integer/arrival_minutes_until_arrival_weight</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

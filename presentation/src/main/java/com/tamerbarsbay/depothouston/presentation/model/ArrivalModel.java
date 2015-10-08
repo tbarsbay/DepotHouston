@@ -1,5 +1,7 @@
 package com.tamerbarsbay.depothouston.presentation.model;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +46,7 @@ public class ArrivalModel {
     }
 
     public String getDestinationName() {
-        return destinationName;
+        return WordUtils.capitalizeFully(destinationName);
     }
 
     public void setDestinationName(String destinationName) {
@@ -147,8 +149,8 @@ public class ArrivalModel {
         this.utcDepartureTime = utcDepartureTime;
     }
 
-    public String getMinsUntilArrival(Date utcArrivalTime) {
-        long diff = utcArrivalTime.getTime() - System.currentTimeMillis();
+    public String getMinsUntilArrival() {
+        long diff = getUtcArrivalTime().getTime() - System.currentTimeMillis();
         long diffInMins = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
         return String.valueOf(diffInMins);
     }
