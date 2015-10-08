@@ -149,9 +149,9 @@ public class ArrivalModel {
         this.utcDepartureTime = utcDepartureTime;
     }
 
-    public String getMinsUntilArrival() {
+    public long getMinsUntilArrival() {
         long diff = getUtcArrivalTime().getTime() - System.currentTimeMillis();
         long diffInMins = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
-        return String.valueOf(diffInMins);
+        return diffInMins;
     }
 }

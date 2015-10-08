@@ -1,5 +1,7 @@
 package com.tamerbarsbay.depothouston.presentation.model;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 /**
  * Created by Tamer on 7/23/2015.
  */
@@ -33,7 +35,7 @@ public class RouteModel {
     }
 
     public String getLongName() {
-        return longName;
+        return WordUtils.capitalizeFully(longName);
     }
 
     public void setLongName(String longName) {
@@ -45,7 +47,7 @@ public class RouteModel {
     }
 
     public String getRouteName() {
-        return routeName;
+        return WordUtils.capitalizeFully(routeName);
     }
 
     public void setRouteName(String routeName) {

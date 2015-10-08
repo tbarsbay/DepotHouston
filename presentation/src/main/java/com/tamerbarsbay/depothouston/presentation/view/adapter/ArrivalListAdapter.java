@@ -51,9 +51,7 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     @Override
     public void onBindViewHolder(ArrivalListAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
-        String arrivalTime = arrivalModel.getMinsUntilArrival();
-        //TODO handle 0, 1m with "Arriving now"
-        arrivalViewHolder.tvArrivalTime.setText(String.format(ARRIVAL_IN_MINS_TEMPLATE, arrivalTime));
+        arrivalViewHolder.tvArrivalTime.setText(getArrivalTextToShow(arrivalModel));
         arrivalViewHolder.tvRouteName.setText(arrivalModel.getRouteName());
         arrivalViewHolder.tvDestinationName.setText(arrivalModel.getDestinationName());
         arrivalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +62,15 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
                 }
             }
         });
+    }
+
+    private String getArrivalTextToShow(ArrivalModel arrivalModel) {
+        long minsUntilArrival = arrivalModel.getMinsUntilArrival();
+        if (minsUntilArrival == 0 || minsUntilArrival == 1) {
+            return "Due";
+        } else {
+            return String.format(ARRIVAL_IN_MINS_TEMPLATE, String.valueOf(minsUntilArrival));
+        }
     }
 
     @Override

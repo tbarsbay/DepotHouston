@@ -25,7 +25,8 @@
 
         <TextView
             android:layout_weight="@integer/arrival_minutes_until_arrival_weight"
-            android:text="@string/arriving_in"
+            android:text="@string/arriving"
+            android:gravity="right"
             style="@style/ArrivalList.Headings"/>
 
     </LinearLayout>
