@@ -12,12 +12,8 @@ import com.tamerbarsbay.depothouston.data.entity.ItineraryEntity;
 import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
 import com.tamerbarsbay.depothouston.data.entity.VehicleEntity;
-import com.tamerbarsbay.depothouston.data.entity.mapper.ArrivalEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.entity.mapper.IncidentEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.entity.mapper.ItineraryEntityJsonMapper;
-import com.tamerbarsbay.depothouston.data.entity.mapper.RouteEntityJsonMapper;
-import com.tamerbarsbay.depothouston.data.entity.mapper.StopEntityJsonMapper;
-import com.tamerbarsbay.depothouston.data.entity.mapper.VehicleEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.exception.NetworkConnectionException;
 
 import java.net.MalformedURLException;
@@ -29,43 +25,19 @@ import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 import rx.Subscriber;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class RestApiImpl implements RestApi {
 
     private final Context context;
-    private RouteEntityJsonMapper routeEntityJsonMapper;
-    private StopEntityJsonMapper stopEntityJsonMapper;
-    private ArrivalEntityJsonMapper arrivalEntityJsonMapper;
     private IncidentEntityJsonMapper incidentEntityJsonMapper;
-    private VehicleEntityJsonMapper vehicleEntityJsonMapper;
     private ItineraryEntityJsonMapper itineraryEntityJsonMapper;
 
     private static OkHttpClient okHttpClient;
 
-    public RestApiImpl(Context context, RouteEntityJsonMapper routeEntityJsonMapper) {
-        if (context == null || routeEntityJsonMapper == null) {
-            throw new IllegalArgumentException("Constructor parameters cannot be null.");
+    public RestApiImpl(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context cannot be null.");
         }
         this.context = context.getApplicationContext();
-        this.routeEntityJsonMapper = routeEntityJsonMapper;
-    }
-
-    public RestApiImpl(Context context, StopEntityJsonMapper stopEntityJsonMapper) {
-        if (context == null || stopEntityJsonMapper == null) {
-            throw new IllegalArgumentException("Constructor parameters cannot be null.");
-        }
-        this.context = context.getApplicationContext();
-        this.stopEntityJsonMapper = stopEntityJsonMapper;
-    }
-
-    public RestApiImpl(Context context, ArrivalEntityJsonMapper arrivalEntityJsonMapper) {
-        if (context == null || arrivalEntityJsonMapper == null) {
-            throw new IllegalArgumentException("Constructor parameters cannot be null.");
-        }
-        this.context = context.getApplicationContext();
-        this.arrivalEntityJsonMapper = arrivalEntityJsonMapper;
     }
 
     public RestApiImpl(Context context, IncidentEntityJsonMapper incidentEntityJsonMapper) {
@@ -74,14 +46,6 @@ public class RestApiImpl implements RestApi {
         }
         this.context = context.getApplicationContext();
         this.incidentEntityJsonMapper = incidentEntityJsonMapper;
-    }
-
-    public RestApiImpl(Context context, VehicleEntityJsonMapper vehicleEntityJsonMapper) {
-        if (context == null || vehicleEntityJsonMapper == null) {
-            throw new IllegalArgumentException("Constructor parameters cannot be null.");
-        }
-        this.context = context.getApplicationContext();
-        this.vehicleEntityJsonMapper = vehicleEntityJsonMapper;
     }
 
     public RestApiImpl(Context context, ItineraryEntityJsonMapper itineraryEntityJsonMapper) {
@@ -93,117 +57,55 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<RouteEntity> getRouteDetails(final String routeId) {
-        return Observable.create(new Observable.OnSubscribe<RouteEntity>() {
-            @Override
-            public void call(Subscriber<? super RouteEntity> subscriber) {
-                if (validNetworkConnection()) {
-                    try {
-                        String responseRouteEntity = getRouteDetailsFromApi(routeId);
-                        if (responseRouteEntity != null) {
-                            subscriber.onNext(routeEntityJsonMapper.transformRouteEntity(
-                                    responseRouteEntity));
-                        } else {
-                            subscriber.onError(new Exception("Null route entity.")); //TODO temp
-                        }
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
-            }
-        });
-    }
-
-    @Override
-    public Observable<List<RouteEntity>> getRouteList() {
-//        return validNetworkConnection() ?
-//                getRetrofit().create(RestApi.class).getRouteList() :
-//                Observable.error(new NetworkConnectionException());
-        try {
-            return getRetrofit().create(RestApi.class).getRouteList();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
+    public Observable<RouteEntity> route(final String routeId) {
+        if (validNetworkConnection()) {
+            return getRetrofit().create(RestApi.class).route(routeId);
+        } else {
             return Observable.error(new NetworkConnectionException());
         }
     }
 
     @Override
-    public Observable<List<StopEntity>> getStopsByRoute(final String routeId) {
-        return Observable.create(new Observable.OnSubscribe<List<StopEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<StopEntity>> subscriber) {
-                if (validNetworkConnection()) {
-                    try {
-                        String responseStopEntities = getStopsByRouteAndDirectionFromApi(routeId, "0"); //TODO temp
-                        if (responseStopEntities != null) {
-                            subscriber.onNext(stopEntityJsonMapper.transformStopEntityCollection(
-                                    responseStopEntities));
-                            subscriber.onCompleted();
-                        } else {
-                            subscriber.onError(new Exception("Null stop entities.")); //TODO temp
-                        }
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
-            }
-        });
+    public Observable<List<RouteEntity>> routes() {
+        if (validNetworkConnection()) {
+            return getRetrofit().create(RestApi.class).routes();
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
     }
 
     @Override
-    public Observable<List<ArrivalEntity>> getArrivalsByStop(final String stopId) {
-        return Observable.create(new Observable.OnSubscribe<List<ArrivalEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<ArrivalEntity>> subscriber) {
-                if (validNetworkConnection()) {
-                    try {
-                        String responseArrivalEntities = getArrivalsByStopFromApi(stopId);
-                        if (responseArrivalEntities != null) {
-                            subscriber.onNext(
-                                    arrivalEntityJsonMapper.transformArrivalEntityCollection(
-                                            responseArrivalEntities));
-                            subscriber.onCompleted();
-                        } else {
-                            subscriber.onError(new Exception("Null arrival entities.")); //TODO temp
-                        }
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
-            }
-        });
+    public Observable<List<StopEntity>> stopsByRoute(final String routeId) {
+        return stopsByRouteAndDirection(routeId, "0"); //TODO temp
     }
 
     @Override
-    public Observable<List<VehicleEntity>> getVehiclesByRoute(final String routeId) {
-        return Observable.create(new Observable.OnSubscribe<List<VehicleEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<VehicleEntity>> subscriber) {
-                if (validNetworkConnection()) {
-                    try {
-                        String responseVehicleEntities = getVehiclesByRouteFromApi(routeId);
-                        if (responseVehicleEntities != null) {
-                            subscriber.onNext(
-                                    vehicleEntityJsonMapper.transformVehicleEntityCollection(
-                                            responseVehicleEntities));
-                            subscriber.onCompleted();
-                        } else {
-                            subscriber.onError(new Exception("Null vehicle entities.")); //TODO temp
-                        }
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
-            }
-        });
+    public Observable<List<StopEntity>> stopsByRouteAndDirection(String routeId, String dirId) {
+        if (validNetworkConnection()) {
+            dirId = String.format(PARAM_FILTER_DIRECTION, routeId, dirId);
+            return getRetrofit().create(RestApi.class).stopsByRouteAndDirection(routeId, dirId);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
+    }
+
+    @Override
+    public Observable<List<ArrivalEntity>> arrivalsByStop(final String stopId) {
+        if (validNetworkConnection()) {
+            return getRetrofit().create(RestApi.class).arrivalsByStop(stopId);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
+    }
+
+    @Override
+    public Observable<List<VehicleEntity>> vehiclesByRoute(final String routeId) {
+        if (validNetworkConnection()) {
+            String routeFilter = String.format(PARAM_FILTER_ROUTE_ID, routeId);
+            return getRetrofit().create(RestApi.class).vehiclesByRoute(routeFilter);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
     }
 
     @Override
@@ -262,7 +164,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<ItineraryEntity> getItineraryDetails(final String itineraryId) {
+    public Observable<ItineraryEntity> itinerary(final String itineraryId) {
         return Observable.create(new Observable.OnSubscribe<ItineraryEntity>() {
             @Override
             public void call(Subscriber<? super ItineraryEntity> subscriber) {
@@ -309,47 +211,6 @@ public class RestApiImpl implements RestApi {
                 }
             }
         });
-    }
-
-    private String getRouteListFromApi() throws MalformedURLException {
-        Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(PATH_ROUTES);
-        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
-    }
-
-    private String getRouteDetailsFromApi(String routeId) throws MalformedURLException {
-        Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_ROUTE_WITH_ID, routeId));
-        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
-    }
-
-    private String getStopListByRoute(String routeId) throws MalformedURLException {
-        Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_ROUTE_WITH_ID, routeId))
-                .appendPath(PATH_STOPS);
-        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
-    }
-
-    private String getStopsByRouteAndDirectionFromApi(String routeId, String dir) throws MalformedURLException {
-        Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_ROUTE_WITH_ID, routeId))
-                .appendPath(PATH_STOPS)
-                .appendQueryParameter(PARAM_KEY_FILTER, String.format(PARAM_FILTER_DIRECTION, routeId, dir));
-        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
-    }
-
-    private String getArrivalsByStopFromApi(String stopId) throws MalformedURLException {
-        Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(String.format(PATH_STOP_WITH_ID, stopId))
-                .appendPath(PATH_ARRIVALS);
-        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
-    }
-
-    private String getVehiclesByRouteFromApi(String routeId) throws MalformedURLException {
-        Uri.Builder builder = getBaseUriBuilderMetro();
-        builder.appendPath(PATH_VEHICLES)
-                .appendQueryParameter(PARAM_KEY_FILTER, String.format(PARAM_FILTER_ROUTE_ID, routeId));
-        return ApiConnection.createGET(builder.build().toString()).requestSyncCall();
     }
 
     private String calculateItineraryFromApi(double lat1, double lon1,
@@ -414,7 +275,6 @@ public class RestApiImpl implements RestApi {
     private Retrofit getRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(CustomGsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(getOkHttpClient())

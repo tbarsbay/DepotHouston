@@ -33,6 +33,6 @@ public class CloudStopDataStore implements StopDataStore {
 
     @Override
     public Observable<List<StopEntity>> getStopListByRoute(String routeId) {
-        return this.restApi.getStopsByRoute(routeId);
+        return this.restApi.stopsByRoute(routeId);
     }
 }

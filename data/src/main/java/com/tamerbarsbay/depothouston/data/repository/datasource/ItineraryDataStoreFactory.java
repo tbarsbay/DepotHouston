@@ -10,9 +10,6 @@ import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @Singleton
 public class ItineraryDataStoreFactory {
 

@@ -3,16 +3,12 @@ package com.tamerbarsbay.depothouston.data.repository.datasource;
 import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.cache.StopCache;
-import com.tamerbarsbay.depothouston.data.entity.mapper.StopEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
 import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 @Singleton
 public class StopDataStoreFactory {
 
@@ -34,8 +30,7 @@ public class StopDataStoreFactory {
     }
 
     public StopDataStore createCloudDataStore() {
-        StopEntityJsonMapper stopEntityJsonMapper = new StopEntityJsonMapper();
-        RestApi restApi = new RestApiImpl(this.context, stopEntityJsonMapper);
+        RestApi restApi = new RestApiImpl(this.context);
         return new CloudStopDataStore(restApi, this.stopCache);
     }
 

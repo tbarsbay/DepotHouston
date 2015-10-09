@@ -9,9 +9,6 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class CloudRouteDataStore implements RouteDataStore {
 
     private final RestApi restApi;
@@ -34,11 +31,11 @@ public class CloudRouteDataStore implements RouteDataStore {
     @Override
     public Observable<List<RouteEntity>> getRouteList() {
         //TODO also put in cache?
-        return this.restApi.getRouteList();
+        return this.restApi.routes();
     }
 
     @Override
     public Observable<RouteEntity> getRouteDetails(String routeId) {
-        return this.restApi.getRouteDetails(routeId).doOnNext(saveToCacheAction);
+        return this.restApi.route(routeId).doOnNext(saveToCacheAction);
     }
 }

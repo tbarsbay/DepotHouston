@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.ArrivalEntityDataMapper;
-import com.tamerbarsbay.depothouston.data.entity.mapper.ArrivalEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
 import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 import com.tamerbarsbay.depothouston.domain.Arrival;
@@ -18,9 +17,6 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.functions.Func1;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @Singleton
 public class ArrivalDataRepository implements ArrivalRepository {
 
@@ -53,9 +49,8 @@ public class ArrivalDataRepository implements ArrivalRepository {
     public Observable<List<Arrival>> getArrivalsByStop(String stopId) {
         // Arrival lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an ArrivalDataStore and just use the RestApi.
-        ArrivalEntityJsonMapper arrivalEntityJsonMapper = new ArrivalEntityJsonMapper();
-        RestApi restApi = new RestApiImpl(this.context, arrivalEntityJsonMapper);
-        return restApi.getArrivalsByStop(stopId).map(arrivalEntityListMapper);
+        RestApi restApi = new RestApiImpl(this.context);
+        return restApi.arrivalsByStop(stopId).map(arrivalEntityListMapper);
     }
 
 }

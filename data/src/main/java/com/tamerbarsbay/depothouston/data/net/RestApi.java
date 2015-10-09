@@ -11,6 +11,8 @@ import java.util.List;
 
 import retrofit.http.GET;
 import retrofit.http.Headers;
+import retrofit.http.Path;
+import retrofit.http.Query;
 import rx.Observable;
 
 public interface RestApi {
@@ -67,15 +69,29 @@ public interface RestApi {
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
     @GET("Routes" + DEFAULT_PARAMS)
-    Observable<List<RouteEntity>> getRouteList();
+    Observable<List<RouteEntity>> routes();
 
-    Observable<RouteEntity> getRouteDetails(final String routeId);
+    @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("Routes(\'{id}\')" + DEFAULT_PARAMS)
+    Observable<RouteEntity> route(@Path("id") final String routeId);
 
-    Observable<List<StopEntity>> getStopsByRoute(final String routeId);
+    @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("Routes(\'{id}\')/Stops" + DEFAULT_PARAMS)
+    Observable<List<StopEntity>> stopsByRoute(@Path("id") final String routeId);
 
-    Observable<List<VehicleEntity>> getVehiclesByRoute(final String routeId);
+    @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("Routes(\'{routeId}\')/Stops" + DEFAULT_PARAMS)
+    Observable<List<StopEntity>> stopsByRouteAndDirection(
+            @Path("routeId") final String routeId,
+            @Query(PARAM_KEY_FILTER) final String dirId);
 
-    Observable<List<ArrivalEntity>> getArrivalsByStop(final String stopId);
+    @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("Vehicles" + DEFAULT_PARAMS)
+    Observable<List<VehicleEntity>> vehiclesByRoute(@Query(PARAM_KEY_FILTER) final String routeId);
+
+    @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("Stops(\'{id}\')/Arrivals" + DEFAULT_PARAMS)
+    Observable<List<ArrivalEntity>> arrivalsByStop(@Path("id") final String stopId);
 
     Observable<ItineraryEntity> calculateItinerary(final double lat1, final double lon1,
                                                    final double lat2, final double lon2);
@@ -84,7 +100,7 @@ public interface RestApi {
                                                               final double lat2, final double lon2,
                                                               final String endTime); //TODO String or Date object?
 
-    Observable<ItineraryEntity> getItineraryDetails(final String itineraryId);
+    Observable<ItineraryEntity> itinerary(final String itineraryId);
 
     Observable<List<IncidentEntity>> getIncidents();
 }

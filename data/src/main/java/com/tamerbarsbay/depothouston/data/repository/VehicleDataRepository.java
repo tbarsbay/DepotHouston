@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.entity.VehicleEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.VehicleEntityDataMapper;
-import com.tamerbarsbay.depothouston.data.entity.mapper.VehicleEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
 import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 import com.tamerbarsbay.depothouston.domain.Vehicle;
@@ -18,9 +17,6 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.functions.Func1;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @Singleton
 public class VehicleDataRepository implements VehicleRepository {
 
@@ -53,8 +49,7 @@ public class VehicleDataRepository implements VehicleRepository {
     public Observable<List<Vehicle>> getVehiclesByRoute(String routeId) {
         // Vehicle lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an VehicleDataStore and just use the RestApi.
-        VehicleEntityJsonMapper vehicleEntityJsonMapper = new VehicleEntityJsonMapper();
-        RestApi restApi = new RestApiImpl(this.context, vehicleEntityJsonMapper);
-        return restApi.getVehiclesByRoute(routeId).map(vehicleEntityListMapper);
+        RestApi restApi = new RestApiImpl(this.context);
+        return restApi.vehiclesByRoute(routeId).map(vehicleEntityListMapper);
     }
 }
