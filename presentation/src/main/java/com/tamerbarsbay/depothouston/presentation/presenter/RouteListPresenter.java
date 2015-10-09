@@ -1,6 +1,7 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.tamerbarsbay.depothouston.domain.Route;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
@@ -103,6 +104,7 @@ public class RouteListPresenter extends DefaultSubscriber<List<Route>> implement
 
     @Override
     public void onError(Throwable e) {
+        Log.d("RLP", "Error: " + e.getMessage() + ".\nCause: " + e.getCause() + ". ST: " + e.getStackTrace()); //TODO temp
         this.hideViewLoading();
         this.showErrorMessage(new DefaultErrorBundle((Exception) e));
         this.showViewRetry();

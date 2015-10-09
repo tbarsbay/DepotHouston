@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
 import com.tamerbarsbay.depothouston.data.entity.IncidentEntity;
 import com.tamerbarsbay.depothouston.data.entity.ItineraryEntity;
@@ -21,7 +22,10 @@ import com.tamerbarsbay.depothouston.data.exception.NetworkConnectionException;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -37,6 +41,8 @@ public class RestApiImpl implements RestApi {
     private IncidentEntityJsonMapper incidentEntityJsonMapper;
     private VehicleEntityJsonMapper vehicleEntityJsonMapper;
     private ItineraryEntityJsonMapper itineraryEntityJsonMapper;
+
+    private static OkHttpClient okHttpClient;
 
     public RestApiImpl(Context context, RouteEntityJsonMapper routeEntityJsonMapper) {
         if (context == null || routeEntityJsonMapper == null) {
@@ -112,27 +118,15 @@ public class RestApiImpl implements RestApi {
 
     @Override
     public Observable<List<RouteEntity>> getRouteList() {
-        return Observable.create(new Observable.OnSubscribe<List<RouteEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<RouteEntity>> subscriber) {
-                if (validNetworkConnection()) {
-                    try {
-                        String responseRouteEntities = getRouteListFromApi();
-                        if (responseRouteEntities != null) {
-                            subscriber.onNext(routeEntityJsonMapper.transformRouteEntityCollection(
-                                    responseRouteEntities));
-                            subscriber.onCompleted();
-                        } else {
-                            subscriber.onError(new Exception("Null route entities.")); //TODO temp
-                        }
-                    } catch (Exception e) {
-                        subscriber.onError(e); //TODO example has NetworkConnectionException here
-                    }
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
-            }
-        });
+//        return validNetworkConnection() ?
+//                getRetrofit().create(RestApi.class).getRouteList() :
+//                Observable.error(new NetworkConnectionException());
+        try {
+            return getRetrofit().create(RestApi.class).getRouteList();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            return Observable.error(new NetworkConnectionException());
+        }
     }
 
     @Override
@@ -404,7 +398,7 @@ public class RestApiImpl implements RestApi {
                 .authority(AUTHORITY_METRO)
                 .appendPath(PATH_DATA)
                 .appendQueryParameter(PARAM_KEY_FORMAT, PARAM_FORMAT)
-                .appendQueryParameter(PARAM_KEY_AUTH_TOKEN, PARAM_AUTH_TOKEN);
+                .appendQueryParameter(PARAM_KEY_AUTH_TOKEN, AUTH_TOKEN);
         return builder;
     }
 
@@ -415,6 +409,25 @@ public class RestApiImpl implements RestApi {
                 .appendPath(PATH_TRANSIT_SERVICE)
                 .appendQueryParameter(PARAM_KEY_FORMAT, PARAM_FORMAT);
         return builder;
+    }
+
+    private Retrofit getRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(CustomGsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(getOkHttpClient())
+                .build();
+    }
+
+    private OkHttpClient getOkHttpClient() {
+        if (okHttpClient == null) {
+            okHttpClient = new OkHttpClient();
+            okHttpClient.setReadTimeout(10000, TimeUnit.MILLISECONDS);
+            okHttpClient.setConnectTimeout(15000, TimeUnit.MILLISECONDS);
+        }
+        return okHttpClient;
     }
 
     private boolean validNetworkConnection() {

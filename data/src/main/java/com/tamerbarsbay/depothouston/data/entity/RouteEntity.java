@@ -2,13 +2,13 @@ package com.tamerbarsbay.depothouston.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class RouteEntity {
 
     @SerializedName("RouteId")
     private String routeId;
+
+    @SerializedName("AgencyAbbreviation")
+    private String agencyAbbreviation;
 
     @SerializedName("FinalStop0Id")
     private String finalStop0Id;
@@ -24,6 +24,70 @@ public class RouteEntity {
 
     @SerializedName("RouteType")
     private String routeType;
+
+    @SerializedName("DataSource")
+    private String dataSource;
+
+    @SerializedName("FinalStop0")
+    private FinalStop0 finalStop0;
+
+    @SerializedName("FinalStop1")
+    private FinalStop1 finalStop1;
+
+    @SerializedName("Directions")
+    private Directions directions;
+
+    @SerializedName("NonOrderedStops")
+    private NonOrderedStops nonOrderedStops;
+
+    @SerializedName("Stops")
+    private Stops stops;
+
+    @SerializedName("Incidents")
+    private Incidents incidents;
+
+    @SerializedName("Arrivals")
+    private Arrivals arrivals;
+
+    class Deferred {
+        @SerializedName("uri")
+        private String url;
+    }
+
+    class FinalStop0 {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
+
+    class FinalStop1 {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
+
+    class Directions {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
+
+    class NonOrderedStops {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
+
+    class Stops {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
+
+    class Incidents {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
+
+    class Arrivals {
+        @SerializedName("__deferred")
+        private Deferred deferred;
+    }
 
     //TODO add links to other things like directions, arrivals, etc
 

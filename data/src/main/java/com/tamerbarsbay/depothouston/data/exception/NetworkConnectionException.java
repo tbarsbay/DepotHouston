@@ -1,8 +1,5 @@
 package com.tamerbarsbay.depothouston.data.exception;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class NetworkConnectionException extends Exception {
 
     public NetworkConnectionException() {

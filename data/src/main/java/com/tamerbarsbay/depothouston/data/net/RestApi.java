@@ -9,12 +9,16 @@ import com.tamerbarsbay.depothouston.data.entity.VehicleEntity;
 
 import java.util.List;
 
+import retrofit.http.GET;
+import retrofit.http.Headers;
 import rx.Observable;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public interface RestApi {
+
+    String API_BASE_URL = "https://api.ridemetro.org/data/";
+    String CONTENT_TYPE_JSON_HEADER = "Content-Type: application/json; charset=utf-8";
+    String AUTH_TOKEN = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO remove later
+    String DEFAULT_PARAMS = "?$format=json&subscription-key=" + AUTH_TOKEN;
 
     //TODO docs
 
@@ -55,13 +59,14 @@ public interface RestApi {
     static final String PARAM_KEY_RADIUS_MI = "radius"; // in miles
 
     static final String PARAM_FORMAT = "json";
-    static final String PARAM_AUTH_TOKEN = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO remove later
     static final String PARAM_FILTER_DIRECTION = "DirectionId eq \'%s_%s\'";
     static final String PARAM_FILTER_ROUTE_NAME = "RouteName eq \'%s\'";
     static final String PARAM_FILTER_ROUTE_ID = "RouteId eq \'%s\'";
     static final String PARAM_ORDERBY_ENDTIME = "EndTime";
     static final String PARAM_EXPAND_LEGS = "Legs";
 
+    @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("Routes" + DEFAULT_PARAMS)
     Observable<List<RouteEntity>> getRouteList();
 
     Observable<RouteEntity> getRouteDetails(final String routeId);
