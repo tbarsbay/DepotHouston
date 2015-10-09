@@ -7,9 +7,6 @@ import com.tamerbarsbay.depothouston.presentation.internal.di.modules.ActivityMo
 
 import dagger.Component;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {

@@ -13,9 +13,6 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.functions.Func1;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @Singleton
 public class ItineraryDataRepository implements ItineraryRepository {
 
@@ -34,7 +31,7 @@ public class ItineraryDataRepository implements ItineraryRepository {
     @Inject
     public ItineraryDataRepository(
             ItineraryDataStoreFactory itineraryDataStoreFactory,
-            ItineraryEntityDataMapper routeEntityDataMapper) {
+            ItineraryEntityDataMapper itineraryEntityDataMapper) {
         this.itineraryDataStoreFactory = itineraryDataStoreFactory;
         this.itineraryEntityDataMapper = itineraryEntityDataMapper;
     }

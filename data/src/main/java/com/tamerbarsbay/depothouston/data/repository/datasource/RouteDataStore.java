@@ -6,9 +6,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public interface RouteDataStore {
 
     Observable<List<RouteEntity>> getRouteList();

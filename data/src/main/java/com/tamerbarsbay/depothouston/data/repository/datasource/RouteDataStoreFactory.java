@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.cache.RouteCache;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
-import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,7 +29,7 @@ public class RouteDataStoreFactory {
     }
 
     public RouteDataStore createCloudDataStore() {
-        RestApi restApi = new RestApiImpl(this.context);
+        RestApi restApi = new RestApi(this.context);
         return new CloudRouteDataStore(restApi, this.routeCache);
     }
 }

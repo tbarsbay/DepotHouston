@@ -7,9 +7,6 @@ import com.tamerbarsbay.depothouston.presentation.view.fragment.RouteListFragmen
 
 import dagger.Component;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, RouteModule.class})
 public interface RouteComponent extends ActivityComponent {

@@ -9,9 +9,6 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class CloudStopDataStore implements StopDataStore {
 
     private final RestApi restApi;

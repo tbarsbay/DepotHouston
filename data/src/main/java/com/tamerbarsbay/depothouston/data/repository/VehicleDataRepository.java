@@ -5,7 +5,6 @@ import android.content.Context;
 import com.tamerbarsbay.depothouston.data.entity.VehicleEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.VehicleEntityDataMapper;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
-import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 import com.tamerbarsbay.depothouston.domain.Vehicle;
 import com.tamerbarsbay.depothouston.domain.repository.VehicleRepository;
 
@@ -49,7 +48,7 @@ public class VehicleDataRepository implements VehicleRepository {
     public Observable<List<Vehicle>> getVehiclesByRoute(String routeId) {
         // Vehicle lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an VehicleDataStore and just use the RestApi.
-        RestApi restApi = new RestApiImpl(this.context);
+        RestApi restApi = new RestApi(this.context);
         return restApi.vehiclesByRoute(routeId).map(vehicleEntityListMapper);
     }
 }

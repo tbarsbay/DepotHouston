@@ -12,9 +12,6 @@ import javax.inject.Named;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by Tamer on 7/26/2015.
- */
 @Module
 public class ArrivalModule {
 

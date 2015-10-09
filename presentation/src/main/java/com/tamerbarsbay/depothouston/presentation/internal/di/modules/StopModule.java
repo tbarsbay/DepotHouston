@@ -12,9 +12,6 @@ import javax.inject.Named;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @Module
 public class StopModule {
 

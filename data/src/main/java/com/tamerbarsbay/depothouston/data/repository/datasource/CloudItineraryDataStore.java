@@ -7,9 +7,6 @@ import com.tamerbarsbay.depothouston.data.net.RestApi;
 import rx.Observable;
 import rx.functions.Action1;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 public class CloudItineraryDataStore implements ItineraryDataStore {
 
     private final RestApi restApi;

@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.cache.StopCache;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
-import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,7 +29,7 @@ public class StopDataStoreFactory {
     }
 
     public StopDataStore createCloudDataStore() {
-        RestApi restApi = new RestApiImpl(this.context);
+        RestApi restApi = new RestApi(this.context);
         return new CloudStopDataStore(restApi, this.stopCache);
     }
 

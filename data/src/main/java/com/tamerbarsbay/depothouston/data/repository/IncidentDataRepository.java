@@ -4,9 +4,7 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.entity.IncidentEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.IncidentEntityDataMapper;
-import com.tamerbarsbay.depothouston.data.entity.mapper.IncidentEntityJsonMapper;
 import com.tamerbarsbay.depothouston.data.net.RestApi;
-import com.tamerbarsbay.depothouston.data.net.RestApiImpl;
 import com.tamerbarsbay.depothouston.domain.Incident;
 import com.tamerbarsbay.depothouston.domain.repository.IncidentRepository;
 
@@ -18,9 +16,6 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.functions.Func1;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @Singleton
 public class IncidentDataRepository implements IncidentRepository {
 
@@ -47,8 +42,7 @@ public class IncidentDataRepository implements IncidentRepository {
     public Observable<List<Incident>> getIncidents() {
         // Incident lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an IncidentDataStore and just use the RestApi.
-        IncidentEntityJsonMapper incidentEntityJsonMapper = new IncidentEntityJsonMapper();
-        RestApi restApi = new RestApiImpl(this.context, incidentEntityJsonMapper);
-        return restApi.getIncidents().map(incidentEntityListMapper);
+        RestApi restApi = new RestApi(this.context);
+        return restApi.incidents().map(incidentEntityListMapper);
     }
 }
