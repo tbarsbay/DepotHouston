@@ -37,32 +37,35 @@ public class ArrivalListActivity extends BaseActivity implements HasComponent<Ar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrival_list);
-        this.initializeActivity(savedInstanceState);
-        this.initializeInjector();
+
+        initializeActivity(savedInstanceState);
+        initializeInjector();
+
+        setToolbarBackArrow();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putString(INSTANCE_STATE_PARAM_STOP_ID, this.stopId);
+            outState.putString(INSTANCE_STATE_PARAM_STOP_ID, stopId);
         }
         super.onSaveInstanceState(outState);
     }
 
     private void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            this.stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
-            addFragment(R.id.fl_arrival_list_fragment, ArrivalListFragment.newInstance(this.stopId));
+            stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
+            addFragment(R.id.fl_arrival_list_fragment, ArrivalListFragment.newInstance(stopId));
         } else {
-            this.stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
+            stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
         }
     }
 
     private void initializeInjector() {
-        this.arrivalComponent = DaggerArrivalComponent.builder()
+        arrivalComponent = DaggerArrivalComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .arrivalModule(new ArrivalModule(this.stopId))
+                .arrivalModule(new ArrivalModule(stopId))
                 .build();
     }
 

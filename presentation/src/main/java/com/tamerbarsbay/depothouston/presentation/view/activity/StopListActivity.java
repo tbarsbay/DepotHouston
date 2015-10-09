@@ -38,32 +38,35 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_list);
-        this.initializeActivity(savedInstanceState);
-        this.initializeInjector();
+
+        initializeActivity(savedInstanceState);
+        initializeInjector();
+
+        setToolbarBackArrow();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putString(INSTANCE_STATE_PARAM_ROUTE_ID, this.routeId);
+            outState.putString(INSTANCE_STATE_PARAM_ROUTE_ID, routeId);
         }
         super.onSaveInstanceState(outState);
     }
 
     private void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            this.routeId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_ROUTE_ID);
-            addFragment(R.id.fl_stop_list_fragment, StopListFragment.newInstance(this.routeId));
+            routeId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_ROUTE_ID);
+            addFragment(R.id.fl_stop_list_fragment, StopListFragment.newInstance(routeId));
         } else {
-            this.routeId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_ROUTE_ID);
+            routeId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_ROUTE_ID);
         }
     }
 
     private void initializeInjector() {
-        this.stopComponent = DaggerStopComponent.builder()
+        stopComponent = DaggerStopComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .stopModule(new StopModule(this.routeId))
+                .stopModule(new StopModule(routeId))
                 .build();
     }
 
@@ -89,6 +92,6 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
 
     @Override
     public void onStopClicked(StopModel stopModel) {
-        this.navigator.navigateToArrivalList(this, stopModel.getStopId());
+        navigator.navigateToArrivalList(this, stopModel.getStopId());
     }
 }

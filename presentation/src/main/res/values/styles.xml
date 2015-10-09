@@ -1,9 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Depot" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:actionButtonStyle">@style/Toolbar.ActionButton</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.NavigationIcon</item>
+        <item name="android:actionOverflowButtonStyle">@style/Toolbar.Overflow</item>
 
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -14,7 +15,7 @@
         <item name="colorControlHighlight">@color/primary</item>
     </style>
 
-    <style name="AppTheme.ProgressBar">
+    <style name="ProgressBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerInParent">true</item>
@@ -22,7 +23,7 @@
         <item name="android:visibility">visible</item>
     </style>
 
-    <style name="AppTheme.Button">
+    <style name="RetryButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
@@ -34,11 +35,22 @@
 
     <style name="Toolbar.NavigationIcon"
         parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:scaleX">.75</item>
+        <item name="android:scaleY">.75</item>
     </style>
 
     <style name="Toolbar.ActionButton"
         parent="@android:style/Widget.Holo.ActionButton">
+        <item name="android:scaleX">.75</item>
+        <item name="android:scaleY">.75</item>
         <item name="android:minWidth">40dp</item>
+    </style>
+
+    <style name="Toolbar.Overflow"
+        parent="@android:style/Widget.Holo.ActionButton.Overflow" >
+        <item name="android:src">@drawable/ic_overflow</item>
+        <item name="android:scaleX">.75</item>
+        <item name="android:scaleY">.75</item>
     </style>
 
     <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">

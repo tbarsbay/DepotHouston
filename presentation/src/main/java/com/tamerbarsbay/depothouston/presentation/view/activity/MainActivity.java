@@ -6,16 +6,13 @@ import android.view.MenuItem;
 
 import com.tamerbarsbay.depothouston.R;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        navigator.navigateToRouteListAsNewTask(this);
     }
 
     @Override
@@ -33,8 +30,4 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.btn_main_goto_route_list)
-    void goToRouteList() {
-        this.navigator.navigateToRouteList(this);
-    }
 }

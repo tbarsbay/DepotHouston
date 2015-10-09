@@ -10,24 +10,41 @@ import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @Singleton
 public class Navigator {
 
     @Inject
     public Navigator() {};
 
-    /**
-     * Navigate to the route list screen.
-     * @param context Context.
-     */
     public void navigateToRouteList(Context context) {
         if (context != null) {
             Intent intent = RouteListActivity.getCallingIntent(context);
             context.startActivity(intent);
         }
+    }
+
+    public void navigateToRouteListAsNewTask(Context context) {
+        if (context != null) {
+            Intent intent = RouteListActivity.getCallingIntent(context);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+        }
+    }
+
+    public void navigateToMapSearch(Context context) {
+        //TODO
+    }
+
+    public void navigateToSavedStops(Context context) {
+        //TODO
+    }
+
+    public void navigateToRecentStops(Context context) {
+        //TODO
+    }
+
+    public void navigateToSettings(Context context) {
+        //TODO
     }
 
     /**
