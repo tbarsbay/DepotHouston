@@ -38,7 +38,7 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_list);
 
-        this.initializeInjector();
+        initializeInjector();
 
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fl_route_list_fragment, RouteListFragment.newInstance());
@@ -61,7 +61,7 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
     }
 
     private void initializeInjector() {
-        this.routeComponent = DaggerRouteComponent.builder()
+        routeComponent = DaggerRouteComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -69,7 +69,7 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
 
     @Override
     public RouteComponent getComponent() {
-        return this.routeComponent;
+        return routeComponent;
     }
 
     @Override

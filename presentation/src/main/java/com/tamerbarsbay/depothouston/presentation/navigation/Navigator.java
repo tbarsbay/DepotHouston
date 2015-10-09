@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.tamerbarsbay.depothouston.presentation.view.activity.ArrivalListActivity;
+import com.tamerbarsbay.depothouston.presentation.view.activity.MapSearchActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity;
 
@@ -32,7 +33,10 @@ public class Navigator {
     }
 
     public void navigateToMapSearch(Context context) {
-        //TODO
+        if (context != null) {
+            Intent intent = MapSearchActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
     }
 
     public void navigateToSavedStops(Context context) {

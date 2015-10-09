@@ -32,6 +32,10 @@
             android:name=".presentation.view.activity.ArrivalListActivity"
             android:label="@string/title_activity_arrival_list" >
         </activity>
+        <activity
+            android:name=".presentation.view.activity.MapSearchActivity"
+            android:label="@string/title_activity_map_search" >
+        </activity>
     </application>
 
 </manifest>

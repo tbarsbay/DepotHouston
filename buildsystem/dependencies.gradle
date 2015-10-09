@@ -27,6 +27,7 @@ ext {
     gsonVersion = '2.3.1'
     okHttpVersion = '2.3.0'
     commonsLangVersion = '3.4'
+    retrofitVersion = '2.0.0-beta2'
 
     presentationDependencies = [
             daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -58,5 +59,8 @@ ext {
             okHttp:             "com.squareup.okhttp:okhttp:${okHttpVersion}",
             javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
             androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
+            retrofit:           "com.squareup.retrofit:retrofit:${retrofitVersion}",
+            retrofitGson:       "com.squareup.retrofit:converter-gson:${retrofitVersion}",
+            retrofitRxJava:     "com.squareup.retrofit:adapter-rxjava:${retrofitVersion}",
     ]
 }

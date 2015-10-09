@@ -19,9 +19,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 @PerActivity
 public class RouteListPresenter extends DefaultSubscriber<List<Route>> implements Presenter {
 
