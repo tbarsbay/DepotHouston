@@ -10,9 +10,6 @@ import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @Singleton
 public class Navigator {
 
@@ -22,6 +19,14 @@ public class Navigator {
     public void navigateToRouteList(Context context) {
         if (context != null) {
             Intent intent = RouteListActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
+    }
+
+    public void navigateToRouteListAsNewTask(Context context) {
+        if (context != null) {
+            Intent intent = RouteListActivity.getCallingIntent(context);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
     }
