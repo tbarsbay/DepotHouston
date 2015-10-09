@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/nav_drawer_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:id="@+id/navdrawer"
+	android:background="@color/nav_drawer_background"
+	android:fitsSystemWindows="true" >
+	
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            
+            <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal"
+	            android:background="@color/light_blue_900"
+	            android:padding="16dp" >
+            
+	            <ImageView
+	                android:src="@mipmap/app_icon"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
+	                android:layout_gravity="center_horizontal"
+	                android:layout_marginRight="16dp" />
+	            
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/white"
+	                android:text="@string/depot_capitalized"
+	                android:textSize="16sp"
+	                android:textStyle="bold"
+	                android:layout_gravity="center_vertical" />
+            
+            </LinearLayout>
+
+            <!-- Drawer items -->
+            <LinearLayout
+                android:id="@+id/navdrawer_items_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical" />
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</ScrollView>

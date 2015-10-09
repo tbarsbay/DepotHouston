@@ -20,7 +20,7 @@ public class BaseActivity extends ActionBarActivity {
     @Inject
     Navigator navigator;
 
-    private Toolbar mActionBarToolbar;
+    protected Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

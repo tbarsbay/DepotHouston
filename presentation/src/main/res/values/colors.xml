@@ -8,6 +8,13 @@
     <color name="prediction_real_time">@color/black</color>
     <color name="prediction_scheduled">@color/primary</color>
 
+    <color name="nav_drawer_background">@color/white</color>
+    <color name="nav_divider_background">#E5E5E5</color>
+    <color name="nav_drawer_text_color">#000000</color>
+    <color name="nav_drawer_text_color_selected">@color/primary</color>
+    <color name="nav_drawer_icon_tint">#888</color>
+    <color name="nav_drawer_icon_tint_selected">@color/primary</color>
+
     <!-- Material Design colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
