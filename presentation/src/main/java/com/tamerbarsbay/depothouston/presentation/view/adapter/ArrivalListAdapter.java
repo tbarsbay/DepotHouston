@@ -55,7 +55,6 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
         arrivalViewHolder.tvMinutesUntilArrival.setText(getArrivalTextToShow(arrivalModel));
         arrivalViewHolder.tvMinutesUntilArrival.setTextColor(getArrivalTextColor(arrivalModel));
-        //TODO this is wrong, it should be getLocalArrivalTime but that was giving the wrong times
         arrivalViewHolder.tvArrivalTime.setText(arrivalModel.getFormattedTime(arrivalModel.getUtcArrivalTime()));
         arrivalViewHolder.tvRouteName.setText(arrivalModel.getRouteName());
         arrivalViewHolder.tvDestinationName.setText(arrivalModel.getDestinationName());
