@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.tamerbarsbay.depothouston.presentation.view.activity.ArrivalListActivity;
-import com.tamerbarsbay.depothouston.presentation.view.activity.MapSearchActivity;
+import com.tamerbarsbay.depothouston.presentation.view.activity.MapsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity;
 
@@ -34,7 +34,8 @@ public class Navigator {
 
     public void navigateToMapSearch(Context context) {
         if (context != null) {
-            Intent intent = MapSearchActivity.getCallingIntent(context);
+            //Intent intent = MapSearchActivity.getCallingIntent(context); //TODO temp
+            Intent intent = MapsActivity.getCallingIntent(context);
             context.startActivity(intent);
         }
     }
