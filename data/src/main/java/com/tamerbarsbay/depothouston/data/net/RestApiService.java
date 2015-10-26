@@ -19,11 +19,7 @@ public interface RestApiService {
 
     String CONTENT_TYPE_JSON_HEADER = "Content-Type: application/json; charset=utf-8";
     String AUTH_TOKEN = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO remove later
-    String DEFAULT_BASE_PARAMS = "?$format=json&subscription-key=" + AUTH_TOKEN;
-
-    String PATH_FIND_NEARBY_STOPS = "FindStopsInArea";
-    String PATH_FIND_NEARBY_ROUTES = "FindRoutesInArea";
-    String PATH_FINAL_STOP = "FinalStop";
+    String DEFAULT_PARAMS = "?$format=json&subscription-key=" + AUTH_TOKEN; //TODO temp
 
     String PARAM_KEY_FILTER = "$filter";
     String PARAM_KEY_LAT = "lat";
@@ -39,19 +35,19 @@ public interface RestApiService {
     String PARAM_KEY_RADIUS_MI = "radius"; // in miles
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Routes" + DEFAULT_BASE_PARAMS)
+    @GET("Routes" + DEFAULT_PARAMS)
     Observable<List<RouteEntity>> routes();
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Routes(\'{id}\')" + DEFAULT_BASE_PARAMS)
+    @GET("Routes(\'{id}\')" + DEFAULT_PARAMS)
     Observable<RouteEntity> route(@Path("id") final String routeId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Routes(\'{id}\')/Stops" + DEFAULT_BASE_PARAMS)
+    @GET("Routes(\'{id}\')/Stops" + DEFAULT_PARAMS)
     Observable<List<StopEntity>> stopsByRoute(@Path("id") final String routeId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Routes(\'{routeId}\')/Stops" + DEFAULT_BASE_PARAMS)
+    @GET("Routes(\'{routeId}\')/Stops" + DEFAULT_PARAMS)
     Observable<List<StopEntity>> stopsByRouteAndDirection(
             @Path("routeId") final String routeId,
             @Query(PARAM_KEY_FILTER) final String dirId);
@@ -59,15 +55,15 @@ public interface RestApiService {
     Observable<List<VehicleEntity>> vehiclesByRoute(final String routeId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Vehicles" + DEFAULT_BASE_PARAMS)
+    @GET("Vehicles" + DEFAULT_PARAMS)
     Observable<List<VehicleEntity>> vehiclesByRouteFilter(@Query(PARAM_KEY_FILTER) final String filter);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Stops(\'{id}\')/Arrivals" + DEFAULT_BASE_PARAMS)
+    @GET("Stops(\'{id}\')/Arrivals" + DEFAULT_PARAMS)
     Observable<List<ArrivalEntity>> arrivalsByStop(@Path("id") final String stopId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("CalculateItineraryByPoints" + DEFAULT_BASE_PARAMS)
+    @GET("CalculateItineraryByPoints" + DEFAULT_PARAMS)
     Observable<ItineraryEntity> calculateItinerary(
             @Query(PARAM_KEY_LAT1) final double lat1,
             @Query(PARAM_KEY_LON1) final double lon1,
@@ -77,7 +73,7 @@ public interface RestApiService {
             @Query(PARAM_KEY_EXPAND) final String expand);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("CalculateItineraryArrivingAt" + DEFAULT_BASE_PARAMS)
+    @GET("CalculateItineraryArrivingAt" + DEFAULT_PARAMS)
     Observable<ItineraryEntity> calculateItineraryWithEndTime(
             @Query(PARAM_KEY_LAT1) final double lat1,
             @Query(PARAM_KEY_LON1) final double lon1,
@@ -88,7 +84,7 @@ public interface RestApiService {
             @Query(PARAM_KEY_EXPAND) final String expand);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Itineraries(guid\'{id}\')" + DEFAULT_BASE_PARAMS)
+    @GET("Itineraries(guid\'{id}\')" + DEFAULT_PARAMS)
     Observable<ItineraryEntity> itinerary(@Path("id") final String itineraryId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)

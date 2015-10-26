@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
@@ -58,6 +59,7 @@ public class RestApi {
     }
 
     public Observable<List<StopEntity>> stopsByRoute(final String routeId) {
+        Log.d("RestApi", "Stops for route: " + routeId); //TODO temp
         return stopsByRouteAndDirection(routeId, "0"); //TODO temp
     }
 
@@ -71,6 +73,7 @@ public class RestApi {
     }
 
     public Observable<List<ArrivalEntity>> arrivalsByStop(final String stopId) {
+        Log.d("RestApi", "Arrivals for stop: " + stopId); //TODO temp
         if (validNetworkConnection()) {
             return getRetrofit().create(RestApiService.class).arrivalsByStop(stopId);
         } else {
