@@ -15,6 +15,6 @@ public interface VehicleRepository {
     /**
      * Get an {@link rx.Observable} which will emit a List of {@link Vehicle} objects.
      */
-    Observable<List<Vehicle>> getVehiclesByRoute(final String routeId);
+    Observable<List<Vehicle>> vehiclesByRoute(final String routeId);
 
 }

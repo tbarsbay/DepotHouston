@@ -11,7 +11,6 @@ import rx.subscriptions.Subscriptions;
 
 /**
  * Taken from https://github.com/android10/Android-CleanArchitecture
- * Created by Tamer on 7/22/2015.
  */
 public abstract class UseCase {
 

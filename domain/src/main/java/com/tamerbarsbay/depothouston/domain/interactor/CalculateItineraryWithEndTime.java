@@ -8,22 +8,19 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
-public class CalculateItineraryWithEndTimeUseCase extends UseCase {
+public class CalculateItineraryWithEndTime extends UseCase {
 
     private final double lat1, lon1, lat2, lon2;
     private final String endTime;
     private final ItineraryRepository itineraryRepository;
 
     @Inject
-    public CalculateItineraryWithEndTimeUseCase(double lat1, double lon1,
-                                                double lat2, double lon2,
-                                                String endTime,
-                                                ItineraryRepository itineraryRepository,
-                                                ThreadExecutor threadExecutor,
-                                                PostExecutionThread postExecutionThread) {
+    public CalculateItineraryWithEndTime(double lat1, double lon1,
+                                         double lat2, double lon2,
+                                         String endTime,
+                                         ItineraryRepository itineraryRepository,
+                                         ThreadExecutor threadExecutor,
+                                         PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.lat1 = lat1;
         this.lon1 = lon1;

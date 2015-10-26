@@ -52,9 +52,9 @@ public class ItineraryDataRepository implements ItineraryRepository {
     }
 
     @Override
-    public Observable<Itinerary> getItineraryDetails(String itineraryId) {
+    public Observable<Itinerary> itinerary(String itineraryId) {
         final ItineraryDataStore itineraryDataStore =
                 this.itineraryDataStoreFactory.create(itineraryId);
-        return itineraryDataStore.getItineraryDetails(itineraryId).map(itineraryEntityMapper);
+        return itineraryDataStore.itinerary(itineraryId).map(itineraryEntityMapper);
     }
 }

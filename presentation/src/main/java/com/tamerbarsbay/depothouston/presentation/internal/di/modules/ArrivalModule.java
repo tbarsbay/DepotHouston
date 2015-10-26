@@ -2,7 +2,7 @@ package com.tamerbarsbay.depothouston.presentation.internal.di.modules;
 
 import com.tamerbarsbay.depothouston.domain.executor.PostExecutionThread;
 import com.tamerbarsbay.depothouston.domain.executor.ThreadExecutor;
-import com.tamerbarsbay.depothouston.domain.interactor.GetArrivalsByStopUseCase;
+import com.tamerbarsbay.depothouston.domain.interactor.GetArrivalsByStop;
 import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.domain.repository.ArrivalRepository;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
@@ -29,7 +29,7 @@ public class ArrivalModule {
     UseCase provideGetArrivalsByStopUseCase(ArrivalRepository arrivalRepository,
                                             ThreadExecutor threadExecutor,
                                             PostExecutionThread postExecutionThread) {
-        return new GetArrivalsByStopUseCase(stopId, arrivalRepository,
+        return new GetArrivalsByStop(stopId, arrivalRepository,
                 threadExecutor, postExecutionThread);
     }
 }

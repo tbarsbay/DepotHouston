@@ -47,6 +47,12 @@ public interface RestApiService {
     Observable<List<StopEntity>> stopsByRoute(@Path("id") final String routeId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("GeoAreas(\'{lat}|{lon}|{radius}\')/Stops" + DEFAULT_PARAMS)
+    Observable<List<StopEntity>> stopsNearLocation(@Path("lat") final double lat,
+                                                   @Path("lon") final double lon,
+                                                   @Path("radius") final String radiusInMiles);
+
+    @Headers(CONTENT_TYPE_JSON_HEADER)
     @GET("Routes(\'{routeId}\')/Stops" + DEFAULT_PARAMS)
     Observable<List<StopEntity>> stopsByRouteAndDirection(
             @Path("routeId") final String routeId,

@@ -72,6 +72,15 @@ public class RestApi {
         }
     }
 
+    public Observable<List<StopEntity>> stopsNearLocation(double lat, double lon, String radius) {
+        Log.d("RestApi", "Stops within " + radius + " miles of: " + lat + "," + lon); //TODO temp
+        if (validNetworkConnection()) {
+            return getRetrofit().create(RestApiService.class).stopsNearLocation(lat, lon, radius);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
+    }
+
     public Observable<List<ArrivalEntity>> arrivalsByStop(final String stopId) {
         Log.d("RestApi", "Arrivals for stop: " + stopId); //TODO temp
         if (validNetworkConnection()) {

@@ -39,7 +39,7 @@ public class IncidentDataRepository implements IncidentRepository {
     }
 
     @Override
-    public Observable<List<Incident>> getIncidents() {
+    public Observable<List<Incident>> incidents() {
         // Incident lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an IncidentDataStore and just use the RestApi.
         RestApi restApi = new RestApi(this.context);

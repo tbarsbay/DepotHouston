@@ -15,7 +15,7 @@ public interface ArrivalRepository {
     /**
      * Get an {@link rx.Observable} which will emit a List of {@link Arrival} objects.
      */
-    Observable<List<Arrival>> getArrivalsByStop(final String stopId);
+    Observable<List<Arrival>> arrivalsByStop(final String stopId);
 
     //TODO getArrivalsByVehicle? for vehicle following?
 

@@ -45,7 +45,7 @@ public class VehicleDataRepository implements VehicleRepository {
     }
 
     @Override
-    public Observable<List<Vehicle>> getVehiclesByRoute(String routeId) {
+    public Observable<List<Vehicle>> vehiclesByRoute(String routeId) {
         // Vehicle lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an VehicleDataStore and just use the RestApi.
         RestApi restApi = new RestApi(this.context);

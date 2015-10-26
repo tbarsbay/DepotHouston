@@ -8,6 +8,10 @@ import rx.Observable;
 
 public interface StopDataStore {
 
-    Observable<List<StopEntity>> getStopListByRoute(final String routeId);
+    Observable<List<StopEntity>> stopsByRoute(final String routeId);
+
+    Observable<List<StopEntity>> stopsNearLocation(final double lat,
+                                                   final double lon,
+                                                   final String radiusInMiles);
 
 }

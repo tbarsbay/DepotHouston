@@ -8,8 +8,8 @@ import rx.Observable;
 
 public interface RouteDataStore {
 
-    Observable<List<RouteEntity>> getRouteList();
+    Observable<List<RouteEntity>> routes();
 
-    Observable<RouteEntity> getRouteDetails(final String routeId);
+    Observable<RouteEntity> route(final String routeId);
 
 }

@@ -40,7 +40,7 @@ public class CloudItineraryDataStore implements ItineraryDataStore {
     }
 
     @Override
-    public Observable<ItineraryEntity> getItineraryDetails(String itineraryId) {
+    public Observable<ItineraryEntity> itinerary(String itineraryId) {
         return this.restApi.itinerary(itineraryId).doOnNext(saveToCacheAction);
     }
 }

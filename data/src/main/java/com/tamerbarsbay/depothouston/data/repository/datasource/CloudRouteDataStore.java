@@ -29,13 +29,13 @@ public class CloudRouteDataStore implements RouteDataStore {
     }
 
     @Override
-    public Observable<List<RouteEntity>> getRouteList() {
+    public Observable<List<RouteEntity>> routes() {
         //TODO also put in cache?
         return this.restApi.routes();
     }
 
     @Override
-    public Observable<RouteEntity> getRouteDetails(String routeId) {
+    public Observable<RouteEntity> route(String routeId) {
         return this.restApi.route(routeId).doOnNext(saveToCacheAction);
     }
 }

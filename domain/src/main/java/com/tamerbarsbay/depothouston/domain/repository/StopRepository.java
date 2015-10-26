@@ -15,13 +15,25 @@ public interface StopRepository {
     /**
      * Get an {@link rx.Observable} which will emit a List of {@link Stop} objects.
      */
-    Observable<List<Stop>> getStopListByRoute(final String routeId);
+    Observable<List<Stop>> stopsByRoute(final String routeId);
 
     /**
      * Get an {@link rx.Observable} which will emit a {@link Stop}.
      *
      * @param stopId The stop id used to retrieve stop data.
      */
-    Observable<Stop> getStopDetails(final String stopId);
+    Observable<Stop> stop(final String stopId);
+
+    /**
+     * Get an {@link rx.Observable} which will emit a List of {@link Stop} objects representing
+     * all transit stops within a given number of miles from the coordinates provided.
+     * @param lat Latitude coordinate of the center location.
+     * @param lon Longitude coordinate of the center location.
+     * @param radiusInMiles Number of miles within which you want to find stops.
+     * @return
+     */
+    Observable<List<Stop>> stopsNearLocation(final double lat,
+                                             final double lon,
+                                             final String radiusInMiles);
 
 }

@@ -45,7 +45,7 @@ public class ArrivalDataRepository implements ArrivalRepository {
     }
 
     @Override
-    public Observable<List<Arrival>> getArrivalsByStop(String stopId) {
+    public Observable<List<Arrival>> arrivalsByStop(String stopId) {
         // Arrival lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an ArrivalDataStore and just use the RestApi.
         RestApi restApi = new RestApi(this.context);
