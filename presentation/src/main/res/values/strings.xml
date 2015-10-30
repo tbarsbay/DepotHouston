@@ -4,6 +4,7 @@
     <string name="exception_message_no_connection">No network connection</string>
     <string name="exception_message_stop_not_found">Error - stop not found.</string>
     <string name="exception_message_generic">Error</string>
+    <string name="error_invalid_user_location_tap_feature_remains">There was an error getting your location. You can still tap anywhere on the map to see stops near that location.</string>
     <string name="title_activity_main">Depot - Houston</string>
 
     <string name="hello_world">Hello world!</string>

@@ -11,7 +11,7 @@ import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.mapper.VehicleModelDataMapper;
 import com.tamerbarsbay.depothouston.presentation.model.VehicleModel;
-import com.tamerbarsbay.depothouston.presentation.view.fragment.VehicleListView;
+import com.tamerbarsbay.depothouston.presentation.view.VehicleListView;
 
 import java.util.Collection;
 import java.util.List;

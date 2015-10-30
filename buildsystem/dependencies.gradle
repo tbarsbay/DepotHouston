@@ -20,12 +20,12 @@ ext {
 
     //Libraries
     daggerVersion = '2.0'
-    butterKnifeVersion = '6.1.0'
+    butterKnifeVersion = '7.0.1'
     rxJavaVersion = '1.0.14'
-    rxAndroidVersion = '0.25.0'
+    rxAndroidVersion = '1.0.1'
     javaxAnnotationVersion = '10.0-b28'
     gsonVersion = '2.3.1'
-    okHttpVersion = '2.3.0'
+    okHttpVersion = '2.5.0'
     commonsLangVersion = '3.4'
     retrofitVersion = '2.0.0-beta2'
 

@@ -1,16 +1,34 @@
 package com.tamerbarsbay.depothouston.presentation.view.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.model.StopModel;
+import com.tamerbarsbay.depothouston.presentation.util.UserLocationManager;
+import com.tamerbarsbay.depothouston.presentation.view.MapSearchView;
 
-public class MapSearchActivity extends NavigationDrawerActivity {
+import java.util.Collection;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class MapSearchActivity extends NavigationDrawerActivity implements MapSearchView,
+        UserLocationManager.UserLocationListener {
+
+    @Bind(R.id.layout_map_search_parent)
+    LinearLayout layoutParent;
+
+    private GoogleMap mMap;
+    private UserLocationManager userLocationManager;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapSearchActivity.class);
@@ -21,54 +39,116 @@ public class MapSearchActivity extends NavigationDrawerActivity {
         return NAVDRAWER_ITEM_MAP_SEARCH;
     }
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        setUpMapIfNeeded();
+        setContentView(R.layout.activity_map_search);
+        ButterKnife.bind(this);
+        setupMapIfNeeded();
+        //TODO setup userlocationmanager
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
+        setupMapIfNeeded();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
-    private void setUpMapIfNeeded() {
+    private void setupMapIfNeeded() {
         if (mMap == null) {
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             if (mMap != null) {
+                //TODO set map on info window click
+                //TODO set map info window adapter
                 //TODO get and plot nearby stops
-                setUpMap();
             }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    private UserLocationManager getUserLocationManager() {
+        return userLocationManager != null ?
+                userLocationManager :
+                new UserLocationManager(this, this);
+    }
+
+    private void showPermissionRationaleSnackbar() {
+        //TODO snackbar requests permission when ok pressed
+    }
+
+    private void getUserLocationAndLoadNearbyStops() {
+        Location userLocation = getUserLocationManager().getUserLocation();
+        //TODO load nearby stops
+    }
+
+    @Override
+    public void renderStopList(Collection<StopModel> stopModels) {
+        //TODO plot all stops
+    }
+
+    @Override
+    public void viewStop(StopModel stopModel) {
+        //TODO handle inactive routes/stops correctly
+        if (stopModel != null) {
+            navigator.navigateToArrivalList(this, stopModel.getStopId());
+        }
+    }
+
+    @Override
+    public void onConnected() {
+        if (Build.VERSION.SDK_INT < 23) {
+            // User has Lollipop or below, no need to request permissions
+            // Just get user location and load nearby stops
+            getUserLocationAndLoadNearbyStops();
+        } else {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // User has not granted location permission
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    showPermissionRationaleSnackbar();
+                }
+            } else {
+                // User has granted location permission
+                getUserLocationAndLoadNearbyStops();
+            }
+        }
+        //TODO if granted, get location and get nearby stops
+        //TODO if not granted, show error and "you can still tap on map to see stops near any location
+    }
+
+    @Override
+    public void onConnectionFailed() {
+        showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void hideLoading() {
+        //TODO
+    }
+
+    @Override
+    public void hideRetry() {
+        //TODO
+    }
+
+    @Override
+    public void showError(String message) {
+        if (layoutParent != null) {
+            //TODO
+        }
+    }
+
+    @Override
+    public void showLoading() {
+        //TODO
+    }
+
+    @Override
+    public void showRetry() {
+        //TODO
     }
 }

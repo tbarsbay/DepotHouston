@@ -13,12 +13,9 @@ import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopViewHolder> {
 
     public interface OnItemClickListener {
@@ -85,12 +82,12 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
     }
 
     static class StopViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.stop_name)
+        @Bind(R.id.stop_name)
         TextView tvName;
 
         public StopViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

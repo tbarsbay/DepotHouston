@@ -6,9 +6,6 @@ import android.widget.Toast;
 
 import com.tamerbarsbay.depothouston.presentation.internal.di.HasComponent;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public abstract class BaseFragment extends Fragment {
 
     @Override

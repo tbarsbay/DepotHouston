@@ -22,8 +22,8 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
@@ -38,16 +38,16 @@ public class StopListFragment extends BaseFragment implements StopListView {
     @Inject
     StopListPresenter stopListPresenter;
 
-    @InjectView(R.id.rv_stop_list)
+    @Bind(R.id.rv_stop_list)
     RecyclerView rvStops;
 
-    @InjectView(R.id.rl_progress)
+    @Bind(R.id.rl_progress)
     RelativeLayout rlProgress;
 
-    @InjectView(R.id.rl_retry)
+    @Bind(R.id.rl_retry)
     RelativeLayout rlRetry;
 
-    @InjectView(R.id.btn_retry)
+    @Bind(R.id.btn_retry)
     Button btnRetry;
 
     private StopListAdapter stopsAdapter;
@@ -87,7 +87,7 @@ public class StopListFragment extends BaseFragment implements StopListView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_stop_list, container, false);
-        ButterKnife.inject(this, fragmentView);
+        ButterKnife.bind(this, fragmentView);
         setupUI();
         return fragmentView;
     }

@@ -24,8 +24,8 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
@@ -40,16 +40,16 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Inject
     ArrivalListPresenter arrivalListPresenter;
 
-    @InjectView(R.id.rv_arrival_list)
+    @Bind(R.id.rv_arrival_list)
     RecyclerView rvArrivals;
 
-    @InjectView(R.id.rl_progress)
+    @Bind(R.id.rl_progress)
     RelativeLayout rlProgress;
 
-    @InjectView(R.id.rl_retry)
+    @Bind(R.id.rl_retry)
     RelativeLayout rlRetry;
 
-    @InjectView(R.id.btn_retry)
+    @Bind(R.id.btn_retry)
     Button btnRetry;
 
     private ArrivalListAdapter arrivalsAdapter;
@@ -87,7 +87,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_arrival_list, container, false);
-        ButterKnife.inject(this, fragmentView);
+        ButterKnife.bind(this, fragmentView);
         setupUI();
         return fragmentView;
     }
