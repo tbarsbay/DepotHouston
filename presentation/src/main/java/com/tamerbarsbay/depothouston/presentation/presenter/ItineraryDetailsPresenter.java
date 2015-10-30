@@ -15,9 +15,6 @@ import com.tamerbarsbay.depothouston.presentation.view.ItineraryDetailsView;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @PerActivity
 public class ItineraryDetailsPresenter extends DefaultSubscriber<Itinerary> implements Presenter {
 

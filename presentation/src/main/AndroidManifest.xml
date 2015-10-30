@@ -38,7 +38,7 @@
         </activity>
         <activity
             android:name=".presentation.view.activity.MapSearchActivity"
-            android:label="@string/title_activity_map_search" >
+            android:label="@string/title_activity_maps" >
         </activity>
 
         <meta-data
@@ -48,10 +48,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".presentation.view.activity.MapsActivity"
-            android:label="@string/title_activity_maps" >
-        </activity>
     </application>
 
 </manifest>

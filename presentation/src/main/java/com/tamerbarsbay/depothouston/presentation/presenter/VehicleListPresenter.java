@@ -19,9 +19,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @PerActivity
 public class VehicleListPresenter extends DefaultSubscriber<List<Vehicle>> implements Presenter {
 

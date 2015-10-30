@@ -19,9 +19,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @PerActivity
 public class StopListPresenter extends DefaultSubscriber<List<Stop>> implements Presenter {
 
