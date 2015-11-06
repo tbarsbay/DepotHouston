@@ -2,7 +2,7 @@ package com.tamerbarsbay.depothouston.data.repository.datasource;
 
 import com.tamerbarsbay.depothouston.data.cache.RouteCache;
 import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
-import com.tamerbarsbay.depothouston.data.net.RestApi;
+import com.tamerbarsbay.depothouston.data.net.HoustonMetroApi;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import rx.functions.Action1;
 
 public class CloudRouteDataStore implements RouteDataStore {
 
-    private final RestApi restApi;
+    private final HoustonMetroApi houstonMetroApi;
     private final RouteCache routeCache;
 
     private final Action1<RouteEntity> saveToCacheAction = new Action1<RouteEntity>() {
@@ -23,19 +23,19 @@ public class CloudRouteDataStore implements RouteDataStore {
         }
     };
 
-    public CloudRouteDataStore(RestApi restApi, RouteCache routeCache) {
-        this.restApi = restApi;
+    public CloudRouteDataStore(HoustonMetroApi houstonMetroApi, RouteCache routeCache) {
+        this.houstonMetroApi = houstonMetroApi;
         this.routeCache = routeCache;
     }
 
     @Override
     public Observable<List<RouteEntity>> routes() {
         //TODO also put in cache?
-        return this.restApi.routes();
+        return this.houstonMetroApi.routes();
     }
 
     @Override
     public Observable<RouteEntity> route(String routeId) {
-        return this.restApi.route(routeId).doOnNext(saveToCacheAction);
+        return this.houstonMetroApi.route(routeId).doOnNext(saveToCacheAction);
     }
 }

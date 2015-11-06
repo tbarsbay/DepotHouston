@@ -15,7 +15,7 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-public interface RestApiService {
+public interface HoustonMetroApiService {
 
     String CONTENT_TYPE_JSON_HEADER = "Content-Type: application/json; charset=utf-8";
     String AUTH_TOKEN = "baee3193bf9849f58d0ce02feb3ca7c3"; //TODO remove later

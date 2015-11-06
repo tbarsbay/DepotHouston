@@ -3,7 +3,7 @@ package com.tamerbarsbay.depothouston.data.repository.datasource;
 import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.cache.ItineraryCache;
-import com.tamerbarsbay.depothouston.data.net.RestApi;
+import com.tamerbarsbay.depothouston.data.net.HoustonMetroApi;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -29,8 +29,8 @@ public class ItineraryDataStoreFactory {
     }
 
     public ItineraryDataStore createCloudDataStore() {
-        RestApi restApi = new RestApi(this.context);
-        return new CloudItineraryDataStore(restApi, this.itineraryCache);
+        HoustonMetroApi houstonMetroApi = new HoustonMetroApi(this.context);
+        return new CloudItineraryDataStore(houstonMetroApi, this.itineraryCache);
     }
 
 }

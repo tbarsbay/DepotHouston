@@ -22,7 +22,7 @@ import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 
-public class RestApi {
+public class HoustonMetroApi {
 
     private final Context context;
 
@@ -35,7 +35,7 @@ public class RestApi {
     private static final String PARAM_ORDERBY_ENDTIME = "EndTime";
     private static final String PARAM_EXPAND_LEGS = "Legs";
 
-    public RestApi(Context context) {
+    public HoustonMetroApi(Context context) {
         if (context == null) {
             throw new IllegalArgumentException("Context cannot be null.");
         }
@@ -44,7 +44,7 @@ public class RestApi {
 
     public Observable<RouteEntity> route(final String routeId) {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).route(routeId);
+            return getRetrofit().create(HoustonMetroApiService.class).route(routeId);
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -52,7 +52,7 @@ public class RestApi {
 
     public Observable<List<RouteEntity>> routes() {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).routes();
+            return getRetrofit().create(HoustonMetroApiService.class).routes();
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -66,7 +66,7 @@ public class RestApi {
     public Observable<List<StopEntity>> stopsByRouteAndDirection(String routeId, String dirId) {
         if (validNetworkConnection()) {
             String dirFilter = String.format(PARAM_FILTER_DIRECTION, routeId, dirId);
-            return getRetrofit().create(RestApiService.class).stopsByRouteAndDirection(routeId, dirFilter);
+            return getRetrofit().create(HoustonMetroApiService.class).stopsByRouteAndDirection(routeId, dirFilter);
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -75,7 +75,7 @@ public class RestApi {
     public Observable<List<StopEntity>> stopsNearLocation(double lat, double lon, String radius) {
         Log.d("RestApi", "Stops within " + radius + " miles of: " + lat + "," + lon); //TODO temp
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).stopsNearLocation(lat, lon, radius);
+            return getRetrofit().create(HoustonMetroApiService.class).stopsNearLocation(lat, lon, radius);
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -84,7 +84,7 @@ public class RestApi {
     public Observable<List<ArrivalEntity>> arrivalsByStop(final String stopId) {
         Log.d("RestApi", "Arrivals for stop: " + stopId); //TODO temp
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).arrivalsByStop(stopId);
+            return getRetrofit().create(HoustonMetroApiService.class).arrivalsByStop(stopId);
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -96,7 +96,7 @@ public class RestApi {
 
     public Observable<List<VehicleEntity>> vehiclesByRouteFilter(String filter) {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).vehiclesByRouteFilter(filter);
+            return getRetrofit().create(HoustonMetroApiService.class).vehiclesByRouteFilter(filter);
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -105,7 +105,7 @@ public class RestApi {
     public Observable<ItineraryEntity> calculateItinerary(final double lat1, final double lon1,
                                                           final double lat2, final double lon2) {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).calculateItinerary(lat1, lon1,
+            return getRetrofit().create(HoustonMetroApiService.class).calculateItinerary(lat1, lon1,
                     lat2, lon2, PARAM_ORDERBY_ENDTIME, PARAM_EXPAND_LEGS);
         } else {
             return Observable.error(new NetworkConnectionException());
@@ -116,7 +116,7 @@ public class RestApi {
                                                                      final double lat2, final double lon2,
                                                                      final String endTime) {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).calculateItineraryWithEndTime(
+            return getRetrofit().create(HoustonMetroApiService.class).calculateItineraryWithEndTime(
                     lat1, lon1, lat2, lon2, endTime, PARAM_ORDERBY_ENDTIME, PARAM_EXPAND_LEGS);
         } else {
             return Observable.error(new NetworkConnectionException());
@@ -125,7 +125,7 @@ public class RestApi {
 
     public Observable<ItineraryEntity> itinerary(final String itineraryId) {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).itinerary(itineraryId);
+            return getRetrofit().create(HoustonMetroApiService.class).itinerary(itineraryId);
         } else {
             return Observable.error(new NetworkConnectionException());
         }
@@ -133,7 +133,7 @@ public class RestApi {
 
     public Observable<List<IncidentEntity>> incidents() {
         if (validNetworkConnection()) {
-            return getRetrofit().create(RestApiService.class).incidents();
+            return getRetrofit().create(HoustonMetroApiService.class).incidents();
         } else {
             return Observable.error(new NetworkConnectionException());
         }

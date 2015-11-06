@@ -27,4 +27,6 @@
     <string name="depot_capitalized">DEPOT</string>
     <string name="title_activity_map_search">MapSearchActivity</string>
     <string name="title_activity_maps">Map Search</string>
+    <string name="location_permission_rationale">Depot needs your location to show you nearby stops</string>
+    <string name="OK">OK</string>
 </resources>

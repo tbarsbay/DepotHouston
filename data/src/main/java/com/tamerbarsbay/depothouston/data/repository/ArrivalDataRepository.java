@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.ArrivalEntityDataMapper;
-import com.tamerbarsbay.depothouston.data.net.RestApi;
+import com.tamerbarsbay.depothouston.data.net.HoustonMetroApi;
 import com.tamerbarsbay.depothouston.domain.Arrival;
 import com.tamerbarsbay.depothouston.domain.repository.ArrivalRepository;
 
@@ -48,8 +48,8 @@ public class ArrivalDataRepository implements ArrivalRepository {
     public Observable<List<Arrival>> arrivalsByStop(String stopId) {
         // Arrival lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an ArrivalDataStore and just use the RestApi.
-        RestApi restApi = new RestApi(this.context);
-        return restApi.arrivalsByStop(stopId).map(arrivalEntityListMapper);
+        HoustonMetroApi houstonMetroApi = new HoustonMetroApi(this.context);
+        return houstonMetroApi.arrivalsByStop(stopId).map(arrivalEntityListMapper);
     }
 
 }

@@ -3,7 +3,7 @@ package com.tamerbarsbay.depothouston.data.repository.datasource;
 import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.cache.StopCache;
-import com.tamerbarsbay.depothouston.data.net.RestApi;
+import com.tamerbarsbay.depothouston.data.net.HoustonMetroApi;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -29,8 +29,8 @@ public class StopDataStoreFactory {
     }
 
     public StopDataStore createCloudDataStore() {
-        RestApi restApi = new RestApi(this.context);
-        return new CloudStopDataStore(restApi, this.stopCache);
+        HoustonMetroApi houstonMetroApi = new HoustonMetroApi(this.context);
+        return new CloudStopDataStore(houstonMetroApi, this.stopCache);
     }
 
 }

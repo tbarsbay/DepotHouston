@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.tamerbarsbay.depothouston.data.entity.IncidentEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.IncidentEntityDataMapper;
-import com.tamerbarsbay.depothouston.data.net.RestApi;
+import com.tamerbarsbay.depothouston.data.net.HoustonMetroApi;
 import com.tamerbarsbay.depothouston.domain.Incident;
 import com.tamerbarsbay.depothouston.domain.repository.IncidentRepository;
 
@@ -42,7 +42,7 @@ public class IncidentDataRepository implements IncidentRepository {
     public Observable<List<Incident>> incidents() {
         // Incident lists will always come from the Metro API and not the local cache.
         // Therefore we can skip the creation of an IncidentDataStore and just use the RestApi.
-        RestApi restApi = new RestApi(this.context);
-        return restApi.incidents().map(incidentEntityListMapper);
+        HoustonMetroApi houstonMetroApi = new HoustonMetroApi(this.context);
+        return houstonMetroApi.incidents().map(incidentEntityListMapper);
     }
 }

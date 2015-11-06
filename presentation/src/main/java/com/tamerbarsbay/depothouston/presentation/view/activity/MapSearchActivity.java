@@ -7,16 +7,22 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
+import com.tamerbarsbay.depothouston.presentation.presenter.MapSearchPresenter;
 import com.tamerbarsbay.depothouston.presentation.util.UserLocationManager;
 import com.tamerbarsbay.depothouston.presentation.view.MapSearchView;
 
 import java.util.Collection;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,8 +33,13 @@ public class MapSearchActivity extends NavigationDrawerActivity implements MapSe
     @Bind(R.id.layout_map_search_parent)
     LinearLayout layoutParent;
 
+    @Inject
+    MapSearchPresenter mapSearchPresenter;
+
     private GoogleMap mMap;
     private UserLocationManager userLocationManager;
+
+    private static final int REQUEST_CODE_LOCATION_PERMISSION = 100;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapSearchActivity.class);
@@ -72,8 +83,21 @@ public class MapSearchActivity extends NavigationDrawerActivity implements MapSe
                 new UserLocationManager(this, this);
     }
 
-    private void showPermissionRationaleSnackbar() {
-        //TODO snackbar requests permission when ok pressed
+    private void showPermissionRationale() {
+        if (layoutParent != null) {
+            Snackbar
+                    .make(layoutParent, R.string.location_permission_rationale, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.OK, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ActivityCompat.requestPermissions(
+                                    MapSearchActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    REQUEST_CODE_LOCATION_PERMISSION);
+                        }
+                    })
+                    .show();
+        }
     }
 
     private void getUserLocationAndLoadNearbyStops() {
@@ -104,14 +128,13 @@ public class MapSearchActivity extends NavigationDrawerActivity implements MapSe
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // User has not granted location permission
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    showPermissionRationaleSnackbar();
+                    showPermissionRationale();
                 }
             } else {
                 // User has granted location permission
                 getUserLocationAndLoadNearbyStops();
             }
         }
-        //TODO if granted, get location and get nearby stops
         //TODO if not granted, show error and "you can still tap on map to see stops near any location
     }
 
