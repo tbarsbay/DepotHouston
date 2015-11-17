@@ -164,6 +164,7 @@ public class HoustonMetroApi {
             okHttpClient = new OkHttpClient();
             okHttpClient.setReadTimeout(10000, TimeUnit.MILLISECONDS);
             okHttpClient.setConnectTimeout(15000, TimeUnit.MILLISECONDS);
+            //okHttpClient.networkInterceptors().add(new LoggingInterceptor()); //TODO temp
         }
         return okHttpClient;
     }

@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @PerActivity
-public class ItineraryDetailsPresenter extends DefaultSubscriber<Itinerary> implements Presenter {
+public class ItineraryDetailsPresenter implements Presenter {
 
     private ItineraryDetailsView itineraryDetailsView;
 
@@ -83,21 +83,24 @@ public class ItineraryDetailsPresenter extends DefaultSubscriber<Itinerary> impl
     }
 
     private void getItineraryDetails() {
-        this.getItineraryDetailsUseCase.execute(this);
+        this.getItineraryDetailsUseCase.execute(new ItineraryDetailsSubscriber());
     }
 
-    @Override
-    public void onNext(Itinerary itinerary) {
-        super.onNext(itinerary);
-    }
+    private final class ItineraryDetailsSubscriber extends DefaultSubscriber<Itinerary> {
 
-    @Override
-    public void onCompleted() {
-        super.onCompleted();
-    }
+        @Override
+        public void onNext(Itinerary itinerary) {
+            super.onNext(itinerary);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        super.onError(e);
+        @Override
+        public void onCompleted() {
+            super.onCompleted();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            super.onError(e);
+        }
     }
 }

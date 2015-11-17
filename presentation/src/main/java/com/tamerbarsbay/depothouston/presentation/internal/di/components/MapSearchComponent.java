@@ -3,6 +3,7 @@ package com.tamerbarsbay.depothouston.presentation.internal.di.components;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.internal.di.modules.ActivityModule;
 import com.tamerbarsbay.depothouston.presentation.internal.di.modules.MapSearchModule;
+import com.tamerbarsbay.depothouston.presentation.view.fragment.MapSearchFragment;
 
 import dagger.Component;
 
@@ -10,6 +11,6 @@ import dagger.Component;
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, MapSearchModule.class})
 public interface MapSearchComponent extends ActivityComponent {
 
-    //void inject(MapSearchFragment mapSearchFragment); //TODO
+    void inject(MapSearchFragment fragment);
 
 }

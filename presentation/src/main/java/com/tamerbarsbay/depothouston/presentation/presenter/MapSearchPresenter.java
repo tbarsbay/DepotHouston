@@ -6,7 +6,7 @@ import com.tamerbarsbay.depothouston.domain.Stop;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
 import com.tamerbarsbay.depothouston.domain.exception.ErrorBundle;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
-import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
+import com.tamerbarsbay.depothouston.domain.interactor.GetStopsNearLocation;
 import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.mapper.StopModelDataMapper;
@@ -17,22 +17,17 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 @PerActivity
-public class MapSearchPresenter extends DefaultSubscriber<List<Stop>> implements Presenter {
-
-    private double lat;
-    private double lon;
-    private String radiusInMiles;
+public class MapSearchPresenter implements Presenter {
 
     private MapSearchView mapSearchView;
 
-    private final UseCase getStopsNearLocation;
+    private final GetStopsNearLocation getStopsNearLocation;
     private final StopModelDataMapper stopModelDataMapper;
 
     @Inject
-    MapSearchPresenter(@Named("stopsNearLocation") UseCase getStopsNearLocation,
+    MapSearchPresenter(GetStopsNearLocation getStopsNearLocation,
                       StopModelDataMapper stopModelDataMapper) {
         this.getStopsNearLocation = getStopsNearLocation;
         this.stopModelDataMapper = stopModelDataMapper;
@@ -51,16 +46,11 @@ public class MapSearchPresenter extends DefaultSubscriber<List<Stop>> implements
     }
 
     public void initialize(double lat, double lon, String radiusInMiles) {
-        this.lat = lat;
-        this.lon = lon;
-        this.radiusInMiles = radiusInMiles;
-        loadStopList();
-    }
-
-    private void loadStopList() {
         hideViewRetry();
         showViewLoading();
-        getStopsNearLocation.execute(this);
+
+        getStopsNearLocation.setParameters(lat, lon, radiusInMiles);
+        getStopsNearLocation.execute(new NearbyStopsSubscriber());
     }
 
     public void onStopClicked(StopModel stopModel) {
@@ -89,26 +79,35 @@ public class MapSearchPresenter extends DefaultSubscriber<List<Stop>> implements
         mapSearchView.showError(errorMessage);
     }
 
+    private void clearMap() {
+        mapSearchView.clearMap();
+    }
+
     private void plotStops(Collection<Stop> stops) {
         final Collection<StopModel> stopModels = stopModelDataMapper.transform(stops);
         mapSearchView.renderStopList(stopModels);
     }
 
-    @Override
-    public void onNext(List<Stop> stops) {
-        plotStops(stops);
-    }
+    private final class NearbyStopsSubscriber extends DefaultSubscriber<List<Stop>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Stop> stops) {
+            clearMap();
+            plotStops(stops);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
+
     }
 
 }

@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @PerActivity
-public class StopListPresenter extends DefaultSubscriber<List<Stop>> implements Presenter {
+public class StopListPresenter implements Presenter {
 
     private StopListView stopListView;
 
@@ -91,24 +91,27 @@ public class StopListPresenter extends DefaultSubscriber<List<Stop>> implements 
     }
 
     private void getRouteList() {
-        this.getStopsByRouteUseCase.execute(this);
+        this.getStopsByRouteUseCase.execute(new StopListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Stop> stops) {
-        this.showStopsInView(stops);
-    }
+    private final class StopListSubscriber extends DefaultSubscriber<List<Stop>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Stop> stops) {
+            showStopsInView(stops);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
     }
 
 }

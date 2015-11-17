@@ -43,7 +43,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Bind(R.id.rv_arrival_list)
     RecyclerView rvArrivals;
 
-    @Bind(R.id.rl_progress)
+    @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
 
     @Bind(R.id.rl_retry)

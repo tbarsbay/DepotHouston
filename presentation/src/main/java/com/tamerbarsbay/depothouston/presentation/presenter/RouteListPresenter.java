@@ -1,7 +1,6 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.tamerbarsbay.depothouston.domain.Route;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
@@ -21,7 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @PerActivity
-public class RouteListPresenter extends DefaultSubscriber<List<Route>> implements Presenter {
+public class RouteListPresenter implements Presenter {
 
     private RouteListView routeListView;
 
@@ -89,24 +88,26 @@ public class RouteListPresenter extends DefaultSubscriber<List<Route>> implement
     }
 
     private void getRouteList() {
-        this.getRouteListUseCase.execute(this);
+        this.getRouteListUseCase.execute(new RouteListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Route> routes) {
-        this.showRoutesInView(routes);
-    }
+    private final class RouteListSubscriber extends DefaultSubscriber<List<Route>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Route> routes) {
+            showRoutesInView(routes);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        Log.d("RLP", "Error: " + e.getMessage() + ".\nCause: " + e.getCause() + ". ST: " + e.getStackTrace()); //TODO temp
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
     }
 }

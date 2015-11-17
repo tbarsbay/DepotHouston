@@ -10,27 +10,32 @@ import rx.Observable;
 
 public class GetStopsNearLocation extends UseCase {
 
-    private final double lat;
-    private final double lon;
-    private final String radiusInMiles;
+    private double lat;
+    private double lon;
+    private String radiusInMiles;
+    private boolean areParametersSet = false;
     private final StopRepository stopRepository;
 
     @Inject
-    public GetStopsNearLocation(double lat,
-                                double lon,
-                                String radiusInMiles,
-                                StopRepository stopRepository,
+    public GetStopsNearLocation(StopRepository stopRepository,
                                 ThreadExecutor threadExecutor,
                                 PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
+        this.stopRepository = stopRepository;
+    }
+
+    public void setParameters(double lat, double lon, String radiusInMiles) {
         this.lat = lat;
         this.lon = lon;
         this.radiusInMiles = radiusInMiles;
-        this.stopRepository = stopRepository;
+        areParametersSet = true;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.stopRepository.stopsNearLocation(lat, lon, radiusInMiles);
+        if (!areParametersSet) {
+            throw new IllegalStateException("Required parameters have not been set.");
+        }
+        return stopRepository.stopsNearLocation(lat, lon, radiusInMiles);
     }
 }

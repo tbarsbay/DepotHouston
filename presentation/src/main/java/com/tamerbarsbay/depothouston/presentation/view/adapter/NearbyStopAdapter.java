@@ -16,45 +16,45 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopViewHolder> {
+public class NearbyStopAdapter extends RecyclerView.Adapter<NearbyStopAdapter.StopViewHolder> {
 
     public interface OnItemClickListener {
-        void onStopItemClicked(StopModel stopModel);
+        void onStopClicked(StopModel stopModel);
     }
 
-    private List<StopModel> stopModels;
+    private List<StopModel> stops;
     private final LayoutInflater layoutInflater;
 
     private OnItemClickListener onItemClickListener;
 
-    public StopListAdapter(Context context, Collection<StopModel> stopModels) {
-        validateStopModels(stopModels);
-        layoutInflater =
+    public NearbyStopAdapter(Context context, Collection<StopModel> stops) {
+        this.validateStops(stops);
+        this.layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.stopModels = (List<StopModel>) stopModels;
+        this.stops = (List<StopModel>) stops;
     }
 
     @Override
     public int getItemCount() {
-        return (stopModels != null) ? stopModels.size() : 0;
+        return (this.stops != null) ? this.stops.size() : 0;
     }
 
     @Override
-    public StopListAdapter.StopViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View view = layoutInflater.inflate(R.layout.list_item_stop, viewGroup, false);
+    public NearbyStopAdapter.StopViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+        View view = this.layoutInflater.inflate(R.layout.list_item_nearby_stop, viewGroup, false);
         StopViewHolder stopViewHolder = new StopViewHolder(view);
         return stopViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(StopListAdapter.StopViewHolder stopViewHolder, int position) {
-        final StopModel stopModel = stopModels.get(position);
-        stopViewHolder.tvName.setText(stopModel.getName());
+    public void onBindViewHolder(NearbyStopAdapter.StopViewHolder stopViewHolder, int position) {
+        final StopModel stop = stops.get(position);
+        stopViewHolder.tvStopName.setText(stop.getName());
         stopViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (StopListAdapter.this.onItemClickListener != null) {
-                    StopListAdapter.this.onItemClickListener.onStopItemClicked(stopModel);
+                if (NearbyStopAdapter.this.onItemClickListener != null) {
+                    NearbyStopAdapter.this.onItemClickListener.onStopClicked(stop);
                 }
             }
         });
@@ -65,9 +65,9 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
         return super.getItemId(position);
     }
 
-    public void setStopsCollection(Collection<StopModel> stopModels) {
-        validateStopModels(stopModels);
-        this.stopModels = (List<StopModel>) stopModels;
+    public void setStopsCollection(Collection<StopModel> stops) {
+        validateStops(stops);
+        this.stops = (List<StopModel>) stops;
         notifyDataSetChanged();
     }
 
@@ -75,15 +75,21 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
         this.onItemClickListener = onItemClickListener;
     }
 
-    private void validateStopModels(Collection<StopModel> stopModels) {
-        if (stopModels == null) {
+    private void validateStops(Collection<StopModel> stops) {
+        if (stops == null) {
             throw new IllegalArgumentException("Stop list cannot be null.");
         }
     }
 
     static class StopViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.stop_name)
-        TextView tvName;
+        @Bind(R.id.tv_nearby_stop_name)
+        TextView tvStopName;
+
+        @Bind(R.id.tv_nearby_stop_routes)
+        TextView tvStopRoutes;
+
+        @Bind(R.id.tv_nearby_stop_distance)
+        TextView tvDistance;
 
         public StopViewHolder(View itemView) {
             super(itemView);

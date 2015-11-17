@@ -30,11 +30,11 @@ public abstract class UseCase {
     protected abstract Observable buildUseCaseObservable();
 
     @SuppressWarnings("unchecked")
-    public void execute(Subscriber UseCaseSubscriber) {
+    public void execute(Subscriber useCaseSubscriber) {
         this.subscription = this.buildUseCaseObservable()
                 .subscribeOn(Schedulers.from(threadExecutor))
                 .observeOn(postExecutionThread.getScheduler())
-                .subscribe(UseCaseSubscriber);
+                .subscribe(useCaseSubscriber);
     }
 
     /**

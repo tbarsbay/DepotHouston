@@ -1,6 +1,5 @@
 package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +40,7 @@ public class StopListFragment extends BaseFragment implements StopListView {
     @Bind(R.id.rv_stop_list)
     RecyclerView rvStops;
 
-    @Bind(R.id.rl_progress)
+    @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
 
     @Bind(R.id.rl_retry)
@@ -76,10 +75,10 @@ public class StopListFragment extends BaseFragment implements StopListView {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof StopListListener) {
-            this.stopListListener = (StopListListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof StopListListener) {
+            this.stopListListener = (StopListListener) context;
         }
     }
 
@@ -93,90 +92,90 @@ public class StopListFragment extends BaseFragment implements StopListView {
     }
 
     private void setupUI() {
-        this.stopsLayoutManager = new LinearLayoutManager(getContext());
-        this.rvStops.setLayoutManager(stopsLayoutManager);
+        stopsLayoutManager = new LinearLayoutManager(getContext());
+        rvStops.setLayoutManager(stopsLayoutManager);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.initialize();
-        this.loadStopList();
+        initialize();
+        loadStopList();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.stopListPresenter.resume();
+        stopListPresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.stopListPresenter.pause();
+        stopListPresenter.pause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.stopListPresenter.destroy();
+        stopListPresenter.destroy();
     }
 
     private void initialize() {
-        this.getComponent(StopComponent.class).inject(this);
-        this.stopListPresenter.setView(this);
+        getComponent(StopComponent.class).inject(this);
+        stopListPresenter.setView(this);
     }
 
     @Override
     public void renderStopList(Collection<StopModel> stopModels) {
         if (stopModels != null) {
-            if (this.stopsAdapter == null) {
-                this.stopsAdapter = new StopListAdapter(getActivity(), stopModels);
+            if (stopsAdapter == null) {
+                stopsAdapter = new StopListAdapter(getActivity(), stopModels);
             } else {
-                this.stopsAdapter.setStopsCollection(stopModels);
+                stopsAdapter.setStopsCollection(stopModels);
             }
-            this.stopsAdapter.setOnItemClickListener(onItemClickListener);
-            this.rvStops.setAdapter(stopsAdapter);
+            stopsAdapter.setOnItemClickListener(onItemClickListener);
+            rvStops.setAdapter(stopsAdapter);
         }
     }
 
     @Override
     public void viewStop(StopModel stopModel) {
-        if (this.stopListListener != null) {
-            this.stopListListener.onStopClicked(stopModel);
+        if (stopListListener != null) {
+            stopListListener.onStopClicked(stopModel);
         }
     }
 
     @Override
     public void showLoading() {
-        this.rlProgress.setVisibility(View.VISIBLE);
+        rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        this.rlProgress.setVisibility(View.GONE);
+        rlProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void showRetry() {
-        this.rlRetry.setVisibility(View.VISIBLE);
+        rlRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideRetry() {
-        this.rlRetry.setVisibility(View.GONE);
+        rlRetry.setVisibility(View.GONE);
     }
 
     @Override public void showError(String message) {
-        this.showToastMessage(message);
+        showToastMessage(message);
     }
 
     @Override public Context getContext() {
-        return this.getActivity().getApplicationContext();
+        return getActivity().getApplicationContext();
     }
 
     private void loadStopList() {
-        this.stopListPresenter.initialize();
+        stopListPresenter.initialize();
     }
 
     @OnClick(R.id.btn_retry)

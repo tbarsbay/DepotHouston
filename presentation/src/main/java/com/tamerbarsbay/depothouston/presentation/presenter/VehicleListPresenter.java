@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @PerActivity
-public class VehicleListPresenter extends DefaultSubscriber<List<Vehicle>> implements Presenter {
+public class VehicleListPresenter implements Presenter {
 
     private VehicleListView vehicleListView;
 
@@ -91,23 +91,27 @@ public class VehicleListPresenter extends DefaultSubscriber<List<Vehicle>> imple
     }
 
     private void getVehicleList() {
-        this.getVehiclesByRoute.execute(this);
+        this.getVehiclesByRoute.execute(new VehicleListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Vehicle> vehicles) {
-        this.showVehiclesInView(vehicles);
-    }
+    private final class VehicleListSubscriber extends DefaultSubscriber<List<Vehicle>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Vehicle> vehicles) {
+            showVehiclesInView(vehicles);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception)e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
+
     }
 }

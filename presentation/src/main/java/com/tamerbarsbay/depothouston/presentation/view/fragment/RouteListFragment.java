@@ -38,7 +38,7 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     @Bind(R.id.rv_route_list)
     RecyclerView rvRoutes;
 
-    @Bind(R.id.rl_progress)
+    @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
 
     @Bind(R.id.rl_retry)
