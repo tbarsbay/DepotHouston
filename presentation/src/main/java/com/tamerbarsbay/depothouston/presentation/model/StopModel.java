@@ -2,9 +2,6 @@ package com.tamerbarsbay.depothouston.presentation.model;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class StopModel {
 
     private final String id;
@@ -119,4 +116,10 @@ public class StopModel {
     public boolean isBus() {
         return this.getType().equals("Bus");
     }
+
+//    public class StopComparator extends Comparator<StopModel> {
+//        public int compare(StopModel stop1, StopModel stop2) {
+//            return Double.compare
+//        }
+//    }
 }

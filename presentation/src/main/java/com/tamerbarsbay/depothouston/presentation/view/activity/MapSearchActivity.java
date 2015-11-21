@@ -36,7 +36,11 @@ public class MapSearchActivity extends NavigationDrawerActivity
 
     private GoogleMap mMap;
 
-    private static final int DEFAULT_ZOOM_LEVEL = 15;
+    private static final int DEFAULT_ZOOM_LEVEL_PRIMARY = 15;
+    private static final int DEFAULT_ZOOM_LEVEL_SECONDARY = 12;
+
+
+    private String centerLocationName = "";
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapSearchActivity.class);
@@ -122,6 +126,16 @@ public class MapSearchActivity extends NavigationDrawerActivity
     }
 
     @Override
+    public void plotCenterMarker(double lat, double lon) {
+        if (mMap != null) {
+            mMap.addMarker(new MarkerOptions()
+                .title(centerLocationName)
+                .position(new LatLng(lat, lon))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        }
+    }
+
+    @Override
     public void viewStop(StopModel stopModel) {
         //TODO handle inactive routes/stops correctly
         if (stopModel != null) {
@@ -147,6 +161,14 @@ public class MapSearchActivity extends NavigationDrawerActivity
         }
     }
 
+    @Override
+    public void centerMapOn(LatLng location) {
+        if (mMap != null) {
+            mMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL_SECONDARY));
+        }
+    }
+
     private GoogleMap.OnMapClickListener onMapClickListener = new GoogleMap.OnMapClickListener() {
         @Override
         public void onMapClick(final LatLng latLng) {
@@ -155,26 +177,26 @@ public class MapSearchActivity extends NavigationDrawerActivity
 
             // Use Google's Geocoder API to search for the tapped location
             Geocoder geo = new Geocoder(getBaseContext(), Locale.US);
-            String locationAddress = "Error loading address"; // set default value in case Geocoder can't find address
+            centerLocationName = "Error loading address"; // set default value in case Geocoder can't find address
             try {
                 List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
 
                 if (!addresses.isEmpty()) {
-                    locationAddress = addresses.get(0).getAddressLine(0);
+                    centerLocationName = addresses.get(0).getAddressLine(0);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             //TODO update name of center marker
-
-            mMap.addMarker(new MarkerOptions()
-                    .title(locationAddress)
+//
+//            mMap.addMarker(new MarkerOptions()
+//                    .title(locationAddress)
 //                    .snippet(CENTER_MARKER) //TODO temp
-                    .position(latLng)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+//                    .position(latLng)
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
             mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL),
+                    CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY),
                     new GoogleMap.CancelableCallback() {
                         @Override
                         public void onFinish() {

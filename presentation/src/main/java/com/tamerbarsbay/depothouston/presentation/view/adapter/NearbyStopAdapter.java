@@ -1,14 +1,17 @@
 package com.tamerbarsbay.depothouston.presentation.view.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
+import com.tamerbarsbay.depothouston.presentation.util.DistanceUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +27,7 @@ public class NearbyStopAdapter extends RecyclerView.Adapter<NearbyStopAdapter.St
 
     private List<StopModel> stops;
     private final LayoutInflater layoutInflater;
+    private LatLng centerLocation = null;
 
     private OnItemClickListener onItemClickListener;
 
@@ -50,6 +54,9 @@ public class NearbyStopAdapter extends RecyclerView.Adapter<NearbyStopAdapter.St
     public void onBindViewHolder(NearbyStopAdapter.StopViewHolder stopViewHolder, int position) {
         final StopModel stop = stops.get(position);
         stopViewHolder.tvStopName.setText(stop.getName());
+        if (centerLocation != null) {
+            stopViewHolder.tvDistance.setText(getDistanceAsString(stop));
+        }
         stopViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +65,30 @@ public class NearbyStopAdapter extends RecyclerView.Adapter<NearbyStopAdapter.St
                 }
             }
         });
+    }
+
+    private String getDistanceAsString(StopModel stop) {
+        String distanceAsString = "";
+        double distance = DistanceUtils.calculateDistanceBetweenCoordinates(
+            centerLocation.latitude,
+            centerLocation.longitude,
+            stop.getLat(),
+            stop.getLon()
+        );
+        if (distance != 0.0) {
+            distanceAsString = String.valueOf(distance);
+        } else {
+            distanceAsString = "0.00";
+        }
+        if (distanceAsString.length() >= 4) {
+            return distanceAsString.substring(0,4) + " mi";
+        } else {
+            return distanceAsString + " mi";
+        }
+    }
+
+    public void setCenterLocation(@NonNull LatLng centerLocation) {
+        this.centerLocation = centerLocation;
     }
 
     @Override

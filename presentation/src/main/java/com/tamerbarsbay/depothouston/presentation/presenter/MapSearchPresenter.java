@@ -26,6 +26,10 @@ public class MapSearchPresenter implements Presenter {
     private final GetStopsNearLocation getStopsNearLocation;
     private final StopModelDataMapper stopModelDataMapper;
 
+    private double lat;
+    private double lon;
+    private String radiusInMiles;
+
     @Inject
     MapSearchPresenter(GetStopsNearLocation getStopsNearLocation,
                       StopModelDataMapper stopModelDataMapper) {
@@ -47,7 +51,13 @@ public class MapSearchPresenter implements Presenter {
 
     public void initialize(double lat, double lon, String radiusInMiles) {
         hideViewRetry();
+        hideViewEmpty();
+        mapSearchView.hideStopsView();
         showViewLoading();
+
+        this.lat = lat;
+        this.lon = lon;
+        this.radiusInMiles = radiusInMiles;
 
         getStopsNearLocation.setParameters(lat, lon, radiusInMiles);
         getStopsNearLocation.execute(new NearbyStopsSubscriber());
@@ -73,6 +83,14 @@ public class MapSearchPresenter implements Presenter {
         mapSearchView.hideRetry();
     }
 
+    private void showViewEmpty() {
+        mapSearchView.showEmpty();
+    }
+
+    private void hideViewEmpty() {
+        mapSearchView.hideEmpty();
+    }
+
     private void showErrorMessage(ErrorBundle errorBundle) {
         String errorMessage = ErrorMessageFactory.create(mapSearchView.getContext(),
                 errorBundle.getException());
@@ -88,11 +106,16 @@ public class MapSearchPresenter implements Presenter {
         mapSearchView.renderStopList(stopModels);
     }
 
+    private void plotCenterMarker() {
+        mapSearchView.plotCenterMarker(lat, lon);
+    }
+
     private final class NearbyStopsSubscriber extends DefaultSubscriber<List<Stop>> {
 
         @Override
         public void onNext(List<Stop> stops) {
             clearMap();
+            plotCenterMarker();
             plotStops(stops);
         }
 

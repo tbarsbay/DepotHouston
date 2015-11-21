@@ -25,9 +25,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class StopListFragment extends BaseFragment implements StopListView {
 
     public interface StopListListener {
@@ -164,6 +161,16 @@ public class StopListFragment extends BaseFragment implements StopListView {
     @Override
     public void hideRetry() {
         rlRetry.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmpty() {
+        // TODO
+    }
+
+    @Override
+    public void hideEmpty() {
+        // TODO
     }
 
     @Override public void showError(String message) {
