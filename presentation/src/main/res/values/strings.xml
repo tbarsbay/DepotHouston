@@ -4,6 +4,7 @@
     <string name="exception_message_no_connection">No network connection</string>
     <string name="exception_message_stop_not_found">Error - stop not found.</string>
     <string name="exception_message_generic">Error</string>
+    <string name="error_invalid_user_location_tap_feature_remains">There was an error getting your location. You can still tap anywhere on the map to see stops.</string>
     <string name="title_activity_main">Depot - Houston</string>
 
     <string name="hello_world">Hello world!</string>
@@ -24,4 +25,12 @@
     <string name="destination">Destination</string>
     <string name="route">Route</string>
     <string name="depot_capitalized">DEPOT</string>
+    <string name="title_activity_map_search">MapSearchActivity</string>
+    <string name="title_activity_maps">Map Search</string>
+    <string name="location_permission_rationale">Depot needs your location to show you nearby stops</string>
+    <string name="OK">OK</string>
+    <string name="enable_location_permission_to_see_nearby_stops"><![CDATA[Enable the location permission to view nearby stops (go to Settings -> Apps)]]></string>
+    <string name="no_nearby_stops">No nearby stops</string>
+    <string name="tap_to_see_nearby_stops">Tap any location to see nearby stops</string>
+    <string name="your_location">Your location</string>
 </resources>

@@ -19,11 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @PerActivity
-public class StopListPresenter extends DefaultSubscriber<List<Stop>> implements Presenter {
+public class StopListPresenter implements Presenter {
 
     private StopListView stopListView;
 
@@ -67,19 +64,19 @@ public class StopListPresenter extends DefaultSubscriber<List<Stop>> implements 
     }
 
     private void showViewLoading() {
-        this.stopListView.showLoading();
+        this.stopListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.stopListView.hideLoading();
+        this.stopListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.stopListView.showRetry();
+        this.stopListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.stopListView.hideRetry();
+        this.stopListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
@@ -94,24 +91,27 @@ public class StopListPresenter extends DefaultSubscriber<List<Stop>> implements 
     }
 
     private void getRouteList() {
-        this.getStopsByRouteUseCase.execute(this);
+        this.getStopsByRouteUseCase.execute(new StopListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Stop> stops) {
-        this.showStopsInView(stops);
-    }
+    private final class StopListSubscriber extends DefaultSubscriber<List<Stop>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Stop> stops) {
+            showStopsInView(stops);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
     }
 
 }

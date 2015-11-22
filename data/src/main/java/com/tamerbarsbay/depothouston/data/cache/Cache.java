@@ -7,9 +7,6 @@ import com.tamerbarsbay.depothouston.domain.executor.ThreadExecutor;
 
 import java.io.File;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 public class Cache {
 
     String SETTINGS_FILE_NAME = "com.tamerbarsbay.depothouston.SETTINGS";

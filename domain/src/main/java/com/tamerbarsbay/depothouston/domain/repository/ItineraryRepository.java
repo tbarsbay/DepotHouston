@@ -17,5 +17,5 @@ public interface ItineraryRepository {
                                                         final double lat2, final double lon2,
                                                         final String endTime);
 
-    Observable<Itinerary> getItineraryDetails(final String itineraryId);
+    Observable<Itinerary> itinerary(final String itineraryId);
 }

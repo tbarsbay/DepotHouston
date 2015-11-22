@@ -19,13 +19,13 @@ public class DiskRouteDataStore implements RouteDataStore {
     }
 
     @Override
-    public Observable<RouteEntity> getRouteDetails(String routeId) {
+    public Observable<RouteEntity> route(String routeId) {
         //TODO
         return null;
     }
 
     @Override
-    public Observable<List<RouteEntity>> getRouteList() {
+    public Observable<List<RouteEntity>> routes() {
         throw new UnsupportedOperationException("Operation not available.");
     }
 }

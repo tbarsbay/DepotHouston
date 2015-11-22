@@ -8,19 +8,16 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
-public class GetStopsByRouteUseCase extends UseCase {
+public class GetStopsByRoute extends UseCase {
 
     private final String routeId;
     private final StopRepository stopRepository;
 
     @Inject
-    public GetStopsByRouteUseCase(String routeId,
-                                  StopRepository stopRepository,
-                                  ThreadExecutor threadExecutor,
-                                  PostExecutionThread postExecutionThread) {
+    public GetStopsByRoute(String routeId,
+                           StopRepository stopRepository,
+                           ThreadExecutor threadExecutor,
+                           PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.routeId = routeId;
         this.stopRepository = stopRepository;
@@ -28,6 +25,6 @@ public class GetStopsByRouteUseCase extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.stopRepository.getStopListByRoute(this.routeId);
+        return this.stopRepository.stopsByRoute(this.routeId);
     }
 }

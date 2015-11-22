@@ -13,12 +13,9 @@ import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.RouteViewHolder> {
 
     public interface OnItemClickListener {
@@ -87,18 +84,18 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.Rout
     }
 
     static class RouteViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.route_name)
+        @Bind(R.id.route_name)
         TextView tvName;
 
-        @InjectView(R.id.route_long_name)
+        @Bind(R.id.route_long_name)
         TextView tvLongName;
 
-        @InjectView(R.id.route_type)
+        @Bind(R.id.route_type)
         TextView tvType;
 
         public RouteViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

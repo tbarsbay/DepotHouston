@@ -15,13 +15,13 @@ public interface RouteRepository {
     /**
      * Get an {@link rx.Observable} which will emit a List of {@link Route} objects.
      */
-    Observable<List<Route>> getRouteList();
+    Observable<List<Route>> routes();
 
     /**
      * Get an {@link rx.Observable} which will emit a {@link Route}.
      *
      * @param routeId The route id used to retrieve route data.
      */
-    Observable<Route> getRouteDetails(final String routeId);
+    Observable<Route> route(final String routeId);
 
 }

@@ -2,9 +2,6 @@ package com.tamerbarsbay.depothouston.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class RouteEntity {
 
     @SerializedName("RouteId")

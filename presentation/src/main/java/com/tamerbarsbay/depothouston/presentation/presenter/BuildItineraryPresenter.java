@@ -4,11 +4,8 @@ import com.tamerbarsbay.depothouston.domain.Itinerary;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @PerActivity
-public class BuildItineraryPresenter extends DefaultSubscriber<Itinerary> implements Presenter {
+public class BuildItineraryPresenter implements Presenter {
 
     //TODO
 
@@ -31,18 +28,22 @@ public class BuildItineraryPresenter extends DefaultSubscriber<Itinerary> implem
 
     }
 
-    @Override
-    public void onNext(Itinerary itinerary) {
-        super.onNext(itinerary);
-    }
+    private final class BuildItinerarySubscriber extends DefaultSubscriber<Itinerary> {
 
-    @Override
-    public void onCompleted() {
-        super.onCompleted();
-    }
+        @Override
+        public void onNext(Itinerary itinerary) {
+            super.onNext(itinerary);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        super.onError(e);
+        @Override
+        public void onCompleted() {
+            super.onCompleted();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            super.onError(e);
+        }
+
     }
 }

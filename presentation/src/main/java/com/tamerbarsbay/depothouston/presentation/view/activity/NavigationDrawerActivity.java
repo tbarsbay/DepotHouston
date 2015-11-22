@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class NavigationDrawerActivity extends BaseActivity {
 
+    //TODO butterknife?
     private DrawerLayout mDrawerLayout;
 
     private Handler mHandler;

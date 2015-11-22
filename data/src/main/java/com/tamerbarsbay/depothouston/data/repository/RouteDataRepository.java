@@ -15,9 +15,6 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.functions.Func1;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 @Singleton
 public class RouteDataRepository implements RouteRepository {
 
@@ -49,15 +46,15 @@ public class RouteDataRepository implements RouteRepository {
     }
 
     @Override
-    public Observable<List<Route>> getRouteList() {
+    public Observable<List<Route>> routes() {
         // Route lists will always come from the Metro API and not the local cache
         final RouteDataStore routeDataStore = this.routeDataStoreFactory.createCloudDataStore();
-        return routeDataStore.getRouteList().map(routeEntityListMapper);
+        return routeDataStore.routes().map(routeEntityListMapper);
     }
 
     @Override
-    public Observable<Route> getRouteDetails(String routeId) {
+    public Observable<Route> route(String routeId) {
         final RouteDataStore routeDataStore = this.routeDataStoreFactory.create(routeId);
-        return routeDataStore.getRouteDetails(routeId).map(routeEntityMapper);
+        return routeDataStore.route(routeId).map(routeEntityMapper);
     }
 }

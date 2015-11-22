@@ -12,6 +12,6 @@ import rx.Observable;
  */
 public interface IncidentRepository {
 
-    Observable<List<Incident>> getIncidents();
+    Observable<List<Incident>> incidents();
 
 }

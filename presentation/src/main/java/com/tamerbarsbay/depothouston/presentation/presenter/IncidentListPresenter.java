@@ -19,11 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @PerActivity
-public class IncidentListPresenter extends DefaultSubscriber<List<Incident>> implements Presenter {
+public class IncidentListPresenter implements Presenter {
 
     private IncidentListView incidentListView;
 
@@ -67,19 +64,19 @@ public class IncidentListPresenter extends DefaultSubscriber<List<Incident>> imp
     }
 
     private void showViewLoading() {
-        this.incidentListView.showLoading();
+        this.incidentListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.incidentListView.hideLoading();
+        this.incidentListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.incidentListView.showRetry();
+        this.incidentListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.incidentListView.hideRetry();
+        this.incidentListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
@@ -94,23 +91,26 @@ public class IncidentListPresenter extends DefaultSubscriber<List<Incident>> imp
     }
 
     private void getIncidentList() {
-        this.getIncidentListUseCase.execute(this);
+        this.getIncidentListUseCase.execute(new IncidentListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Incident> incidents) {
-        this.showIncidentsInView(incidents);
-    }
+    private final class IncidentListSubscriber extends DefaultSubscriber<List<Incident>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Incident> incidents) {
+            showIncidentsInView(incidents);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception)e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
     }
 }

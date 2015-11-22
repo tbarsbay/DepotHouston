@@ -1,8 +1,5 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public interface Presenter {
     /**
      * Called in the Activity/Fragment onResume() method.

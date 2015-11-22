@@ -11,7 +11,7 @@ import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.mapper.VehicleModelDataMapper;
 import com.tamerbarsbay.depothouston.presentation.model.VehicleModel;
-import com.tamerbarsbay.depothouston.presentation.view.fragment.VehicleListView;
+import com.tamerbarsbay.depothouston.presentation.view.VehicleListView;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,11 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/24/2015.
- */
 @PerActivity
-public class VehicleListPresenter extends DefaultSubscriber<List<Vehicle>> implements Presenter {
+public class VehicleListPresenter implements Presenter {
 
     private VehicleListView vehicleListView;
 
@@ -67,19 +64,19 @@ public class VehicleListPresenter extends DefaultSubscriber<List<Vehicle>> imple
     }
 
     private void showViewLoading() {
-        this.vehicleListView.showLoading();
+        this.vehicleListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.vehicleListView.hideLoading();
+        this.vehicleListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.vehicleListView.showRetry();
+        this.vehicleListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.vehicleListView.hideRetry();
+        this.vehicleListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
@@ -94,23 +91,27 @@ public class VehicleListPresenter extends DefaultSubscriber<List<Vehicle>> imple
     }
 
     private void getVehicleList() {
-        this.getVehiclesByRoute.execute(this);
+        this.getVehiclesByRoute.execute(new VehicleListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Vehicle> vehicles) {
-        this.showVehiclesInView(vehicles);
-    }
+    private final class VehicleListSubscriber extends DefaultSubscriber<List<Vehicle>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Vehicle> vehicles) {
+            showVehiclesInView(vehicles);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception)e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
+
     }
 }

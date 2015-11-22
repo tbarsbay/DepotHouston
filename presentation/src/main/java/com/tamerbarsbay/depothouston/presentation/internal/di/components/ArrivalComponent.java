@@ -7,9 +7,6 @@ import com.tamerbarsbay.depothouston.presentation.view.fragment.ArrivalListFragm
 
 import dagger.Component;
 
-/**
- * Created by Tamer on 7/26/2015.
- */
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, ArrivalModule.class})
 public interface ArrivalComponent extends ActivityComponent {

@@ -27,7 +27,7 @@ public class DiskItineraryDataStore implements ItineraryDataStore {
     }
 
     @Override
-    public Observable<ItineraryEntity> getItineraryDetails(String itineraryId) {
+    public Observable<ItineraryEntity> itinerary(String itineraryId) {
         //TODO
         return null;
     }

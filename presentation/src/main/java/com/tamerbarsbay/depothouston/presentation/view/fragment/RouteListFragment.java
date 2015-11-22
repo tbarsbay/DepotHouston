@@ -22,13 +22,10 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class RouteListFragment extends BaseFragment implements RouteListView {
 
     public interface RouteListListener {
@@ -38,16 +35,16 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     @Inject
     RouteListPresenter routeListPresenter;
 
-    @InjectView(R.id.rv_route_list)
+    @Bind(R.id.rv_route_list)
     RecyclerView rvRoutes;
 
-    @InjectView(R.id.rl_progress)
+    @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
 
-    @InjectView(R.id.rl_retry)
+    @Bind(R.id.rl_retry)
     RelativeLayout rlRetry;
 
-    @InjectView(R.id.btn_retry)
+    @Bind(R.id.btn_retry)
     Button btnRetry;
 
     private RouteListAdapter routesAdapter;
@@ -72,7 +69,7 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_route_list, container, false);
-        ButterKnife.inject(this, fragmentView);
+        ButterKnife.bind(this, fragmentView);
         setupUI();
         return fragmentView;
     }
@@ -113,22 +110,22 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     }
 
     @Override
-    public void showLoading() {
+    public void showLoadingView() {
         this.rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideLoading() {
+    public void hideLoadingView() {
         this.rlProgress.setVisibility(View.GONE);
     }
 
     @Override
-    public void showRetry() {
+    public void showRetryView() {
         this.rlRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideRetry() {
+    public void hideRetryView() {
         this.rlRetry.setVisibility(View.GONE);
     }
 

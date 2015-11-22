@@ -13,12 +13,9 @@ import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopViewHolder> {
 
     public interface OnItemClickListener {
@@ -31,27 +28,27 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
     private OnItemClickListener onItemClickListener;
 
     public StopListAdapter(Context context, Collection<StopModel> stopModels) {
-        this.validateStopModels(stopModels);
-        this.layoutInflater =
+        validateStopModels(stopModels);
+        layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.stopModels = (List<StopModel>) stopModels;
     }
 
     @Override
     public int getItemCount() {
-        return (this.stopModels != null) ? this.stopModels.size() : 0;
+        return (stopModels != null) ? stopModels.size() : 0;
     }
 
     @Override
     public StopListAdapter.StopViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View view = this.layoutInflater.inflate(R.layout.list_item_stop, viewGroup, false);
+        View view = layoutInflater.inflate(R.layout.list_item_stop, viewGroup, false);
         StopViewHolder stopViewHolder = new StopViewHolder(view);
         return stopViewHolder;
     }
 
     @Override
     public void onBindViewHolder(StopListAdapter.StopViewHolder stopViewHolder, int position) {
-        final StopModel stopModel = this.stopModels.get(position);
+        final StopModel stopModel = stopModels.get(position);
         stopViewHolder.tvName.setText(stopModel.getName());
         stopViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +66,9 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
     }
 
     public void setStopsCollection(Collection<StopModel> stopModels) {
-        this.validateStopModels(stopModels);
+        validateStopModels(stopModels);
         this.stopModels = (List<StopModel>) stopModels;
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener (OnItemClickListener onItemClickListener) {
@@ -85,12 +82,12 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
     }
 
     static class StopViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.stop_name)
+        @Bind(R.id.stop_name)
         TextView tvName;
 
         public StopViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

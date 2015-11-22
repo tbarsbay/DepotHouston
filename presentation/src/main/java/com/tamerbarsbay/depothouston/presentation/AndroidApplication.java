@@ -6,9 +6,6 @@ import com.tamerbarsbay.depothouston.presentation.internal.di.components.Applica
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerApplicationComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.modules.ApplicationModule;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 public class AndroidApplication extends Application {
 
     private ApplicationComponent applicationComponent;

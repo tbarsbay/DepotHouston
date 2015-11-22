@@ -7,9 +7,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class DiskStopDataStore implements StopDataStore {
 
     private final StopCache stopCache;
@@ -19,7 +16,13 @@ public class DiskStopDataStore implements StopDataStore {
     }
 
     @Override
-    public Observable<List<StopEntity>> getStopListByRoute(String routeId) {
+    public Observable<List<StopEntity>> stopsByRoute(String routeId) {
         throw new UnsupportedOperationException("Operation not available.");
+    }
+
+    @Override
+    public Observable<List<StopEntity>> stopsNearLocation(double lat, double lon, String radiusInMiles) {
+        //TODO
+        return null;
     }
 }

@@ -11,7 +11,6 @@ import rx.subscriptions.Subscriptions;
 
 /**
  * Taken from https://github.com/android10/Android-CleanArchitecture
- * Created by Tamer on 7/22/2015.
  */
 public abstract class UseCase {
 
@@ -31,11 +30,11 @@ public abstract class UseCase {
     protected abstract Observable buildUseCaseObservable();
 
     @SuppressWarnings("unchecked")
-    public void execute(Subscriber UseCaseSubscriber) {
+    public void execute(Subscriber useCaseSubscriber) {
         this.subscription = this.buildUseCaseObservable()
                 .subscribeOn(Schedulers.from(threadExecutor))
                 .observeOn(postExecutionThread.getScheduler())
-                .subscribe(UseCaseSubscriber);
+                .subscribe(useCaseSubscriber);
     }
 
     /**

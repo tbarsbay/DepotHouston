@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_map_search_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary">
+
+    <LinearLayout
+        android:id="@+id/layout_map_search_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_place"
+            android:tint="@color/white"
+            android:paddingRight="16dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stops near"
+                android:textColor="@color/text_secondary_light"
+                android:background="@color/primary"/>
+
+            <TextView
+                android:id="@+id/tv_map_search_center_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@color/primary"
+                android:textSize="20sp"
+                tools:text="5130 Hacienda Drive"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_map_search_stops"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_below="@id/layout_map_search_header"
+        tools:listitem="@layout/list_item_nearby_stop"/>
+
+    <TextView
+        android:id="@+id/tv_map_search_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/tap_to_see_nearby_stops"
+        style="@style/MapSearch.Text"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/tv_map_search_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_nearby_stops"
+        style="@style/MapSearch.Text"/>
+
+    <include layout="@layout/view_progress"/>
+
+</RelativeLayout>

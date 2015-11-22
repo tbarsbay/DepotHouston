@@ -19,11 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 @PerActivity
-public class RouteListPresenter extends DefaultSubscriber<List<Route>> implements Presenter {
+public class RouteListPresenter implements Presenter {
 
     private RouteListView routeListView;
 
@@ -64,19 +61,19 @@ public class RouteListPresenter extends DefaultSubscriber<List<Route>> implement
     }
 
     private void showViewLoading() {
-        this.routeListView.showLoading();
+        this.routeListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.routeListView.hideLoading();
+        this.routeListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.routeListView.showRetry();
+        this.routeListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.routeListView.hideRetry();
+        this.routeListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
@@ -91,23 +88,26 @@ public class RouteListPresenter extends DefaultSubscriber<List<Route>> implement
     }
 
     private void getRouteList() {
-        this.getRouteListUseCase.execute(this);
+        this.getRouteListUseCase.execute(new RouteListSubscriber());
     }
 
-    @Override
-    public void onNext(List<Route> routes) {
-        this.showRoutesInView(routes);
-    }
+    private final class RouteListSubscriber extends DefaultSubscriber<List<Route>> {
 
-    @Override
-    public void onCompleted() {
-        this.hideViewLoading();
-    }
+        @Override
+        public void onNext(List<Route> routes) {
+            showRoutesInView(routes);
+        }
 
-    @Override
-    public void onError(Throwable e) {
-        this.hideViewLoading();
-        this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-        this.showViewRetry();
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            hideViewLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
     }
 }

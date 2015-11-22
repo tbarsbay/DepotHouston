@@ -13,8 +13,8 @@ import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.ArrivalViewHolder> {
 
@@ -105,21 +105,21 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     }
 
 static class ArrivalViewHolder extends RecyclerView.ViewHolder {
-    @InjectView(R.id.arrival_minutes_until_arrival)
+    @Bind(R.id.arrival_minutes_until_arrival)
     TextView tvMinutesUntilArrival;
 
-    @InjectView(R.id.arrival_route_name)
+    @Bind(R.id.arrival_route_name)
     TextView tvRouteName;
 
-    @InjectView(R.id.arrival_destination_name)
+    @Bind(R.id.arrival_destination_name)
     TextView tvDestinationName;
     
-    @InjectView(R.id.arrival_time)
+    @Bind(R.id.arrival_time)
     TextView tvArrivalTime;
 
     public ArrivalViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.inject(this, itemView);
+        ButterKnife.bind(this, itemView);
     }
 }
 }
