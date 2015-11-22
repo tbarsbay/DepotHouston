@@ -19,10 +19,6 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
 
     private RouteComponent routeComponent;
 
-    /**
-     * Get an Intent that can be used to open up this activity.
-     * @return An Intent to open this activity.
-     */
     public static Intent getCallingIntent(Context context) {
         Intent intent = new Intent(context, RouteListActivity.class);
         return intent;
