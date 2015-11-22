@@ -195,25 +195,26 @@ public class MapSearchActivity extends NavigationDrawerActivity
 //                    .snippet(CENTER_MARKER) //TODO temp
 //                    .position(latLng)
 //                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+            getNearbyStops(latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
             mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY),
-                    new GoogleMap.CancelableCallback() {
-                        @Override
-                        public void onFinish() {
-                            getNearbyStops(
-                                    latLng.latitude,
-                                    latLng.longitude,
-                                    MapSearchFragment.DEFAULT_RADIUS_MILES);
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            getNearbyStops(
-                                    latLng.latitude,
-                                    latLng.longitude,
-                                    MapSearchFragment.DEFAULT_RADIUS_MILES);
-                        }
-                    });
+                    CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
+//                    new GoogleMap.CancelableCallback() {
+//                        @Override
+//                        public void onFinish() {
+//                            getNearbyStops(
+//                                    latLng.latitude,
+//                                    latLng.longitude,
+//                                    MapSearchFragment.DEFAULT_RADIUS_MILES);
+//                        }
+//
+//                        @Override
+//                        public void onCancel() {
+//                            getNearbyStops(
+//                                    latLng.latitude,
+//                                    latLng.longitude,
+//                                    MapSearchFragment.DEFAULT_RADIUS_MILES);
+//                        }
+//                    });
         }
     };
 }

@@ -31,4 +31,5 @@
     <string name="OK">OK</string>
     <string name="enable_location_permission_to_see_nearby_stops"><![CDATA[Enable the location permission to view nearby stops (go to Settings -> Apps)]]></string>
     <string name="no_nearby_stops">No nearby stops</string>
+    <string name="tap_to_see_nearby_stops">Tap any location to see nearby stops</string>
 </resources>

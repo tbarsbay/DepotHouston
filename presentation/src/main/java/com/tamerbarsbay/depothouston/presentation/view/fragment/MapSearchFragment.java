@@ -44,6 +44,9 @@ public class MapSearchFragment
     @Bind(R.id.tv_map_search_empty)
     TextView tvEmptyStops;
 
+    @Bind(R.id.tv_map_search_prompt)
+    TextView tvInitialPrompt;
+
     @Bind(R.id.layout_map_search_parent)
     RelativeLayout layoutParent;
 
@@ -183,6 +186,10 @@ public class MapSearchFragment
     }
 
     public void getNearbyStops(double lat, double lon, String radiusInMiles) {
+        // Hide the initial user prompt as soon as a search is mad
+        if (tvInitialPrompt != null && tvInitialPrompt.getVisibility() == View.VISIBLE) {
+            tvInitialPrompt.setVisibility(View.GONE);
+        }
         if (mapSearchPresenter != null && adapter != null) {
             adapter.setCenterLocation(new LatLng(lat, lon));
             mapSearchPresenter.initialize(lat, lon, radiusInMiles);
