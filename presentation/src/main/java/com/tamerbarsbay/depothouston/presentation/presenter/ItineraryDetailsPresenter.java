@@ -56,19 +56,19 @@ public class ItineraryDetailsPresenter implements Presenter {
     }
 
     private void showViewLoading() {
-        this.itineraryDetailsView.showLoading();
+        this.itineraryDetailsView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.itineraryDetailsView.hideLoading();
+        this.itineraryDetailsView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.itineraryDetailsView.showRetry();
+        this.itineraryDetailsView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.itineraryDetailsView.hideRetry();
+        this.itineraryDetailsView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

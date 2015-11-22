@@ -64,19 +64,19 @@ public class ArrivalListPresenter implements Presenter {
     }
 
     private void showViewLoading() {
-        this.arrivalListView.showLoading();
+        this.arrivalListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.arrivalListView.hideLoading();
+        this.arrivalListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.arrivalListView.showRetry();
+        this.arrivalListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.arrivalListView.hideRetry();
+        this.arrivalListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

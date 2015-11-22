@@ -144,32 +144,32 @@ public class StopListFragment extends BaseFragment implements StopListView {
     }
 
     @Override
-    public void showLoading() {
+    public void showLoadingView() {
         rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideLoading() {
+    public void hideLoadingView() {
         rlProgress.setVisibility(View.GONE);
     }
 
     @Override
-    public void showRetry() {
+    public void showRetryView() {
         rlRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideRetry() {
+    public void hideRetryView() {
         rlRetry.setVisibility(View.GONE);
     }
 
     @Override
-    public void showEmpty() {
+    public void showEmptyView() {
         // TODO
     }
 
     @Override
-    public void hideEmpty() {
+    public void hideEmptyView() {
         // TODO
     }
 

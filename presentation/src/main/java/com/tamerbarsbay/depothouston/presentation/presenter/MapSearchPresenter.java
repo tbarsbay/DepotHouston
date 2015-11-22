@@ -28,7 +28,7 @@ public class MapSearchPresenter implements Presenter {
 
     private double lat;
     private double lon;
-    private String radiusInMiles;
+    private String centerAddress;
 
     @Inject
     MapSearchPresenter(GetStopsNearLocation getStopsNearLocation,
@@ -49,15 +49,15 @@ public class MapSearchPresenter implements Presenter {
         getStopsNearLocation.unsubscribe();
     }
 
-    public void initialize(double lat, double lon, String radiusInMiles) {
-        hideViewRetry();
-        hideViewEmpty();
+    public void initialize(String centerAddress, double lat, double lon, String radiusInMiles) {
+        mapSearchView.hideRetryView();
+        mapSearchView.hideEmptyView();
         mapSearchView.hideStopsView();
-        showViewLoading();
+        mapSearchView.showLoadingView();
 
         this.lat = lat;
         this.lon = lon;
-        this.radiusInMiles = radiusInMiles;
+        this.centerAddress = centerAddress;
 
         getStopsNearLocation.setParameters(lat, lon, radiusInMiles);
         getStopsNearLocation.execute(new NearbyStopsSubscriber());
@@ -67,68 +67,32 @@ public class MapSearchPresenter implements Presenter {
         mapSearchView.viewStop(stopModel);
     }
 
-    private void showViewLoading() {
-        mapSearchView.showLoading();
-    }
-
-    private void hideViewLoading() {
-        mapSearchView.hideLoading();
-    }
-
-    private void showViewRetry() {
-        mapSearchView.showRetry();
-    }
-
-    private void hideViewRetry() {
-        mapSearchView.hideRetry();
-    }
-
-    private void showViewEmpty() {
-        mapSearchView.showEmpty();
-    }
-
-    private void hideViewEmpty() {
-        mapSearchView.hideEmpty();
-    }
-
     private void showErrorMessage(ErrorBundle errorBundle) {
         String errorMessage = ErrorMessageFactory.create(mapSearchView.getContext(),
                 errorBundle.getException());
         mapSearchView.showError(errorMessage);
     }
 
-    private void clearMap() {
-        mapSearchView.clearMap();
-    }
-
-    private void plotStops(Collection<Stop> stops) {
-        final Collection<StopModel> stopModels = stopModelDataMapper.transform(stops);
-        mapSearchView.renderStopList(stopModels);
-    }
-
-    private void plotCenterMarker() {
-        mapSearchView.plotCenterMarker(lat, lon);
-    }
-
     private final class NearbyStopsSubscriber extends DefaultSubscriber<List<Stop>> {
 
         @Override
         public void onNext(List<Stop> stops) {
-            clearMap();
-            plotCenterMarker();
-            plotStops(stops);
+            final Collection<StopModel> stopModels = stopModelDataMapper.transform(stops);
+            mapSearchView.clearMap();
+            mapSearchView.plotCenterMarker(centerAddress, lat, lon);
+            mapSearchView.renderStopList(stopModels);
         }
 
         @Override
         public void onCompleted() {
-            hideViewLoading();
+            mapSearchView.hideLoadingView();
         }
 
         @Override
         public void onError(Throwable e) {
-            hideViewLoading();
+            mapSearchView.hideLoadingView();
             showErrorMessage(new DefaultErrorBundle((Exception) e));
-            showViewRetry();
+            mapSearchView.showRetryView();
         }
 
     }

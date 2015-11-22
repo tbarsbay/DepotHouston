@@ -64,19 +64,19 @@ public class VehicleListPresenter implements Presenter {
     }
 
     private void showViewLoading() {
-        this.vehicleListView.showLoading();
+        this.vehicleListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.vehicleListView.hideLoading();
+        this.vehicleListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.vehicleListView.showRetry();
+        this.vehicleListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.vehicleListView.hideRetry();
+        this.vehicleListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

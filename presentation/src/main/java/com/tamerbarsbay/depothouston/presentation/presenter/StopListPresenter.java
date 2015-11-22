@@ -64,19 +64,19 @@ public class StopListPresenter implements Presenter {
     }
 
     private void showViewLoading() {
-        this.stopListView.showLoading();
+        this.stopListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.stopListView.hideLoading();
+        this.stopListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.stopListView.showRetry();
+        this.stopListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.stopListView.hideRetry();
+        this.stopListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

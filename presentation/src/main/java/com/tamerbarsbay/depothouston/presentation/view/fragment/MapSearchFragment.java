@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.tamerbarsbay.depothouston.presentation.internal.di.components.MapSear
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.MapSearchPresenter;
 import com.tamerbarsbay.depothouston.presentation.util.UserLocationManager;
+import com.tamerbarsbay.depothouston.presentation.view.DividerItemDecoration;
 import com.tamerbarsbay.depothouston.presentation.view.MapSearchView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.NearbyStopAdapter;
 
@@ -46,6 +48,12 @@ public class MapSearchFragment
 
     @Bind(R.id.tv_map_search_prompt)
     TextView tvInitialPrompt;
+
+    @Bind(R.id.tv_map_search_center_address)
+    TextView tvCenterAddress;
+
+    @Bind(R.id.layout_map_search_header)
+    LinearLayout layoutStopsHeader;
 
     @Bind(R.id.layout_map_search_parent)
     RelativeLayout layoutParent;
@@ -151,6 +159,7 @@ public class MapSearchFragment
         adapter = new NearbyStopAdapter(getContext(), new ArrayList<StopModel>());
         adapter.setOnItemClickListener(onStopClickedListener);
         rvStops.setAdapter(adapter);
+        rvStops.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
     }
 
     private void showEnablePermissionMessage() {
@@ -172,7 +181,11 @@ public class MapSearchFragment
             // Houston, center on Houston.
             if (HOUSTON_BOUNDS.contains(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))) {
                 // User is in Houston area
-                getNearbyStops(userLocation.getLatitude(), userLocation.getLongitude(), DEFAULT_RADIUS_MILES);
+                getNearbyStops(
+                        getString(R.string.your_location),
+                        userLocation.getLatitude(),
+                        userLocation.getLongitude(),
+                        DEFAULT_RADIUS_MILES);
             } else {
                 // User is not in the Houston area - center the map on Houston.
                 if (mapSearchListener != null) {
@@ -185,15 +198,14 @@ public class MapSearchFragment
         }
     }
 
-    public void getNearbyStops(double lat, double lon, String radiusInMiles) {
+    public void getNearbyStops(String centerAddress, double lat, double lon, String radiusInMiles) {
         // Hide the initial user prompt as soon as a search is mad
         if (tvInitialPrompt != null && tvInitialPrompt.getVisibility() == View.VISIBLE) {
             tvInitialPrompt.setVisibility(View.GONE);
         }
         if (mapSearchPresenter != null && adapter != null) {
             adapter.setCenterLocation(new LatLng(lat, lon));
-            mapSearchPresenter.initialize(lat, lon, radiusInMiles);
-        } else {
+            mapSearchPresenter.initialize(centerAddress, lat, lon, radiusInMiles);
         }
     }
 
@@ -258,13 +270,13 @@ public class MapSearchFragment
     public void renderStopList(Collection<StopModel> stopModels) {
         if (stopModels != null) {
             if (stopModels.isEmpty()) {
-                tvEmptyStops.setVisibility(View.VISIBLE);
-                rvStops.setVisibility(View.GONE);
+                hideStopsView();
+                showEmptyView();
                 adapter.setStopsCollection(new ArrayList<StopModel>());
                 return;
             } else {
-                rvStops.setVisibility(View.VISIBLE);
-                tvEmptyStops.setVisibility(View.GONE);
+                showStopsView();
+                hideEmptyView();
             }
             adapter.setStopsCollection(stopModels);
             if (mapSearchListener != null) {
@@ -279,7 +291,10 @@ public class MapSearchFragment
     }
 
     @Override
-    public void plotCenterMarker(double lat, double lon) {
+    public void plotCenterMarker(String centerAddress, double lat, double lon) {
+        if (tvCenterAddress != null) {
+            tvCenterAddress.setText(centerAddress);
+        }
         if (mapSearchListener != null) {
             mapSearchListener.plotCenterMarker(lat, lon);
         }
@@ -302,14 +317,14 @@ public class MapSearchFragment
     }
 
     @Override
-    public void showLoading() {
+    public void showLoadingView() {
         if (layoutProgress != null) {
             layoutProgress.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void hideLoading() {
+    public void hideLoadingView() {
         if (layoutProgress != null) {
             layoutProgress.setVisibility(View.GONE);
         }
@@ -317,37 +332,39 @@ public class MapSearchFragment
 
     @Override
     public void showStopsView() {
-        if (rvStops != null) {
+        if (rvStops != null && layoutStopsHeader != null) {
+            layoutStopsHeader.setVisibility(View.VISIBLE);
             rvStops.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void hideStopsView() {
-        if (rvStops != null) {
+        if (rvStops != null && layoutStopsHeader != null) {
+            layoutStopsHeader.setVisibility(View.GONE);
             rvStops.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void showRetry() {
+    public void showRetryView() {
         //TODO
     }
 
     @Override
-    public void hideRetry() {
+    public void hideRetryView() {
         //TODO
     }
 
     @Override
-    public void showEmpty() {
+    public void showEmptyView() {
         if (tvEmptyStops != null) {
             tvEmptyStops.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void hideEmpty() {
+    public void hideEmptyView() {
         if (tvEmptyStops != null) {
             tvEmptyStops.setVisibility(View.GONE);
         }

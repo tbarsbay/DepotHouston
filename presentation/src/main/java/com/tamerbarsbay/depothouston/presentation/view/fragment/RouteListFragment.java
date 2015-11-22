@@ -110,22 +110,22 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     }
 
     @Override
-    public void showLoading() {
+    public void showLoadingView() {
         this.rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideLoading() {
+    public void hideLoadingView() {
         this.rlProgress.setVisibility(View.GONE);
     }
 
     @Override
-    public void showRetry() {
+    public void showRetryView() {
         this.rlRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideRetry() {
+    public void hideRetryView() {
         this.rlRetry.setVisibility(View.GONE);
     }
 

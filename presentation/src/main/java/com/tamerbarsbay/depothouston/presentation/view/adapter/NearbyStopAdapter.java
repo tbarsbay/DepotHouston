@@ -116,9 +116,6 @@ public class NearbyStopAdapter extends RecyclerView.Adapter<NearbyStopAdapter.St
         @Bind(R.id.tv_nearby_stop_name)
         TextView tvStopName;
 
-        @Bind(R.id.tv_nearby_stop_routes)
-        TextView tvStopRoutes;
-
         @Bind(R.id.tv_nearby_stop_distance)
         TextView tvDistance;
 

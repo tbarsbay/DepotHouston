@@ -61,19 +61,19 @@ public class RouteListPresenter implements Presenter {
     }
 
     private void showViewLoading() {
-        this.routeListView.showLoading();
+        this.routeListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.routeListView.hideLoading();
+        this.routeListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.routeListView.showRetry();
+        this.routeListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.routeListView.hideRetry();
+        this.routeListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

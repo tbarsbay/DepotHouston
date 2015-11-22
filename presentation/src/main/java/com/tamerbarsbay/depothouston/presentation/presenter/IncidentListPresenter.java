@@ -64,19 +64,19 @@ public class IncidentListPresenter implements Presenter {
     }
 
     private void showViewLoading() {
-        this.incidentListView.showLoading();
+        this.incidentListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.incidentListView.hideLoading();
+        this.incidentListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.incidentListView.showRetry();
+        this.incidentListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.incidentListView.hideRetry();
+        this.incidentListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

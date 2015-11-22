@@ -4,10 +4,10 @@ import android.content.Context;
 
 public interface LoadDataView {
 
-    void showLoading();
-    void hideLoading();
-    void showRetry();
-    void hideRetry();
+    void showLoadingView();
+    void hideLoadingView();
+    void showRetryView();
+    void hideRetryView();
     void showError(String message);
     Context getContext();
 

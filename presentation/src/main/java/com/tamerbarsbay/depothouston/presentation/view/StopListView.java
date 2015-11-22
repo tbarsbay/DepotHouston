@@ -8,6 +8,6 @@ public interface StopListView extends LoadDataView {
 
     void renderStopList(Collection<StopModel> stopModels);
     void viewStop(StopModel stopModel);
-    void showEmpty();
-    void hideEmpty();
+    void showEmptyView();
+    void hideEmptyView();
 }

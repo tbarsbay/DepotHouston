@@ -154,10 +154,10 @@ public class MapSearchActivity extends NavigationDrawerActivity
         }
     }
 
-    private void getNearbyStops(double lat, double lon, String radiusInMiles) {
+    private void getNearbyStops(String centerAddress, double lat, double lon, String radiusInMiles) {
         MapSearchFragment fragment = getMapSearchFragment();
         if (fragment != null) {
-            fragment.getNearbyStops(lat, lon, radiusInMiles);
+            fragment.getNearbyStops(centerAddress, lat, lon, radiusInMiles);
         }
     }
 
@@ -173,7 +173,6 @@ public class MapSearchActivity extends NavigationDrawerActivity
         @Override
         public void onMapClick(final LatLng latLng) {
             clearMap();
-            //TODO show loading ui
 
             // Use Google's Geocoder API to search for the tapped location
             Geocoder geo = new Geocoder(getBaseContext(), Locale.US);
@@ -188,33 +187,9 @@ public class MapSearchActivity extends NavigationDrawerActivity
                 e.printStackTrace();
             }
 
-            //TODO update name of center marker
-//
-//            mMap.addMarker(new MarkerOptions()
-//                    .title(locationAddress)
-//                    .snippet(CENTER_MARKER) //TODO temp
-//                    .position(latLng)
-//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-            getNearbyStops(latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
+            getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
             mMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
-//                    new GoogleMap.CancelableCallback() {
-//                        @Override
-//                        public void onFinish() {
-//                            getNearbyStops(
-//                                    latLng.latitude,
-//                                    latLng.longitude,
-//                                    MapSearchFragment.DEFAULT_RADIUS_MILES);
-//                        }
-//
-//                        @Override
-//                        public void onCancel() {
-//                            getNearbyStops(
-//                                    latLng.latitude,
-//                                    latLng.longitude,
-//                                    MapSearchFragment.DEFAULT_RADIUS_MILES);
-//                        }
-//                    });
         }
     };
 }

@@ -18,8 +18,10 @@
     <color name="nav_drawer_icon_tint">#888</color>
     <color name="nav_drawer_icon_tint_selected">@color/primary</color>
 
-    <color name="text_primary">#87000000</color>
-    <color name="text_secondary">#56000000</color>
+    <color name="text_primary_dark">#87000000</color>
+    <color name="text_secondary_dark">#56000000</color>
+    <color name="text_primary_light">#FFFFFF</color>
+    <color name="text_secondary_light">#90FFFFFF</color>
 
     <!-- Material Design colors -->
     <color name="black">#000000</color>
