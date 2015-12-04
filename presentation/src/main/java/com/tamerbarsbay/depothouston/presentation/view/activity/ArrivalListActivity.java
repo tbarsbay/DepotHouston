@@ -18,18 +18,22 @@ public class ArrivalListActivity extends BaseActivity implements HasComponent<Ar
         ArrivalListFragment.ArrivalListListener {
 
     private static final String INTENT_EXTRA_PARAM_STOP_ID = "com.tamerbarsbay.depothouston.INTENT_PARAM_STOP_ID";
+    private static final String INTENT_EXTRA_PARAM_STOP_NAME = "com.tamerbarsbay.depothouston.INTENT_PARAM_STOP_NAME";
     private static final String INSTANCE_STATE_PARAM_STOP_ID = "com.tamerbarsbay.depothouston.STATE_PARAM_STOP_ID";
+    private static final String INSTANCE_STATE_PARAM_STOP_NAME = "com.tamerbarsbay.depothouston.STATE_PARAM_STOP_NAME";
 
     private String stopId;
+    private String stopName;
     private ArrivalComponent arrivalComponent;
 
     /**
      * Get an Intent that can be used to open up this activity.
      * @return An Intent to open this activity.
      */
-    public static Intent getCallingIntent(Context context, String stopId) {
+    public static Intent getCallingIntent(Context context, String stopId, String stopName) {
         Intent intent = new Intent(context, ArrivalListActivity.class);
         intent.putExtra(INTENT_EXTRA_PARAM_STOP_ID, stopId);
+        intent.putExtra(INTENT_EXTRA_PARAM_STOP_NAME, stopName);
         return intent;
     }
 
@@ -48,16 +52,16 @@ public class ArrivalListActivity extends BaseActivity implements HasComponent<Ar
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
             outState.putString(INSTANCE_STATE_PARAM_STOP_ID, stopId);
+            outState.putString(INSTANCE_STATE_PARAM_STOP_NAME, stopName);
         }
         super.onSaveInstanceState(outState);
     }
 
     private void initializeActivity(Bundle savedInstanceState) {
+        stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
+        stopName = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_NAME);
         if (savedInstanceState == null) {
-            stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
-            addFragment(R.id.fl_arrival_list_fragment, ArrivalListFragment.newInstance(stopId));
-        } else {
-            stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
+            addFragment(R.id.fl_arrival_list_fragment, ArrivalListFragment.newInstance(stopId, stopName));
         }
     }
 

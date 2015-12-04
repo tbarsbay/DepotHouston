@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="#ffffff">
+
+    <FrameLayout
+        android:id="@+id/saved_stop_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingRight="16dp">
+
+            <View
+                android:id="@+id/saved_stop_drag_handle"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|left"
+                android:background="@color/blue_100"
+                tools:ignore="RtlHardcoded"/>
+
+            <TextView
+                android:id="@+id/tv_saved_stop_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="16sp"
+                tools:text="5440 S Cornell"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

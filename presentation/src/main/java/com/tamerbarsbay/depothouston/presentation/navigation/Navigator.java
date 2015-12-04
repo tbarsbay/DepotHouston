@@ -2,6 +2,7 @@ package com.tamerbarsbay.depothouston.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.tamerbarsbay.depothouston.presentation.view.activity.ArrivalListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.MapSearchActivity;
@@ -61,6 +62,7 @@ public class Navigator {
      * @param routeId The id of the route for which we're loading stops.
      */
     public void navigateToStopList(Context context, String routeId) {
+        //TODO convert all to nonnull annotation
         if (context != null) {
             Intent intent = StopListActivity.getCallingIntent(context, routeId);
             context.startActivity(intent);
@@ -72,11 +74,9 @@ public class Navigator {
      * @param context Context.
      * @param stopId The id of the stop for which we're loading stops.
      */
-    public void navigateToArrivalList(Context context, String stopId) {
-        if (context != null) {
-            Intent intent = ArrivalListActivity.getCallingIntent(context, stopId);
-            context.startActivity(intent);
-        }
+    public void navigateToArrivalList(@NonNull Context context, @NonNull String stopId, @NonNull String stopName) {
+        Intent intent = ArrivalListActivity.getCallingIntent(context, stopId, stopName);
+        context.startActivity(intent);
     }
 
 }
