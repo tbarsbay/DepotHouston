@@ -41,6 +41,8 @@ public class SavedStopAdapter
     private View.OnClickListener onItemClickListener; //TODO use our own onclicklistener system?
     private Context context;
 
+    private static final String LOG_TAG = "SavedStopAdapter";
+
     public interface SavedStopsListener {
         void onGroupItemRemoved(int groupPosition); //TODO implement somewhere below
         void onChildItemRemoved(int groupPosition, int childPosition); //TODO implement somewhere below
@@ -121,19 +123,19 @@ public class SavedStopAdapter
     }
 
     @Override
-    public int getChildCount(int position) {
-        return SavedStopUtils.getChildCount(context, position);
+    public int getChildCount(int groupPosition) {
+        return SavedStopUtils.getChildCount(context, groupPosition);
     }
 
     @Override
     public long getGroupId(int position) {
-        Log.d("SavedStopAdapter", "getGroupId(" + position +")"); //TODO temp
+        //Log.d("SavedStopAdapter", "getGroupId(" + position +")"); //TODO temp
         return SavedStopUtils.getGroupId(position);
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        Log.d("SavedStopAdapter", "getChildId(" + childPosition +")"); //TODO temp
+        //Log.d("SavedStopAdapter", "getChildId(" + childPosition +")"); //TODO temp
         return SavedStopUtils.getChildId(groupPosition, childPosition);
     }
 
@@ -224,11 +226,9 @@ public class SavedStopAdapter
                 public void onClick(View v) {
                     //TODO
                     if (isExpanded) {
-                        Log.d("SavedStopAdapter", "Clicked expand");
-                        expandableItemManager.collapseGroup(groupPosition); //TODO temp
+                        expandableItemManager.collapseGroup(groupPosition);
                     } else {
-                        Log.d("SavedStopAdapter", "Clicked expand");
-                        expandableItemManager.expandGroup(groupPosition); //TODO temp
+                        expandableItemManager.expandGroup(groupPosition);
                     }
                 }
             });
@@ -302,7 +302,6 @@ public class SavedStopAdapter
 
     @Override
     public boolean onCheckGroupCanStartDrag(GroupViewHolder holder, int groupPosition, int x, int y) {
-        Log.d("SavedStopAdapter", "onCheckGroupCanStartDrag"); //TODO test
         // x, y --- relative from the itemView's top-left
         final View containerView = holder.container;
         final View dragHandleView = holder.dragHandle;
@@ -322,31 +321,29 @@ public class SavedStopAdapter
         final int offsetX = containerView.getLeft() + (int) (ViewCompat.getTranslationX(containerView) + 0.5f);
         final int offsetY = containerView.getTop() + (int) (ViewCompat.getTranslationY(containerView) + 0.5f);
 
-        Log.d("SavedStopAdapter", "onCheckChildCanStartDrag"); //TODO test
         return ViewUtils.hitTest(dragHandleView, x - offsetX, y - offsetY);
     }
 
     @Override
     public ItemDraggableRange onGetGroupItemDraggableRange(GroupViewHolder holder, int groupPosition) {
-        // no drag-sortable range specified
-        //return null; //TODO test
-        return new ItemDraggableRange(0, getGroupCount()); //TODO test
+        // no drag-sortable range specified, return null to mean no constraints
+        return null;
     }
 
     @Override
     public ItemDraggableRange onGetChildItemDraggableRange(ChildViewHolder holder, int groupPosition, int childPosition) {
-        // no drag-sortable range specified
+        // no drag-sortable range specified, return null to mean no constraints
         return null;
     }
 
     @Override
     public void onMoveGroupItem(int fromGroupPosition, int toGroupPosition) {
-        SavedStopUtils.moveSavedGroup(fromGroupPosition, toGroupPosition);
+        SavedStopUtils.moveSavedGroup(context, fromGroupPosition, toGroupPosition);
     }
 
     @Override
     public void onMoveChildItem(int fromGroupPosition, int fromChildPosition, int toGroupPosition, int toChildPosition) {
-        SavedStopUtils.moveSavedStop(fromGroupPosition, fromChildPosition, toGroupPosition, toChildPosition);
+        SavedStopUtils.moveSavedStop(context, fromGroupPosition, fromChildPosition, toGroupPosition, toChildPosition);
     }
 
     public void setSavedStopsListener(@NonNull SavedStopsListener listener) {

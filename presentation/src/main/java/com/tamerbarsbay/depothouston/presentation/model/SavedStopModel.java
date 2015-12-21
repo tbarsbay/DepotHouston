@@ -2,20 +2,39 @@ package com.tamerbarsbay.depothouston.presentation.model;
 
 import android.support.annotation.NonNull;
 
-public class SavedStopModel extends StopModel {
+public class SavedStopModel {
 
-    private int rank;
+    private long objectId;
+    private String stopId;
+    private String name;
 
-    public SavedStopModel(@NonNull String id, @NonNull String name) {
-        super(id); //TODO why is this here?
+    public SavedStopModel(long objectId, @NonNull String stopId, @NonNull String name) {
+        this.objectId = objectId;
+        this.stopId = stopId;
         this.name = name;
     }
 
-    public int getRank() {
-        return rank;
+    public long getObjectId() {
+        return objectId;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setObjectId(long id) {
+        this.objectId = id;
+    }
+
+    public String getStopId() {
+        return stopId;
+    }
+
+    public void setStopId(@NonNull String stopId) {
+        this.stopId = stopId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

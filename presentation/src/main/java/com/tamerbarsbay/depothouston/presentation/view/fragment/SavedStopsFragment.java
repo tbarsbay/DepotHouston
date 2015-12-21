@@ -82,6 +82,8 @@ public class SavedStopsFragment extends BaseFragment {
         rvSavedStops.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSavedStops.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         rvSavedStops.setAdapter(wrappedAdapter);
+
+        dragDropManager.attachRecyclerView(rvSavedStops);
     }
 
     @Override

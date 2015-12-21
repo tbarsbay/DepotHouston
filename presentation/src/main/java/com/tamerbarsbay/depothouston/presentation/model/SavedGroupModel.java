@@ -9,14 +9,16 @@ import java.util.ArrayList;
  */
 public class SavedGroupModel {
 
+    private final long id;
     private String name;
-    private int rank;
-    private ArrayList<SavedStopModel> stops;
+    private ArrayList<SavedStopModel> stops = new ArrayList<SavedStopModel>();
+    private long nextChildId;
 
-    public SavedGroupModel(@NonNull String name, int rank, @NonNull ArrayList<SavedStopModel> stops) {
+    public SavedGroupModel(long id, @NonNull String name, @NonNull ArrayList<SavedStopModel> stops) {
+        this.id = id;
         this.name = name;
-        this.rank = rank;
         this.stops = stops;
+        this.nextChildId = 0;
     }
 
     public String getName() {
@@ -27,12 +29,8 @@ public class SavedGroupModel {
         this.name = name;
     }
 
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
+    public long getId() {
+        return id;
     }
 
     public ArrayList<SavedStopModel> getStops() {
@@ -51,5 +49,11 @@ public class SavedGroupModel {
         if (stops != null) {
             stops.add(stop);
         }
+    }
+
+    public long generateNewChildId() {
+        final long id = nextChildId;
+        nextChildId += 1;
+        return id;
     }
 }
