@@ -14,6 +14,10 @@ public class SavedGroupModel {
     private ArrayList<SavedStopModel> stops = new ArrayList<SavedStopModel>();
     private int nextChildId;
 
+    public SavedGroupModel(int id, @NonNull String name) {
+        this(id, name, new ArrayList<SavedStopModel>());
+    }
+
     public SavedGroupModel(int id, @NonNull String name, @NonNull ArrayList<SavedStopModel> stops) {
         this.id = id;
         this.name = name;

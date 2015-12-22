@@ -19,10 +19,23 @@ public class SavedStopUtils {
 
     private static final String LOG_TAG = "SavedStopUtils";
 
-    public static void clearSavedStops(@NonNull Context context) {
-        //TODO temp method
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().remove(PREFS_SAVED_STOPS).apply();
+    public static void createGroup(@NonNull Context context,
+                                   @NonNull String groupName) {
+        ArrayList<SavedGroupModel> savedGroups = getSavedStopGroups(context);
+        SavedGroupModel newGroup = new SavedGroupModel(savedGroups.size(), groupName, new ArrayList<SavedStopModel>());
+        savedGroups.add(newGroup);
+        saveGroupsToSharedPreferences(context, savedGroups);
+    }
+
+    public static boolean doesGroupExist(@NonNull Context context,
+                                         @NonNull String groupName) {
+        ArrayList<SavedGroupModel> groups = getSavedStopGroups(context);
+        for (SavedGroupModel group : groups) {
+            if (groupName.equals(group.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void saveStopToGroup(@NonNull Context context,

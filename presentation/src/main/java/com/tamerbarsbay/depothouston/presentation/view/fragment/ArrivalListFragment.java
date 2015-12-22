@@ -139,7 +139,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
             //TODO TEMPORARY - REMOVE
             Log.d("ArrivalListFragment", "Saving stop: " + stopName);
-            SavedStopUtils.saveStopToGroup(getContext(), "Test Group", new SavedStopModel(0, stopId, stopName)); //TODO 0 id temp
+            SavedStopUtils.saveStopToGroup(getContext(), "Test Group 2", new SavedStopModel(0, stopId, stopName)); //TODO 0 id temp
         }
     }
 

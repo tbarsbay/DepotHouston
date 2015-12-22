@@ -10,8 +10,8 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
 
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="colorControlActivated">@android:color/white</item>
+        <!--<item name="colorControlNormal">@android:color/white</item>-->
+        <!--<item name="colorControlActivated">@android:color/white</item>-->
         <item name="colorControlHighlight">@color/primary</item>
     </style>
 
@@ -118,6 +118,17 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:visibility">gone</item>
         <item name="android:background">@color/primary</item>
+    </style>
+
+    <style name="SavedStops"></style>
+
+    <style name="SavedStops.DialogButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>
