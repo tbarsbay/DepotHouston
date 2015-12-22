@@ -73,13 +73,16 @@ public class MapSearchFragment
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 100;
     public static final String DEFAULT_RADIUS_MILES = ".25"; //TODO get from user settings
 
-    // Coordinates for slightly outside the Houston borders
     private static final double HOUSTON_SOUTHWEST_LAT = 29.393960;
     private static final double HOUSTON_SOUTHWEST_LON = -95.083066;
     private static final double HOUSTON_NORTHEAST_LAT = 30.204589;
     private static final double HOUSTON_NORTHEAST_LON = -94.871179;
     private static final double HOUSTON_CENTER_LAT = 29.760215;
     private static final double HOUSTON_CENTER_LON =  -95.370019;
+
+    /**
+     * Coordinates for slightly outside the Houston borders, used for centering the map on Houston
+     */
     private static final LatLngBounds HOUSTON_BOUNDS = new LatLngBounds(
             new LatLng(HOUSTON_SOUTHWEST_LAT, HOUSTON_SOUTHWEST_LON),
             new LatLng(HOUSTON_NORTHEAST_LAT, HOUSTON_NORTHEAST_LON)
@@ -92,11 +95,47 @@ public class MapSearchFragment
     public MapSearchFragment() {}
 
     public interface MapSearchListener {
+        /**
+         * Plot a collection of transit stops on the map using markers.
+         * @param stops
+         */
         void renderStopList(Collection<StopModel> stops);
+
+        /**
+         * Handle the user tapping on a specific transit stop. This will normally open up the
+         * arrivals screen for that stop.
+         * @param stop
+         */
         void viewStop(StopModel stop);
+
+        /**
+         * Clear the map of all markers and polylines.
+         */
         void clearMap();
+
+        /**
+         * Plot a marker on the map to designate the current center location around which
+         * nearby stops are being shown.
+         * @param lat
+         * @param lon
+         */
         void plotCenterMarker(double lat, double lon);
+
+        /**
+         * Center the map on a specific location.
+         * @param location
+         */
         void centerMapOn(LatLng location);
+
+        /**
+         * Expand the map's size on the screen when there are no stops to show in the list view.
+         */
+        void expandMapView();
+
+        /**
+         * Shrink the map's size on the screen when there is a list of stops to show to the user.
+         */
+        void collapseMapView();
     }
 
     private UserLocationManager getUserLocationManager() {
@@ -188,13 +227,17 @@ public class MapSearchFragment
                         DEFAULT_RADIUS_MILES);
             } else {
                 // User is not in the Houston area - center the map on Houston.
-                if (mapSearchListener != null) {
-                    mapSearchListener.centerMapOn(new LatLng(HOUSTON_CENTER_LAT, HOUSTON_CENTER_LON));
-                }
+                centerMapOnHouston();
             }
         } else {
             Log.d("MapSearchFragment", "user location null"); //TODO temp log
             showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
+        }
+    }
+
+    private void centerMapOnHouston() {
+        if (mapSearchListener != null) {
+            mapSearchListener.centerMapOn(new LatLng(HOUSTON_CENTER_LAT, HOUSTON_CENTER_LON));
         }
     }
 
@@ -245,9 +288,10 @@ public class MapSearchFragment
                 } else {
                     Log.d("MapSearch", "Should not show permission rationale");
                     showEnablePermissionMessage();
+                    centerMapOnHouston();
                 }
             } else {
-                Log.d("MapSearch", "User has granted permission");
+                Log.d("MapSearch", "User has granted permission"); //TODO temp
                 // User has granted location permission
                 getUserLocationAndLoadNearbyStops();
             }
@@ -280,13 +324,8 @@ public class MapSearchFragment
             }
             adapter.setStopsCollection(stopModels);
             if (mapSearchListener != null) {
-                Log.d("MapSearchFragment", "listener not null"); //TODO temp
                 mapSearchListener.renderStopList(stopModels);
-            } else {
-                Log.d("MapSearchFragment", "listener null"); //TODO temp
             }
-        } else {
-            Log.d("MapSearchFragment", "stop models null"); //TODO temp
         }
     }
 
@@ -320,6 +359,7 @@ public class MapSearchFragment
     public void showLoadingView() {
         if (layoutProgress != null) {
             layoutProgress.setVisibility(View.VISIBLE);
+            expandMapView();
         }
     }
 
@@ -332,14 +372,17 @@ public class MapSearchFragment
 
     @Override
     public void showStopsView() {
+        Log.d("MapSearch", "showStopsView"); //TODO temp
         if (rvStops != null && layoutStopsHeader != null) {
             layoutStopsHeader.setVisibility(View.VISIBLE);
             rvStops.setVisibility(View.VISIBLE);
+            collapseMapView();
         }
     }
 
     @Override
     public void hideStopsView() {
+        Log.d("MapSearch", "hideStopsView"); //TODO temp
         if (rvStops != null && layoutStopsHeader != null) {
             layoutStopsHeader.setVisibility(View.GONE);
             rvStops.setVisibility(View.GONE);
@@ -349,6 +392,7 @@ public class MapSearchFragment
     @Override
     public void showRetryView() {
         //TODO
+        expandMapView();
     }
 
     @Override
@@ -360,6 +404,7 @@ public class MapSearchFragment
     public void showEmptyView() {
         if (tvEmptyStops != null) {
             tvEmptyStops.setVisibility(View.VISIBLE);
+            expandMapView();
         }
     }
 
@@ -367,6 +412,22 @@ public class MapSearchFragment
     public void hideEmptyView() {
         if (tvEmptyStops != null) {
             tvEmptyStops.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void expandMapView() {
+        Log.d("MapSearch", "expandMapView"); //TODO temp
+        if (mapSearchListener != null) {
+            mapSearchListener.expandMapView();
+        }
+    }
+
+    @Override
+    public void collapseMapView() {
+        Log.d("MapSearch", "collapseMapView"); //TODO temp
+        if (mapSearchListener != null) {
+            mapSearchListener.collapseMapView();
         }
     }
 

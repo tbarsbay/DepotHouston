@@ -6,5 +6,7 @@ public interface MapSearchView extends StopListView {
     void plotCenterMarker(String centerAddress, double lat, double lon);
     void showStopsView();
     void hideStopsView();
+    void collapseMapView();
+    void expandMapView();
 
 }

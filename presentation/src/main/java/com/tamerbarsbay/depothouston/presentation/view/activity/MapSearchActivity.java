@@ -6,6 +6,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,10 +31,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MapSearchActivity extends NavigationDrawerActivity
         implements HasComponent<MapSearchComponent>, MapSearchFragment.MapSearchListener {
+
+    @Bind(R.id.layout_map_search_container)
+    FrameLayout layoutStops;
 
     MapSearchComponent mapSearchComponent;
 
@@ -39,8 +47,9 @@ public class MapSearchActivity extends NavigationDrawerActivity
     private static final int DEFAULT_ZOOM_LEVEL_PRIMARY = 15;
     private static final int DEFAULT_ZOOM_LEVEL_SECONDARY = 12;
 
-
     private String centerLocationName = "";
+
+    private boolean isMapViewExpanded = true;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapSearchActivity.class);
@@ -169,6 +178,26 @@ public class MapSearchActivity extends NavigationDrawerActivity
         }
     }
 
+    @Override
+    public void expandMapView() {
+        if (layoutStops != null && !isMapViewExpanded) {
+            Animation a = new ExpandAnimation(3, 1);
+            a.setDuration(300);
+            layoutStops.startAnimation(a);
+            isMapViewExpanded = !isMapViewExpanded;
+        }
+    }
+
+    @Override
+    public void collapseMapView() {
+        if (layoutStops != null && isMapViewExpanded) {
+            Animation a = new ExpandAnimation(1, 3);
+            a.setDuration(300);
+            layoutStops.startAnimation(a);
+            isMapViewExpanded = !isMapViewExpanded;
+        }
+    }
+
     private GoogleMap.OnMapClickListener onMapClickListener = new GoogleMap.OnMapClickListener() {
         @Override
         public void onMapClick(final LatLng latLng) {
@@ -192,4 +221,29 @@ public class MapSearchActivity extends NavigationDrawerActivity
                     CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
         }
     };
+
+    private class ExpandAnimation extends Animation {
+
+        private final float mStartWeight;
+        private final float mDeltaWeight;
+
+        public ExpandAnimation(float startWeight, float endWeight) {
+            mStartWeight = startWeight;
+            mDeltaWeight = endWeight - startWeight;
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            if (layoutStops != null) {
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutStops.getLayoutParams();
+                lp.weight = (mStartWeight + (mDeltaWeight * interpolatedTime));
+                layoutStops.setLayoutParams(lp);
+            }
+        }
+
+        @Override
+        public boolean willChangeBounds() {
+            return true;
+        }
+    }
 }
