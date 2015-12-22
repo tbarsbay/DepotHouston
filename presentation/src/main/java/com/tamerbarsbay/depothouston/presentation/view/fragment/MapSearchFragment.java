@@ -247,11 +247,11 @@ public class MapSearchFragment
                     return;
                 }
             }
+        } else {
+            showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
         }
 
-        // If the user location is null, or if the user is not in Houston, center the map
-        // on Houston
-        showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
+        // Center the map on Houston by default (in case user location is null or outside Houston)
         centerMapOnHouston();
     }
 
