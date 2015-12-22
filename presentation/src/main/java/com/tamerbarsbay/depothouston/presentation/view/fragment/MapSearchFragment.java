@@ -215,7 +215,6 @@ public class MapSearchFragment
     private void getUserLocationAndLoadNearbyStops() {
         Location userLocation = getUserLocationManager().getUserLocation();
         if (userLocation != null) {
-            Log.d("MapSearchFragment", "user location not null"); //TODO temp log
             // If the user is in Houston, center on their location. If the user is outside of
             // Houston, center on Houston.
             if (HOUSTON_BOUNDS.contains(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))) {
@@ -230,7 +229,6 @@ public class MapSearchFragment
                 centerMapOnHouston();
             }
         } else {
-            Log.d("MapSearchFragment", "user location null"); //TODO temp log
             showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
         }
     }
@@ -372,7 +370,6 @@ public class MapSearchFragment
 
     @Override
     public void showStopsView() {
-        Log.d("MapSearch", "showStopsView"); //TODO temp
         if (rvStops != null && layoutStopsHeader != null) {
             layoutStopsHeader.setVisibility(View.VISIBLE);
             rvStops.setVisibility(View.VISIBLE);
@@ -382,7 +379,6 @@ public class MapSearchFragment
 
     @Override
     public void hideStopsView() {
-        Log.d("MapSearch", "hideStopsView"); //TODO temp
         if (rvStops != null && layoutStopsHeader != null) {
             layoutStopsHeader.setVisibility(View.GONE);
             rvStops.setVisibility(View.GONE);
@@ -417,7 +413,6 @@ public class MapSearchFragment
 
     @Override
     public void expandMapView() {
-        Log.d("MapSearch", "expandMapView"); //TODO temp
         if (mapSearchListener != null) {
             mapSearchListener.expandMapView();
         }
@@ -425,7 +420,6 @@ public class MapSearchFragment
 
     @Override
     public void collapseMapView() {
-        Log.d("MapSearch", "collapseMapView"); //TODO temp
         if (mapSearchListener != null) {
             mapSearchListener.collapseMapView();
         }
