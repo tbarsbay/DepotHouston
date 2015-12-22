@@ -3,7 +3,6 @@ package com.tamerbarsbay.depothouston.presentation.view.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +94,6 @@ public class SavedStopAdapter
 
     public SavedStopAdapter(@NonNull Context context,
                             @NonNull RecyclerViewExpandableItemManager itemManager) {
-        Log.d("SavedStopsAdapter", "constructor"); //TODO temp
         this.context = context;
         expandableItemManager = itemManager;
         setHasStableIds(true);
@@ -152,15 +150,6 @@ public class SavedStopAdapter
         if (group == null) {
             return;
         }
-
-        // set listeners
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO
-                Log.d("SavedStopAdapter", "Clicked group: " + group.getName()); //TODO temp
-            }
-        });
 
         // set text
         holder.title.setText(group.getName());
@@ -226,7 +215,6 @@ public class SavedStopAdapter
                 if (stopClickListener != null) {
                     stopClickListener.onStopClicked(stop);
                 }
-                Log.d("SavedStopAdapter", "Clicked stop: " + stop.getName()); //TODO temp
             }
         });
 
