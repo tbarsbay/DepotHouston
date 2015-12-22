@@ -44,9 +44,6 @@ public class MapSearchActivity extends NavigationDrawerActivity
 
     private GoogleMap mMap;
 
-    private static final int DEFAULT_ZOOM_LEVEL_PRIMARY = 15;
-    private static final int DEFAULT_ZOOM_LEVEL_SECONDARY = 12;
-
     private String centerLocationName = "";
 
     private boolean isMapViewExpanded = true;
@@ -178,10 +175,10 @@ public class MapSearchActivity extends NavigationDrawerActivity
     }
 
     @Override
-    public void centerMapOn(LatLng location) {
+    public void centerMapOn(LatLng location, int zoomLevel) {
         if (mMap != null) {
             mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL_SECONDARY));
+                    CameraUpdateFactory.newLatLngZoom(location, zoomLevel));
         }
     }
 
@@ -228,8 +225,6 @@ public class MapSearchActivity extends NavigationDrawerActivity
                 }
 
                 getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
-                mMap.animateCamera(
-                        CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
             } else {
                 showError(getString(R.string.exception_message_no_connection));
             }

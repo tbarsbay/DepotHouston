@@ -94,7 +94,7 @@ public class MapSearchPresenter implements Presenter {
                     new StopComparator());
 
             mapSearchView.clearMap();
-            mapSearchView.centerMapOn(lat, lon);
+            mapSearchView.centerMapOn(lat, lon, MapSearchView.ZOOM_LEVEL_CLOSE);
             mapSearchView.plotCenterMarker(centerAddress, lat, lon);
             mapSearchView.renderStopList(stopModels);
         }

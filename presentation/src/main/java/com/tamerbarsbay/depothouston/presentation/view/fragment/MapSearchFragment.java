@@ -128,7 +128,7 @@ public class MapSearchFragment
          * Center the map on a specific location.
          * @param location
          */
-        void centerMapOn(LatLng location);
+        void centerMapOn(LatLng location, int zoomLevel);
 
         /**
          * Expand the map's size on the screen when there are no stops to show in the list view.
@@ -256,9 +256,7 @@ public class MapSearchFragment
     }
 
     private void centerMapOnHouston() {
-        if (mapSearchListener != null) {
-            mapSearchListener.centerMapOn(new LatLng(HOUSTON_CENTER_LAT, HOUSTON_CENTER_LON));
-        }
+        centerMapOn(HOUSTON_CENTER_LAT, HOUSTON_CENTER_LON, ZOOM_LEVEL_FAR);
     }
 
     public void getNearbyStops(String centerAddress, double lat, double lon, String radiusInMiles) {
@@ -326,9 +324,9 @@ public class MapSearchFragment
     }
 
     @Override
-    public void centerMapOn(double lat, double lon) {
+    public void centerMapOn(double lat, double lon, int zoomLevel) {
         if (mapSearchListener != null) {
-            mapSearchListener.centerMapOn(new LatLng(lat, lon));
+            mapSearchListener.centerMapOn(new LatLng(lat, lon), zoomLevel);
         }
     }
 
