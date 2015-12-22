@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -300,17 +299,13 @@ public class MapSearchFragment
             if (ActivityCompat.checkSelfPermission(
                     getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // User has not granted location permission
-                Log.d("MapSearch", "User has not granted permission"); //TODO temp logs
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    Log.d("MapSearch", "Should show permission rationale");
                     showPermissionRationale();
                 } else {
-                    Log.d("MapSearch", "Should not show permission rationale");
                     showEnablePermissionMessage();
                     centerMapOnHouston();
                 }
             } else {
-                Log.d("MapSearch", "User has granted permission"); //TODO temp
                 // User has granted location permission
                 getUserLocationAndLoadNearbyStops();
             }
