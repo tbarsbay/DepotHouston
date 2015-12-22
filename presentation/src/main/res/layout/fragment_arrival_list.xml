@@ -6,6 +6,8 @@
     android:orientation="vertical"
     tools:context="com.tamerbarsbay.depothouston.presentation.view.fragment.ArrivalListFragment">
 
+    <include layout="@layout/view_arrival_list_header" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,18 +19,18 @@
             android:layout_weight="@integer/arrival_route_name_weight"
             android:text="@string/route"
             android:gravity="center_horizontal"
-            style="@style/ArrivalList.Headings"/>
+            style="@style/ArrivalList.Heading"/>
 
         <TextView
             android:layout_weight="@integer/arrival_destination_name_weight"
             android:text="@string/destination"
-            style="@style/ArrivalList.Headings"/>
+            style="@style/ArrivalList.Heading"/>
 
         <TextView
             android:layout_weight="@integer/arrival_time_weight"
             android:text="@string/arriving"
             android:gravity="center_horizontal"
-            style="@style/ArrivalList.Headings"/>
+            style="@style/ArrivalList.Heading"/>
 
     </LinearLayout>
 

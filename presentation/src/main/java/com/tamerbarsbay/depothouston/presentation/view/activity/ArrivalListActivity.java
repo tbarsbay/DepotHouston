@@ -46,6 +46,7 @@ public class ArrivalListActivity extends BaseActivity implements HasComponent<Ar
         initializeInjector();
 
         setToolbarBackArrow();
+        clearToolbarTitle();
     }
 
     @Override

@@ -6,23 +6,23 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ArrivalComponent;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
-import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.ArrivalListPresenter;
-import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalListAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -44,6 +44,12 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
     @Bind(R.id.rv_arrival_list)
     RecyclerView rvArrivals;
+
+    @Bind(R.id.tv_arrival_list_stop_name)
+    TextView tvStopName;
+
+    @Bind(R.id.tv_arrival_list_last_updated)
+    TextView tvLastUpdated;
 
     @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
@@ -95,14 +101,11 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_arrival_list, container, false);
         ButterKnife.bind(this, fragmentView);
-        setupUI();
+
+        arrivalsLayoutManager = new LinearLayoutManager(getContext());
+        rvArrivals.setLayoutManager(arrivalsLayoutManager);
 
         return fragmentView;
-    }
-
-    private void setupUI() {
-        this.arrivalsLayoutManager = new LinearLayoutManager(getContext());
-        this.rvArrivals.setLayoutManager(arrivalsLayoutManager);
     }
 
     @Override
@@ -137,9 +140,17 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
             stopId = getArguments().getString(ARGUMENT_KEY_STOP_ID, null);
             stopName = getArguments().getString(ARGUMENT_KEY_STOP_NAME, null);
 
-            //TODO TEMPORARY - REMOVE
-            Log.d("ArrivalListFragment", "Saving stop: " + stopName);
-            SavedStopUtils.saveStopToGroup(getContext(), "Test Group 2", new SavedStopModel(0, stopId, stopName)); //TODO 0 id temp
+            if (stopId != null && stopName != null) {
+                String currentTime = new SimpleDateFormat("hh:mm aa").format(new Date());
+                tvStopName.setText(stopName);
+                tvLastUpdated.setText(currentTime); //TODO set this when the data actually loads, not here
+            } else {
+                //TODO error - show retry view?
+            }
+
+//            //TODO TEMPORARY - REMOVE
+//            Log.d("ArrivalListFragment", "Saving stop: " + stopName);
+//            SavedStopUtils.saveStopToGroup(getContext(), "Test Group 2", new SavedStopModel(0, stopId, stopName)); //TODO 0 id temp
         }
     }
 
