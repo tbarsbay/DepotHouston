@@ -32,6 +32,7 @@ public class MapSearchPresenter implements Presenter {
     private double lat;
     private double lon;
     private String centerAddress;
+    private String radiusInMiles;
 
     @Inject
     MapSearchPresenter(GetStopsNearLocation getStopsNearLocation,
@@ -61,9 +62,14 @@ public class MapSearchPresenter implements Presenter {
         this.lat = lat;
         this.lon = lon;
         this.centerAddress = centerAddress;
+        this.radiusInMiles = radiusInMiles;
 
         getStopsNearLocation.setParameters(lat, lon, radiusInMiles);
         getStopsNearLocation.execute(new NearbyStopsSubscriber());
+    }
+
+    public void initializePreviousRequest() {
+        initialize(centerAddress, lat, lon, radiusInMiles);
     }
 
     public void onStopClicked(StopModel stopModel) {
@@ -88,6 +94,7 @@ public class MapSearchPresenter implements Presenter {
                     new StopComparator());
 
             mapSearchView.clearMap();
+            mapSearchView.centerMapOn(lat, lon);
             mapSearchView.plotCenterMarker(centerAddress, lat, lon);
             mapSearchView.renderStopList(stopModels);
         }

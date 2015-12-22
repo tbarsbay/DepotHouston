@@ -56,7 +56,7 @@
             style="@style/SavedStops.DialogButton"
             android:id="@+id/btn_create"
             android:text="@string/create"
-            android:textColor="@color/button_text"
+            android:textColor="@color/enable_dependent_primary"
             android:enabled="false"/>
 
     </LinearLayout>

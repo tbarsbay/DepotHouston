@@ -76,6 +76,29 @@
         android:text="@string/no_nearby_stops"
         style="@style/MapSearch.Text"/>
 
+    <LinearLayout
+        android:id="@+id/layout_map_search_retry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/something_went_wrong_try_again"
+            android:paddingBottom="4dp"
+            style="@style/MapSearch.TextButton"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_refresh"
+            android:tint="@color/white" />
+
+    </LinearLayout>
+
     <include layout="@layout/view_progress"/>
 
 </RelativeLayout>

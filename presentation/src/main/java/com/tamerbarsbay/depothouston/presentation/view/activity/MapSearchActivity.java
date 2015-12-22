@@ -170,6 +170,13 @@ public class MapSearchActivity extends NavigationDrawerActivity
         }
     }
 
+    private void showError(String message) {
+        MapSearchFragment fragment = getMapSearchFragment();
+        if (fragment != null) {
+            fragment.showError(message);
+        }
+    }
+
     @Override
     public void centerMapOn(LatLng location) {
         if (mMap != null) {
@@ -203,22 +210,29 @@ public class MapSearchActivity extends NavigationDrawerActivity
         public void onMapClick(final LatLng latLng) {
             clearMap();
 
-            // Use Google's Geocoder API to search for the tapped location
-            Geocoder geo = new Geocoder(getBaseContext(), Locale.US);
-            centerLocationName = "Error loading address"; // set default value in case Geocoder can't find address
-            try {
-                List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            // We check for a valid network connection in this particular spot because using
+            // Google's Geocoder API blocks the UI thread briefly and we'd rather not
+            // waste time on it if we already know the user has no network connection.
+            if (validNetworkConnection()) {
+                // Use Google's Geocoder API to search for the tapped location
+                Geocoder geo = new Geocoder(getBaseContext(), Locale.US);
+                centerLocationName = "Error loading address"; // set default value in case Geocoder can't find address
+                try {
+                    List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
 
-                if (!addresses.isEmpty()) {
-                    centerLocationName = addresses.get(0).getAddressLine(0);
+                    if (!addresses.isEmpty()) {
+                        centerLocationName = addresses.get(0).getAddressLine(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
-            mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
+                getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
+                mMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
+            } else {
+                showError(getString(R.string.exception_message_no_connection));
+            }
         }
     };
 

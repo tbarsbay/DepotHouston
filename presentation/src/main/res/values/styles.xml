@@ -120,6 +120,12 @@
         <item name="android:background">@color/primary</item>
     </style>
 
+    <style name="MapSearch.TextButton" parent="MapSearch.Text">
+        <item name="android:textColor">@color/press_dependent_white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
     <style name="SavedStops"></style>
 
     <style name="SavedStops.DialogButton">

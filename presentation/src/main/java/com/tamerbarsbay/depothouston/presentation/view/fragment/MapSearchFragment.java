@@ -35,6 +35,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MapSearchFragment
     extends BaseFragment implements UserLocationManager.UserLocationListener, MapSearchView {
@@ -59,6 +60,9 @@ public class MapSearchFragment
 
     @Bind(R.id.layout_progress)
     RelativeLayout layoutProgress;
+
+    @Bind(R.id.layout_map_search_retry)
+    LinearLayout layoutRetry;
 
     @Inject
     MapSearchPresenter mapSearchPresenter;
@@ -236,15 +240,12 @@ public class MapSearchFragment
             LatLng userLocationLatLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
             if (HOUSTON_BOUNDS.contains(userLocationLatLng)) {
                 // User is in Houston area, center on them
-                if (mapSearchListener != null) {
-                    mapSearchListener.centerMapOn(userLocationLatLng);
-                    getNearbyStops(
-                            getString(R.string.your_location),
-                            userLocation.getLatitude(),
-                            userLocation.getLongitude(),
-                            DEFAULT_RADIUS_MILES);
-                    return;
-                }
+                getNearbyStops(
+                        getString(R.string.your_location),
+                        userLocation.getLatitude(),
+                        userLocation.getLongitude(),
+                        DEFAULT_RADIUS_MILES);
+                return;
             }
         } else {
             showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
@@ -321,6 +322,13 @@ public class MapSearchFragment
     public void clearMap() {
         if (mapSearchListener != null) {
             mapSearchListener.clearMap();
+        }
+    }
+
+    @Override
+    public void centerMapOn(double lat, double lon) {
+        if (mapSearchListener != null) {
+            mapSearchListener.centerMapOn(new LatLng(lat, lon));
         }
     }
 
@@ -403,13 +411,17 @@ public class MapSearchFragment
 
     @Override
     public void showRetryView() {
-        //TODO
-        expandMapView();
+        if (layoutRetry != null) {
+            layoutRetry.setVisibility(View.VISIBLE);
+            expandMapView();
+        }
     }
 
     @Override
     public void hideRetryView() {
-        //TODO
+        if (layoutRetry != null) {
+            layoutRetry.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -438,6 +450,13 @@ public class MapSearchFragment
     public void collapseMapView() {
         if (mapSearchListener != null) {
             mapSearchListener.collapseMapView();
+        }
+    }
+
+    @OnClick(R.id.layout_map_search_retry)
+    void onRetryClicked() {
+        if (mapSearchPresenter != null) {
+            mapSearchPresenter.initializePreviousRequest();
         }
     }
 
