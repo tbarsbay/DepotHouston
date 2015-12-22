@@ -21,6 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.DividerItemDecoration;
@@ -67,7 +68,7 @@ public class SavedStopsFragment extends BaseFragment {
         dragDropManager = new RecyclerViewDragDropManager();
 
         adapter = new SavedStopAdapter(getContext(), itemManager);
-        adapter.setSavedStopsListener(new SavedStopAdapter.SavedStopsListener() {
+        adapter.setStopClickListener(new SavedStopAdapter.StopClickListener() {
             @Override
             public void onGroupItemRemoved(int groupPosition) {
                 //TODO
@@ -81,9 +82,9 @@ public class SavedStopsFragment extends BaseFragment {
             }
 
             @Override
-            public void onItemViewClicked(View v, boolean pinned) {
+            public void onStopClicked(SavedStopModel stop) {
                 //TODO
-                Log.d("SavedStopsFragment", "onItemViewClicked");
+                Log.d("SavedStopsFragment", "onStopClicked");
             }
         });
 
@@ -206,6 +207,6 @@ public class SavedStopsFragment extends BaseFragment {
 
     private void createGroup(String groupName) {
         SavedStopUtils.createGroup(getContext(), groupName);
-        adapter.notifyItemInserted(itemManager.getGroupCount()-1);
+        adapter.notifyItemInserted(itemManager.getGroupCount() - 1);
     }
 }

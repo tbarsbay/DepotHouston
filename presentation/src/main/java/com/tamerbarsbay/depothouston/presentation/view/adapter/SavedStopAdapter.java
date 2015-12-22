@@ -37,21 +37,18 @@ public class SavedStopAdapter
     private interface Draggable extends DraggableItemConstants {}
 
     private final RecyclerViewExpandableItemManager expandableItemManager;
-    private SavedStopsListener savedStopsListener;
-    private View.OnClickListener onItemClickListener; //TODO use our own onclicklistener system?
+    private StopClickListener stopClickListener;
     private Context context;
 
     private static final String LOG_TAG = "SavedStopAdapter";
 
-    public interface SavedStopsListener {
+    public interface StopClickListener {
         void onGroupItemRemoved(int groupPosition); //TODO implement somewhere below
         void onChildItemRemoved(int groupPosition, int childPosition); //TODO implement somewhere below
-        void onItemViewClicked(View v, boolean pinned); //TODO probably not needed
+        void onStopClicked(SavedStopModel stop);
     }
 
     public static abstract class BaseViewHolder extends AbstractDraggableItemViewHolder implements ExpandableItemViewHolder {
-        //TODO temp variables
-
         @Bind(R.id.saved_stop_container)
         FrameLayout container;
 
@@ -101,20 +98,7 @@ public class SavedStopAdapter
         Log.d("SavedStopsAdapter", "constructor"); //TODO temp
         this.context = context;
         expandableItemManager = itemManager;
-        onItemClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemViewClick(v);
-            }
-        };
         setHasStableIds(true);
-    }
-
-    private void onItemViewClick(View v) {
-        if (savedStopsListener != null) {
-            savedStopsListener.onItemViewClicked(v, true); //TODO why true pinned
-            //TODO call this somewhere
-        }
     }
 
     @Override
@@ -129,13 +113,11 @@ public class SavedStopAdapter
 
     @Override
     public long getGroupId(int position) {
-        //Log.d("SavedStopAdapter", "getGroupId(" + position +")"); //TODO temp
         return SavedStopUtils.getGroupId(context, position);
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        //Log.d("SavedStopAdapter", "getChildId(" + childPosition +")"); //TODO temp
         return SavedStopUtils.getChildId(context, groupPosition, childPosition);
     }
 
@@ -168,7 +150,6 @@ public class SavedStopAdapter
         // group item
         final SavedGroupModel group = SavedStopUtils.getSavedStopGroups(context).get(groupPosition);
         if (group == null) {
-            Log.d("SavedStopAdapter", "Group null"); //TODO temp
             return;
         }
 
@@ -194,28 +175,24 @@ public class SavedStopAdapter
             final boolean isExpanded;
 
             if ((dragState & Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
-                //bgResId = R.drawable.bg_group_item_dragging_active_state;
-                bgResId = R.color.red_500; //TODO temp
+                bgResId = R.color.grey_300;
 
                 // need to clear drawable state here to get correct appearance of the dragging item.
                 DrawableUtils.clearState(holder.container.getForeground());
             } else if ((dragState & Draggable.STATE_FLAG_DRAGGING) != 0) {
-                //bgResId = R.drawable.bg_group_item_dragging_state;
-                bgResId = R.color.green_500; //TODO temp
+                bgResId = R.color.white;
             } else if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
-                //bgResId = R.drawable.bg_group_item_expanded_state;
-                bgResId = R.color.blue_500; //TODO temp
+                bgResId = R.color.white;
             } else {
-                //bgResId = R.drawable.bg_group_item_normal_state;
-                bgResId = R.color.white; //TODO temp
+                bgResId = R.color.white;
             }
 
             if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
                 isExpanded = true;
-                holder.ivIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_up)); //TODO test
+                holder.ivIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_up));
             } else {
                 isExpanded = false;
-                holder.ivIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_down)); //TODO test
+                holder.ivIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_down));
             }
 
             holder.container.setBackgroundResource(bgResId);
@@ -223,7 +200,6 @@ public class SavedStopAdapter
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO
                     if (isExpanded) {
                         expandableItemManager.collapseGroup(groupPosition);
                     } else {
@@ -231,9 +207,6 @@ public class SavedStopAdapter
                     }
                 }
             });
-
-
-            //holder.ivIndicator.setExpandedState(isExpanded, animateIndicator); //TODO
         }
     }
 
@@ -242,7 +215,6 @@ public class SavedStopAdapter
         // child item
         final SavedStopModel stop = SavedStopUtils.getSavedStop(context, groupPosition, childPosition);
         if (stop == null) {
-            Log.d("SavedStopAdapter", "Stop null"); //TODO temp
             return;
         }
 
@@ -251,7 +223,9 @@ public class SavedStopAdapter
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO open stop arrivals
+                if (stopClickListener != null) {
+                    stopClickListener.onStopClicked(stop);
+                }
                 Log.d("SavedStopAdapter", "Clicked stop: " + stop.getName()); //TODO temp
             }
         });
@@ -266,16 +240,14 @@ public class SavedStopAdapter
 
             if ((dragState & Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
                 //bgResId = R.drawable.bg_item_dragging_active_state;
-                bgResId = R.color.purple_500; //TODO temp
+                bgResId = R.color.grey_300;
 
                 // need to clear drawable state here to get correct appearance of the dragging item.
                 DrawableUtils.clearState(holder.container.getForeground());
             } else if ((dragState & Draggable.STATE_FLAG_DRAGGING) != 0) {
-                //bgResId = R.drawable.bg_item_dragging_state;
-                bgResId = R.color.green_500; //TODO temp
+                bgResId = R.color.white;
             } else {
-                //bgResId = R.drawable.bg_item_normal_state;
-                bgResId = R.color.white; //TODO temp
+                bgResId = R.color.white;
             }
 
             holder.container.setBackgroundResource(bgResId);
@@ -344,7 +316,7 @@ public class SavedStopAdapter
         SavedStopUtils.moveSavedStop(context, fromGroupPosition, fromChildPosition, toGroupPosition, toChildPosition);
     }
 
-    public void setSavedStopsListener(@NonNull SavedStopsListener listener) {
-        savedStopsListener = listener;
+    public void setStopClickListener(@NonNull StopClickListener listener) {
+        stopClickListener = listener;
     }
 }

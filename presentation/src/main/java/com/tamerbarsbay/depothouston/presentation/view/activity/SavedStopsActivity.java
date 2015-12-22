@@ -26,8 +26,6 @@ public class SavedStopsActivity extends NavigationDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_stops);
 
-        //TODO initializeInjector();
-
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fl_saved_stops_fragment, SavedStopsFragment.newInstance());
         fragmentTransaction.commit();
@@ -42,9 +40,6 @@ public class SavedStopsActivity extends NavigationDrawerActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

@@ -5,7 +5,7 @@
     <item android:id="@+id/action_create_group"
           android:title="@string/action_create_group"
           android:icon="@drawable/ic_add_circle"
-          android:orderInCategory="99"
+          android:orderInCategory="98"
           app:showAsAction="always"/>
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"

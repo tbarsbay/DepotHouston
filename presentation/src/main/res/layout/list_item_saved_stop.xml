@@ -20,14 +20,6 @@
             android:gravity="center_vertical"
             android:paddingRight="16dp">
 
-            <View
-                android:id="@+id/saved_stop_drag_handle"
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="top|left"
-                android:background="@color/blue_100"
-                tools:ignore="RtlHardcoded"/>
-
             <TextView
                 android:id="@+id/tv_saved_stop_title"
                 android:layout_width="0dp"
@@ -38,6 +30,14 @@
                 android:textColor="@color/text_primary_dark"
                 android:textSize="16sp"
                 tools:text="5440 S Cornell"/>
+
+            <ImageView
+                android:id="@+id/saved_stop_drag_handle"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu"
+                android:tint="@color/primary"
+                tools:ignore="RtlHardcoded"/>
 
         </LinearLayout>
 
