@@ -73,8 +73,8 @@ public class MapSearchFragment
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 100;
     public static final String DEFAULT_RADIUS_MILES = ".25"; //TODO get from user settings
 
-    private static final double HOUSTON_SOUTHWEST_LAT = 29.393960;
-    private static final double HOUSTON_SOUTHWEST_LON = -95.083066;
+    private static final double HOUSTON_SOUTHWEST_LAT = 29.431005;
+    private static final double HOUSTON_SOUTHWEST_LON = -95.885714;
     private static final double HOUSTON_NORTHEAST_LAT = 30.204589;
     private static final double HOUSTON_NORTHEAST_LON = -94.871179;
     private static final double HOUSTON_CENTER_LAT = 29.760215;
@@ -171,6 +171,24 @@ public class MapSearchFragment
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_LOCATION_PERMISSION:
+                // If the request was cancelled, the results array is empty
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Granted, get the user's location and show nearby stops
+                    getUserLocationAndLoadNearbyStops();
+                } else {
+                    // Denied, center on Houston
+                    centerMapOnHouston();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mapSearchPresenter.resume();
@@ -214,23 +232,27 @@ public class MapSearchFragment
 
     private void getUserLocationAndLoadNearbyStops() {
         Location userLocation = getUserLocationManager().getUserLocation();
+
         if (userLocation != null) {
-            // If the user is in Houston, center on their location. If the user is outside of
-            // Houston, center on Houston.
-            if (HOUSTON_BOUNDS.contains(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))) {
-                // User is in Houston area
-                getNearbyStops(
-                        getString(R.string.your_location),
-                        userLocation.getLatitude(),
-                        userLocation.getLongitude(),
-                        DEFAULT_RADIUS_MILES);
-            } else {
-                // User is not in the Houston area - center the map on Houston.
-                centerMapOnHouston();
+            LatLng userLocationLatLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+            if (HOUSTON_BOUNDS.contains(userLocationLatLng)) {
+                // User is in Houston area, center on them
+                if (mapSearchListener != null) {
+                    mapSearchListener.centerMapOn(userLocationLatLng);
+                    getNearbyStops(
+                            getString(R.string.your_location),
+                            userLocation.getLatitude(),
+                            userLocation.getLongitude(),
+                            DEFAULT_RADIUS_MILES);
+                    return;
+                }
             }
-        } else {
-            showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
         }
+
+        // If the user location is null, or if the user is not in Houston, center the map
+        // on Houston
+        showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
+        centerMapOnHouston();
     }
 
     private void centerMapOnHouston() {
@@ -257,8 +279,7 @@ public class MapSearchFragment
                     .setAction(R.string.OK, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ActivityCompat.requestPermissions(
-                                    getActivity(),
+                            requestPermissions(
                                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                     REQUEST_CODE_LOCATION_PERMISSION);
                         }
