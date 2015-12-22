@@ -92,6 +92,6 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
 
     @Override
     public void onStopClicked(StopModel stopModel) {
-        navigator.navigateToArrivalList(this, stopModel.getStopId());
+        navigator.navigateToArrivalList(this, stopModel.getStopId(), stopModel.getName());
     }
 }

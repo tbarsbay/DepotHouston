@@ -1,6 +1,5 @@
 package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,10 +58,10 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof RouteListListener) {
-            this.routeListListener = (RouteListListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof RouteListListener) {
+            routeListListener = (RouteListListener) context;
         }
     }
 
@@ -77,88 +76,88 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.initialize();
-        this.loadRouteList();
+        initialize();
+        loadRouteList();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.routeListPresenter.resume();
+        routeListPresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.routeListPresenter.pause();
+        routeListPresenter.pause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.routeListPresenter.destroy();
+        routeListPresenter.destroy();
     }
 
     private void initialize() {
         this.getComponent(RouteComponent.class).inject(this);
-        this.routeListPresenter.setView(this);
+        routeListPresenter.setView(this);
     }
 
     private void setupUI() {
-        this.routesLayoutManager = new LinearLayoutManager(getActivity());
-        this.rvRoutes.setLayoutManager(routesLayoutManager);
+        routesLayoutManager = new LinearLayoutManager(getActivity());
+        rvRoutes.setLayoutManager(routesLayoutManager);
     }
 
     @Override
     public void showLoadingView() {
-        this.rlProgress.setVisibility(View.VISIBLE);
+        rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoadingView() {
-        this.rlProgress.setVisibility(View.GONE);
+        rlProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void showRetryView() {
-        this.rlRetry.setVisibility(View.VISIBLE);
+        rlRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideRetryView() {
-        this.rlRetry.setVisibility(View.GONE);
+        rlRetry.setVisibility(View.GONE);
     }
 
     @Override
     public void renderRouteList(Collection<RouteModel> routeModels) {
         if (routeModels != null) {
-            if (this.routesAdapter == null) {
-                this.routesAdapter = new RouteListAdapter(getActivity(), routeModels);
+            if (routesAdapter == null) {
+                routesAdapter = new RouteListAdapter(getActivity(), routeModels);
             } else {
-                this.routesAdapter.setRoutesCollection(routeModels);
+                routesAdapter.setRoutesCollection(routeModels);
             }
-            this.routesAdapter.setOnItemClickListener(onItemClickListener);
-            this.rvRoutes.setAdapter(routesAdapter);
+            routesAdapter.setOnItemClickListener(onItemClickListener);
+            rvRoutes.setAdapter(routesAdapter);
         }
     }
 
     @Override
     public void viewRoute(RouteModel routeModel) {
-        if (this.routeListListener != null) {
-            this.routeListListener.onRouteClicked(routeModel);
+        if (routeListListener != null) {
+            routeListListener.onRouteClicked(routeModel);
         }
     }
 
     @Override public void showError(String message) {
-        this.showToastMessage(message);
+        showToastMessage(message);
     }
 
     @Override public Context getContext() {
-        return this.getActivity().getApplicationContext();
+        return getActivity().getApplicationContext();
     }
 
     private void loadRouteList() {
-        this.routeListPresenter.initialize();
+        routeListPresenter.initialize();
     }
 
     @OnClick(R.id.btn_retry)

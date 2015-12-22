@@ -1,12 +1,12 @@
 package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,9 @@ import android.widget.RelativeLayout;
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ArrivalComponent;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
+import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.ArrivalListPresenter;
+import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalListAdapter;
 
@@ -58,6 +60,9 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     private ArrivalListListener arrivalListListener;
 
     private static final String ARGUMENT_KEY_STOP_ID = "com.tamerbarsbay.depothouston.ARGUMENT_STOP_ID";
+    private static final String ARGUMENT_KEY_STOP_NAME = "com.tamerbarsbay.depothouston.ARGUMENT_STOP_NAME";
+    private String stopId;
+    private String stopName;
 
     public ArrivalListFragment() {}
 
@@ -67,19 +72,21 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
      * @param stopId The id of the stop for which we are loading arrivals.
      * @return New ArrivalListFragment object.
      */
-    public static ArrivalListFragment newInstance(String stopId) {
+    public static ArrivalListFragment newInstance(String stopId, String stopName) {
         ArrivalListFragment fragment = new ArrivalListFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_KEY_STOP_ID, stopId);
+        args.putString(ARGUMENT_KEY_STOP_NAME, stopName);
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof ArrivalListListener) {
-            this.arrivalListListener = (ArrivalListListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ArrivalListListener) {
+            this.arrivalListListener = (ArrivalListListener) context;
         }
     }
 
@@ -89,6 +96,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
         View fragmentView = inflater.inflate(R.layout.fragment_arrival_list, container, false);
         ButterKnife.bind(this, fragmentView);
         setupUI();
+
         return fragmentView;
     }
 
@@ -100,31 +108,39 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.initialize();
-        this.loadArrivalList();
+        initialize();
+        loadArrivalList();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.arrivalListPresenter.resume();
+        arrivalListPresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.arrivalListPresenter.pause();
+        arrivalListPresenter.pause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.arrivalListPresenter.destroy();
+        arrivalListPresenter.destroy();
     }
 
     private void initialize() {
-        this.getComponent(ArrivalComponent.class).inject(this);
-        this.arrivalListPresenter.setView(this);
+        getComponent(ArrivalComponent.class).inject(this);
+        arrivalListPresenter.setView(this);
+        if (getArguments() != null) {
+            stopId = getArguments().getString(ARGUMENT_KEY_STOP_ID, null);
+            stopName = getArguments().getString(ARGUMENT_KEY_STOP_NAME, null);
+
+            //TODO TEMPORARY - REMOVE
+            Log.d("ArrivalListFragment", "Saving stop: " + stopName);
+            SavedStopUtils.saveStopToGroup(getContext(), "Test Group 2", new SavedStopModel(0, stopId, stopName)); //TODO 0 id temp
+        }
     }
 
     @Override

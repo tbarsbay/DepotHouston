@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.tamerbarsbay.depothouston.presentation.view.fragment.SavedStopsFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_saved_stops"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="true"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"/>
+
+</FrameLayout>

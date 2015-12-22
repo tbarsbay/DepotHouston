@@ -4,18 +4,18 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public class StopModel {
 
-    private final String id;
-    private String stopId;
-    private String directionId;
-    private String routeId;
-    private String agencyId;
-    private String name;
-    private String stopCode;
-    private String type;
-    private double lat;
-    private double lon;
-    private String ordinal;
-    private String ordinalOnDirection;
+    protected final String id;
+    protected String stopId;
+    protected String directionId;
+    protected String routeId;
+    protected String agencyId;
+    protected String name;
+    protected String stopCode;
+    protected String type;
+    protected double lat;
+    protected double lon;
+    protected String ordinal;
+    protected String ordinalOnDirection;
 
     public StopModel(String id) {
         this.id = id;

@@ -139,7 +139,7 @@ public class MapSearchActivity extends NavigationDrawerActivity
     public void viewStop(StopModel stopModel) {
         //TODO handle inactive routes/stops correctly
         if (stopModel != null) {
-            navigator.navigateToArrivalList(this, stopModel.getStopId());
+            navigator.navigateToArrivalList(this, stopModel.getStopId(), stopModel.getName());
         }
     }
 
