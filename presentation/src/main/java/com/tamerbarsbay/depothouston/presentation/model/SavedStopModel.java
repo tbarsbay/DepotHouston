@@ -4,21 +4,21 @@ import android.support.annotation.NonNull;
 
 public class SavedStopModel {
 
-    private long objectId;
+    private int objectId;
     private String stopId;
     private String name;
 
-    public SavedStopModel(long objectId, @NonNull String stopId, @NonNull String name) {
+    public SavedStopModel(int objectId, @NonNull String stopId, @NonNull String name) {
         this.objectId = objectId;
         this.stopId = stopId;
         this.name = name;
     }
 
-    public long getObjectId() {
+    public int getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(long id) {
+    public void setObjectId(int id) {
         this.objectId = id;
     }
 

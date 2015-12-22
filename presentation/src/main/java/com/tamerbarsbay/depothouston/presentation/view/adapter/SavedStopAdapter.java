@@ -130,13 +130,13 @@ public class SavedStopAdapter
     @Override
     public long getGroupId(int position) {
         //Log.d("SavedStopAdapter", "getGroupId(" + position +")"); //TODO temp
-        return SavedStopUtils.getGroupId(position);
+        return SavedStopUtils.getGroupId(context, position);
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         //Log.d("SavedStopAdapter", "getChildId(" + childPosition +")"); //TODO temp
-        return SavedStopUtils.getChildId(groupPosition, childPosition);
+        return SavedStopUtils.getChildId(context, groupPosition, childPosition);
     }
 
     @Override
@@ -165,9 +165,8 @@ public class SavedStopAdapter
 
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, final int groupPosition, int viewType) {
-        Log.d("SavedStopsAdapter", "onBindGroupView"); //TODO temp
         // group item
-        final SavedGroupModel group = SavedStopUtils.getGroupByRank(context, groupPosition);
+        final SavedGroupModel group = SavedStopUtils.getSavedStopGroups(context).get(groupPosition);
         if (group == null) {
             Log.d("SavedStopAdapter", "Group null"); //TODO temp
             return;
@@ -240,7 +239,6 @@ public class SavedStopAdapter
 
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
-        Log.d("SavedStopsAdapter", "onBindChildView"); //TODO temp
         // child item
         final SavedStopModel stop = SavedStopUtils.getSavedStop(context, groupPosition, childPosition);
         if (stop == null) {

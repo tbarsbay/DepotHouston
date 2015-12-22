@@ -9,12 +9,12 @@ import java.util.ArrayList;
  */
 public class SavedGroupModel {
 
-    private final long id;
+    private final int id;
     private String name;
     private ArrayList<SavedStopModel> stops = new ArrayList<SavedStopModel>();
-    private long nextChildId;
+    private int nextChildId;
 
-    public SavedGroupModel(long id, @NonNull String name, @NonNull ArrayList<SavedStopModel> stops) {
+    public SavedGroupModel(int id, @NonNull String name, @NonNull ArrayList<SavedStopModel> stops) {
         this.id = id;
         this.name = name;
         this.stops = stops;
@@ -29,7 +29,7 @@ public class SavedGroupModel {
         this.name = name;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -51,8 +51,8 @@ public class SavedGroupModel {
         }
     }
 
-    public long generateNewChildId() {
-        final long id = nextChildId;
+    public int generateNewChildId() {
+        final int id = nextChildId;
         nextChildId += 1;
         return id;
     }

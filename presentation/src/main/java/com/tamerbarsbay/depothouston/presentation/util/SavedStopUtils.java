@@ -17,10 +17,18 @@ public class SavedStopUtils {
 
     private static final String PREFS_SAVED_STOPS = "prefs_saved_stops";
 
+    private static final String LOG_TAG = "SavedStopUtils";
+
+    public static void clearSavedStops(@NonNull Context context) {
+        //TODO temp method
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().remove(PREFS_SAVED_STOPS).apply();
+    }
+
     public static void saveStopToGroup(@NonNull Context context,
                                           @NonNull String groupName,
                                           @NonNull SavedStopModel stop) {
-        if (stop.getName() == null || stop.getId() == null) {
+        if (stop.getName() == null || stop.getStopId() == null) {
             throw new IllegalArgumentException("Stop cannot have null name or id");
         }
 
@@ -32,7 +40,7 @@ public class SavedStopUtils {
             if (group.getName().equals(groupName)) {
                 Log.d("SavedStopUtils", "saveStopToGroup: found group"); //TODO temp
                 // Found the group, add the stop here
-                stop.setRank(group.getNumStops());
+                stop.setObjectId(group.generateNewChildId());
                 group.addStop(stop);
 
                 // Serialize the groups back to string
@@ -42,7 +50,7 @@ public class SavedStopUtils {
         }
 
         // The group was not found, so create it!
-        SavedGroupModel newGroup = new SavedGroupModel(groupName, savedGroups.size(), new ArrayList<SavedStopModel>());
+        SavedGroupModel newGroup = new SavedGroupModel(savedGroups.size(), groupName, new ArrayList<SavedStopModel>());
         Log.d("SavedStopUtils", "saveStopToGroup: creating new group"); //TODO temp
         newGroup.addStop(stop);
         savedGroups.add(newGroup);
@@ -76,49 +84,13 @@ public class SavedStopUtils {
         return new ArrayList<SavedGroupModel>();
     }
 
-    public static SavedGroupModel getGroupByName(@NonNull Context context,
-                                                 @NonNull String name) {
-        return getGroupByName(getSavedStopGroups(context), name);
-    }
-
-    /**
-     * Returns a {@link SavedGroupModel} from a given list of groups that matches a certain name, or null
-     * if one could not be found.
-     * @param groups
-     * @param name
-     * @return The group if one was found, or null if one wasn't
-     */
-    public static SavedGroupModel getGroupByName(@NonNull ArrayList<SavedGroupModel> groups,
-                                                 @NonNull String name) {
-        for (SavedGroupModel savedGroup : groups) {
-            if (name.equals(savedGroup.getName())) {
-                return savedGroup;
-            }
-        }
-        return null;
-    }
-
-    public static SavedGroupModel getGroupByRank(@NonNull Context context, int rank) {
-        return getGroupByRank(getSavedStopGroups(context), rank);
-    }
-
-    public static SavedGroupModel getGroupByRank(@NonNull ArrayList<SavedGroupModel> groups,
-                                                 int rank) {
-        for (SavedGroupModel savedGroup : groups) {
-            if (savedGroup.getRank() == rank) {
-                return savedGroup;
-            }
-        }
-        return null;
-    }
-
     public static SavedStopModel getSavedStop(@NonNull Context context, int groupRank, int childRank) {
-        SavedGroupModel group = getGroupByRank(context, groupRank);
+        SavedGroupModel group = getSavedStopGroups(context).get(groupRank);
         if (group != null && group.getStops() != null) {
-            for (SavedStopModel stop : group.getStops()) {
-                if (stop.getRank() == childRank) {
-                    return stop;
-                }
+            try {
+                return group.getStops().get(childRank);
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
         }
         return null;
@@ -130,35 +102,37 @@ public class SavedStopUtils {
     }
 
     public static int getChildCount(@NonNull Context context, int groupRank) {
-        SavedGroupModel savedGroup = getGroupByRank(context, groupRank);
+        SavedGroupModel savedGroup = getSavedStopGroups(context).get(groupRank);
         if (savedGroup != null && savedGroup.getStops() != null) {
             return savedGroup.getStops().size();
         }
         return 0;
     }
 
-    public static int getGroupId(int groupRank) {
-        return groupRank; //TODO TEST
+    public static int getGroupId(@NonNull Context context, int groupRank) {
+        SavedGroupModel group = getSavedStopGroups(context).get(groupRank);
+        return group == null ? 0 : group.getId();
     }
 
-    public static int getChildId(int groupRank, int childPosition) {
-        return 0; //TODO example has generateChildId which increments children
+    public static int getChildId(@NonNull Context context, int groupRank, int childPosition) {
+        SavedStopModel stop = getSavedStop(context, groupRank, childPosition);
+        return stop == null ? 0 : stop.getObjectId();
     }
 
     public static void moveSavedGroup(@NonNull Context context, int fromGroupRank, int toGroupRank) {
         Log.d("SavedStopUtils", "moveSavedGroup: from " + fromGroupRank + " to " + toGroupRank); //TODO temp
 
         ArrayList<SavedGroupModel> savedGroups = getSavedStopGroups(context);
-        SavedGroupModel group = getGroupByRank(savedGroups, fromGroupRank);
+        SavedGroupModel group = savedGroups.get(fromGroupRank);
         if (group == null || !savedGroups.remove(group)) {
             // Something went wrong //TODO handle with a custom exception?
+            Log.d(LOG_TAG, "moveSavedGroup: error");
             return;
         }
 
         // If we reach here, a group was found and removed from the list of groups.
         // Now re-add it in the new position.
         savedGroups.add(toGroupRank, group); //TODO try this but it may have to be minus one or something
-        //TODO update group rank? i think its not needed
         //TODO catch indexoutofbounds exception?? handle with custom exception?
         Log.d("SavedStopUtils", "Successfully moving group"); //TODO temp
         saveGroupsToSharedPreferences(context, savedGroups);
@@ -179,9 +153,10 @@ public class SavedStopUtils {
             SavedGroupModel toGroup = savedGroups.get(toGroupRank);
             if (fromGroup == null || toGroup == null) {
                 // Error //TODO handle
+                Log.d(LOG_TAG, "moveSavedStop: error");
                 return;
             }
-            SavedStopModel stop = fromGroup.getStops().get(fromChildRank); //TODO fix
+            SavedStopModel stop = fromGroup.getStops().get(fromChildRank);
             if (stop != null && fromGroup.getStops().remove(stop)) {
                 // Successfully removed stop from old group, now add to new group
                 toGroup.getStops().add(toChildRank, stop); //TODO error handle out of bounds
