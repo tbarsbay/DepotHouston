@@ -130,7 +130,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof ArrivalListListener) {
-            this.arrivalListListener = (ArrivalListListener) context;
+            arrivalListListener = (ArrivalListListener) context;
         }
     }
 
@@ -191,13 +191,13 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Override
     public void renderArrivalList(Collection<ArrivalModel> arrivalModels) {
         if (arrivalModels != null) {
-            if (this.arrivalsAdapter == null) {
-                this.arrivalsAdapter = new ArrivalListAdapter(getActivity(), arrivalModels);
+            if (arrivalsAdapter == null) {
+                arrivalsAdapter = new ArrivalListAdapter(getActivity(), arrivalModels);
             } else {
-                this.arrivalsAdapter.setArrivalsCollection(arrivalModels);
+                arrivalsAdapter.setArrivalsCollection(arrivalModels);
             }
-            this.arrivalsAdapter.setOnItemClickListener(onItemClickListener);
-            this.rvArrivals.setAdapter(arrivalsAdapter);
+            arrivalsAdapter.setOnItemClickListener(onItemClickListener);
+            rvArrivals.setAdapter(arrivalsAdapter);
         }
     }
 
@@ -218,34 +218,34 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
     @Override
     public void showLoadingView() {
-        this.rlProgress.setVisibility(View.VISIBLE);
+        rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoadingView() {
-        this.rlProgress.setVisibility(View.GONE);
+        rlProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void showRetryView() {
-        this.rlRetry.setVisibility(View.VISIBLE);
+        rlRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideRetryView() {
-        this.rlRetry.setVisibility(View.GONE);
+        rlRetry.setVisibility(View.GONE);
     }
 
     @Override public void showError(String message) {
-        this.showToastMessage(message);
+        showToastMessage(message);
     }
 
     @Override public Context getContext() {
-        return this.getActivity().getApplicationContext();
+        return getActivity().getApplicationContext();
     }
 
     private void loadArrivalList() {
-        this.arrivalListPresenter.initialize();
+        arrivalListPresenter.initialize();
     }
 
     private void populateSavedGroupsSpinner() {
@@ -272,7 +272,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
     @OnClick(R.id.btn_retry)
     void onButtonRetryClick() {
-        ArrivalListFragment.this.loadArrivalList();
+        loadArrivalList();
     }
 
     @OnClick(R.id.ib_arrival_list_favorite)
@@ -328,6 +328,11 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @OnTextChanged(R.id.et_save_stop_new_group_name)
     void onNewGroupNameTextChanged(CharSequence text) {
         btnSave.setEnabled(text.toString().trim().length() > 0);
+    }
+
+    @OnClick(R.id.fab_arrival_list_refresh)
+    void onRefreshClicked() {
+        loadArrivalList();
     }
 
     private ArrivalListAdapter.OnItemClickListener onItemClickListener =

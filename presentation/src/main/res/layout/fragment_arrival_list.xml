@@ -1,14 +1,21 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tamerbarsbay.depothouston.presentation.view.fragment.ArrivalListFragment">
 
-    <include layout="@layout/view_arrival_list_actions" />
+    <include
+        android:id="@+id/layout_arrival_list_actions"
+        layout="@layout/view_arrival_list_actions" />
 
-    <include layout="@layout/view_save_stop"/>
+    <include
+        layout="@layout/view_save_stop"
+        android:id="@+id/layout_save_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_arrival_list_actions"/>
 
     <LinearLayout
         android:id="@+id/layout_arrival_list_headers"
@@ -19,7 +26,8 @@
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:background="@color/light_blue_100">
+        android:background="@color/light_blue_100"
+        android:layout_below="@id/layout_save_stop">
 
         <TextView
             android:layout_weight="@integer/arrival_route_name_weight"
@@ -45,10 +53,37 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_arrival"/>
+        tools:listitem="@layout/list_item_arrival"
+        android:layout_below="@id/layout_arrival_list_headers"/>
 
-    <include layout="@layout/view_progress" />
+    <RelativeLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_arrival_list_headers"
+        android:visibility="gone"
+        android:background="@color/white">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
     <include layout="@layout/view_retry" />
 
-</LinearLayout>
+    <com.tamerbarsbay.depothouston.presentation.view.FloatingActionButton
+        android:id="@+id/fab_arrival_list_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:fab_colorNormal="@color/pink_500"
+        app:fab_size="normal"
+        app:fab_colorPressed="@color/pink_200"
+        app:fab_icon="@drawable/ic_refresh"/>
+
+</RelativeLayout>
