@@ -6,9 +6,12 @@
     android:orientation="vertical"
     tools:context="com.tamerbarsbay.depothouston.presentation.view.fragment.ArrivalListFragment">
 
-    <include layout="@layout/view_arrival_list_header" />
+    <include layout="@layout/view_arrival_list_actions" />
+
+    <include layout="@layout/view_save_stop"/>
 
     <LinearLayout
+        android:id="@+id/layout_arrival_list_headers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

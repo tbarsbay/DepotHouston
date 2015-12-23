@@ -38,6 +38,17 @@ public class SavedStopUtils {
         return false;
     }
 
+    public static boolean isStopSaved(@NonNull Context context,
+                                      @NonNull String stopId) {
+        ArrayList<SavedGroupModel> groups = getSavedStopGroups(context);
+        for (SavedGroupModel group : groups) {
+            if (group.containsSavedStop(stopId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void saveStopToGroup(@NonNull Context context,
                                           @NonNull String groupName,
                                           @NonNull SavedStopModel stop) {
@@ -45,14 +56,15 @@ public class SavedStopUtils {
             throw new IllegalArgumentException("Stop cannot have null name or id");
         }
 
-        Log.d("SavedStopUtils", "saveStopToGroup"); //TODO temp
-        //TODO check if stop is already in group
-
+        // If the group exists, add this stop to it
         ArrayList<SavedGroupModel> savedGroups = getSavedStopGroups(context);
         for (SavedGroupModel group : savedGroups) {
             if (group.getName().equals(groupName)) {
-                Log.d("SavedStopUtils", "saveStopToGroup: found group"); //TODO temp
-                // Found the group, add the stop here
+                // Found the group, see if it already contains this stop
+                if (group.containsSavedStop(stop.getStopId())) {
+                    return;
+                }
+
                 stop.setObjectId(group.generateNewChildId());
                 group.addStop(stop);
 
@@ -62,9 +74,8 @@ public class SavedStopUtils {
             }
         }
 
-        // The group was not found, so create it!
+        // If the group doesn't already exist, create it
         SavedGroupModel newGroup = new SavedGroupModel(savedGroups.size(), groupName, new ArrayList<SavedStopModel>());
-        Log.d("SavedStopUtils", "saveStopToGroup: creating new group"); //TODO temp
         newGroup.addStop(stop);
         savedGroups.add(newGroup);
         saveGroupsToSharedPreferences(context, savedGroups);
@@ -74,12 +85,8 @@ public class SavedStopUtils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String savedStopsString = new Gson().toJson(savedGroups);
         if (savedStopsString != null) {
-            Log.d("SavedStopUtils", "saveGroupsToPrefs savedStopString not null"); //TODO temp
             sp.edit().putString(PREFS_SAVED_STOPS, savedStopsString).apply();
-        } else {
-            Log.d("SavedStopUtils", "saveGroupsToPrefs savedStopString null"); //TODO temp
         }
-        //TODO handle if string is null?
     }
 
     public static ArrayList<SavedGroupModel> getSavedStopGroups(@NonNull Context context) {
@@ -95,6 +102,15 @@ public class SavedStopUtils {
             }
         }
         return new ArrayList<SavedGroupModel>();
+    }
+
+    public static ArrayList<String> getGroupNamesArray(@NonNull Context context) {
+        ArrayList<String> groupNames = new ArrayList<String>();
+        ArrayList<SavedGroupModel> savedGroups = getSavedStopGroups(context);
+        for (SavedGroupModel savedGroup : savedGroups) {
+            groupNames.add(savedGroup.getName());
+        }
+        return groupNames;
     }
 
     public static SavedStopModel getSavedStop(@NonNull Context context, int groupRank, int childRank) {

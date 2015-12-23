@@ -55,6 +55,20 @@ public class SavedGroupModel {
         }
     }
 
+    /**
+     * Returns whether or not a group contains a specific saved stop.
+     * @param stopId
+     * @return
+     */
+    public boolean containsSavedStop(@NonNull String stopId) {
+        for (SavedStopModel stop : stops) {
+            if (stopId.equals(stop.getStopId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int generateNewChildId() {
         final int id = nextChildId;
         nextChildId += 1;
