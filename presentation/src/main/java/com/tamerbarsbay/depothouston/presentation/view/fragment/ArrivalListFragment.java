@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ArrivalComponent;
@@ -45,11 +44,8 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Bind(R.id.rv_arrival_list)
     RecyclerView rvArrivals;
 
-    @Bind(R.id.tv_arrival_list_stop_name)
-    TextView tvStopName;
-
-    @Bind(R.id.tv_arrival_list_last_updated)
-    TextView tvLastUpdated;
+//    @Bind(R.id.tv_arrival_list_last_updated)
+//    TextView tvLastUpdated;
 
     @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
@@ -142,8 +138,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
             if (stopId != null && stopName != null) {
                 String currentTime = new SimpleDateFormat("hh:mm aa").format(new Date());
-                tvStopName.setText(stopName);
-                tvLastUpdated.setText(currentTime); //TODO set this when the data actually loads, not here
+//                tvLastUpdated.setText(currentTime); //TODO set this when the data actually loads, not here
             } else {
                 //TODO error - show retry view?
             }

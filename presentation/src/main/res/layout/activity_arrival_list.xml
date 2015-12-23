@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context="com.tamerbarsbay.depothouston.presentation.view.activity.ArrivalListActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar_no_elevation" />
 
     <FrameLayout
         android:id="@+id/fl_arrival_list_fragment"
