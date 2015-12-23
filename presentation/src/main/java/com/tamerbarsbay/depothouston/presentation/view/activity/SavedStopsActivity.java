@@ -8,9 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.SavedStopsFragment;
 
-public class SavedStopsActivity extends NavigationDrawerActivity {
+public class SavedStopsActivity
+        extends NavigationDrawerActivity
+        implements SavedStopsFragment.SavedStopsListener {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, SavedStopsActivity.class);
@@ -48,5 +51,12 @@ public class SavedStopsActivity extends NavigationDrawerActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStopClicked(SavedStopModel stop) {
+        if (stop != null) {
+            navigator.navigateToArrivalList(this, stop.getStopId(), stop.getName());
+        }
     }
 }

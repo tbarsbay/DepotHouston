@@ -4,28 +4,24 @@ package com.tamerbarsbay.depothouston.presentation.view.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
-import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.model.SavedGroupModel;
 import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
-import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
-import com.tamerbarsbay.depothouston.presentation.view.DividerItemDecoration;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.SavedStopAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,16 +30,13 @@ public class SavedStopsFragment extends BaseFragment {
     //TODO implement SavedStopView?
 
     public interface SavedStopsListener {
-        void onStopClicked(StopModel stopModel);
+        void onStopClicked(SavedStopModel stop);
     }
 
-    @Bind(R.id.rv_saved_stops)
-    RecyclerView rvSavedStops;
+    @Bind(R.id.elv_saved_stops)
+    ExpandableListView elvSavedStops;
 
     private SavedStopAdapter adapter;
-    private RecyclerViewExpandableItemManager itemManager;
-    private RecyclerViewDragDropManager dragDropManager;
-    private RecyclerView.Adapter wrappedAdapter;
     private SavedStopsListener savedStopsListener;
 
     public SavedStopsFragment() {}
@@ -64,66 +57,14 @@ public class SavedStopsFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        itemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
-        dragDropManager = new RecyclerViewDragDropManager();
+        ArrayList<SavedGroupModel> groups = SavedStopUtils.getSavedStopGroups(getContext());
+        adapter = new SavedStopAdapter(getContext(), groups);
+        adapter.setOnClickListener(onClickListener);
 
-        adapter = new SavedStopAdapter(getContext(), itemManager);
-        adapter.setStopClickListener(new SavedStopAdapter.StopClickListener() {
-            @Override
-            public void onGroupItemRemoved(int groupPosition) {
-                //TODO
-                Log.d("SavedStopsFragment", "onGroupItemRemoved: " + groupPosition);
-            }
-
-            @Override
-            public void onChildItemRemoved(int groupPosition, int childPosition) {
-                //TODO
-                Log.d("SavedStopsFragment", "onChildItemRemoved: " + groupPosition);
-            }
-
-            @Override
-            public void onStopClicked(SavedStopModel stop) {
-                //TODO
-                Log.d("SavedStopsFragment", "onStopClicked");
-            }
-        });
-
-        wrappedAdapter = itemManager.createWrappedAdapter(adapter);
-        wrappedAdapter = dragDropManager.createWrappedAdapter(wrappedAdapter);
-
-        rvSavedStops.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvSavedStops.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
-        rvSavedStops.setAdapter(wrappedAdapter);
-
-        dragDropManager.attachRecyclerView(rvSavedStops);
-
-        itemManager.expandAll();
-    }
-
-    @Override
-    public void onDestroyView() {
-        if (dragDropManager != null) {
-            dragDropManager.release();
-            dragDropManager = null;
+        elvSavedStops.setAdapter(adapter);
+        for (int i = 0; i < groups.size(); i++) {
+            elvSavedStops.expandGroup(i, true);
         }
-
-        if (itemManager != null) {
-            itemManager.release();
-            itemManager = null;
-        }
-
-        if (rvSavedStops != null) {
-            rvSavedStops.setAdapter(null);
-            rvSavedStops = null;
-        }
-
-        if (wrappedAdapter != null) {
-            WrapperAdapterUtils.releaseAll(wrappedAdapter);
-            wrappedAdapter = null;
-        }
-        adapter = null;
-
-        super.onDestroyView();
     }
 
     @Override
@@ -207,6 +148,45 @@ public class SavedStopsFragment extends BaseFragment {
 
     private void createGroup(String groupName) {
         SavedStopUtils.createGroup(getContext(), groupName);
-        adapter.notifyItemInserted(itemManager.getGroupCount() - 1);
+        updateData();
     }
+
+    private void updateData() {
+        if (adapter != null) {
+            adapter.setData(SavedStopUtils.getSavedStopGroups(getContext()));
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private SavedStopAdapter.OnClickListener onClickListener =
+            new SavedStopAdapter.OnClickListener() {
+                @Override
+                public void onGroupExpanded(int groupPosition) {
+                    elvSavedStops.expandGroup(groupPosition);
+                }
+
+                @Override
+                public void onGroupCollapsed(int groupPosition) {
+                    elvSavedStops.collapseGroup(groupPosition);
+                }
+
+                @Override
+                public void onGroupRemoved(int groupPosition) {
+                    SavedStopUtils.removeGroup(getContext(), groupPosition);
+                    updateData();
+                }
+
+                @Override
+                public void onStopRemoved(int groupPosition, int stopPosition) {
+                    SavedStopUtils.removeStop(getContext(), groupPosition, stopPosition);
+                    updateData();
+                }
+
+                @Override
+                public void onStopClicked(SavedStopModel stop) {
+                    if (savedStopsListener != null) {
+                        savedStopsListener.onStopClicked(stop);
+                    }
+                }
+            };
 }

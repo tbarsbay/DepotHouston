@@ -81,6 +81,22 @@ public class SavedStopUtils {
         saveGroupsToSharedPreferences(context, savedGroups);
     }
 
+    public static void removeGroup(Context context, int groupPosition) {
+        ArrayList<SavedGroupModel> groups = getSavedStopGroups(context);
+        if (groupPosition < 0 || groupPosition >= groups.size()) return;
+        groups.remove(groupPosition);
+        saveGroupsToSharedPreferences(context, groups);
+    }
+
+    public static void removeStop(Context context, int groupPosition, int stopPosition) {
+        ArrayList<SavedGroupModel> groups = getSavedStopGroups(context);
+        if (groupPosition < 0 || groupPosition >= groups.size()) return;
+        SavedGroupModel group = groups.get(groupPosition);
+        if (stopPosition < 0 || stopPosition >= group.getStops().size()) return;
+        group.getStops().remove(stopPosition);
+        saveGroupsToSharedPreferences(context, groups);
+    }
+
     private static void saveGroupsToSharedPreferences(@NonNull Context context, @NonNull ArrayList<SavedGroupModel> savedGroups) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String savedStopsString = new Gson().toJson(savedGroups);

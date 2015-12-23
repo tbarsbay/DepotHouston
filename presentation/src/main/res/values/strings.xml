@@ -45,4 +45,5 @@
     <string name="something_went_wrong_try_again">Oops - something went wrong!\nPlease tap to try again.</string>
     <string name="save">Save</string>
     <string name="save_stop_to_group">Save stop to group</string>
+    <string name="remove">Remove</string>
 </resources>
