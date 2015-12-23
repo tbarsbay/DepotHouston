@@ -48,13 +48,21 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_arrival_list"
-        android:scrollbars="vertical"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_arrival"
-        android:layout_below="@id/layout_arrival_list_headers"/>
+        android:layout_below="@id/layout_arrival_list_headers">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_arrival_list"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_item_arrival"
+            android:layout_below="@id/layout_arrival_list_headers"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/layout_progress"
@@ -71,7 +79,20 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/view_retry" />
+    <RelativeLayout
+        android:id="@+id/rl_retry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_below="@id/layout_arrival_list_headers">
+
+        <Button
+            android:id="@+id/btn_retry"
+            style="@style/RetryButton"
+            android:text="@string/btn_text_retry" />
+
+    </RelativeLayout>
 
     <com.tamerbarsbay.depothouston.presentation.view.FloatingActionButton
         android:id="@+id/fab_arrival_list_refresh"

@@ -4,6 +4,7 @@ package com.tamerbarsbay.depothouston.presentation.view.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,6 +53,9 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Bind(R.id.rv_arrival_list)
     RecyclerView rvArrivals;
 
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
 //    @Bind(R.id.tv_arrival_list_last_updated)
 //    TextView tvLastUpdated;
 
@@ -63,9 +67,6 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
     @Bind(R.id.ib_arrival_list_notifications)
     ImageButton ibNotification;
-
-    @Bind(R.id.layout_progress)
-    RelativeLayout rlProgress;
 
     @Bind(R.id.rl_retry)
     RelativeLayout rlRetry;
@@ -143,6 +144,13 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
         arrivalsLayoutManager = new LinearLayoutManager(getContext());
         rvArrivals.setLayoutManager(arrivalsLayoutManager);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadArrivalList();
+            }
+        });
+
         return fragmentView;
     }
 
@@ -181,10 +189,6 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
             if (stopId != null) {
                 setFavoriteIcon();
             }
-
-//            //TODO TEMPORARY - REMOVE
-//            Log.d("ArrivalListFragment", "Saving stop: " + stopName);
-//            SavedStopUtils.saveStopToGroup(getContext(), "Test Group 2", new SavedStopModel(0, stopId, stopName)); //TODO 0 id temp
         }
     }
 
@@ -218,12 +222,16 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
     @Override
     public void showLoadingView() {
-        rlProgress.setVisibility(View.VISIBLE);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(true);
+        }
     }
 
     @Override
     public void hideLoadingView() {
-        rlProgress.setVisibility(View.GONE);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
