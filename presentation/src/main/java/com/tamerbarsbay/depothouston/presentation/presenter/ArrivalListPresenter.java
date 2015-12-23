@@ -14,6 +14,8 @@ import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -87,6 +89,7 @@ public class ArrivalListPresenter implements Presenter {
 
     private void showArrivalsInView(Collection<Arrival> arrivals) {
         final Collection<ArrivalModel> arrivalModels = this.arrivalModelDataMapper.transform(arrivals);
+        Collections.sort((List<ArrivalModel>)arrivalModels, new ArrivalComparator());
         this.arrivalListView.renderArrivalList(arrivalModels);
     }
 
@@ -113,6 +116,20 @@ public class ArrivalListPresenter implements Presenter {
             showViewRetry();
         }
 
+    }
+
+    private class ArrivalComparator implements Comparator<ArrivalModel> {
+
+        /**
+         * Sorts arrivals by arrival time (soonest to latest).
+         * @param arrival1
+         * @param arrival2
+         * @return
+         */
+        public int compare(ArrivalModel arrival1, ArrivalModel arrival2) {
+            return Long.valueOf(arrival1.getMinsUntilArrival())
+                    .compareTo(arrival2.getMinsUntilArrival());
+        }
     }
 
 }
