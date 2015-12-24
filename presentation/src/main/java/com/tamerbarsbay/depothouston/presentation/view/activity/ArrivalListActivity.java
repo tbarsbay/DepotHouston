@@ -60,6 +60,9 @@ public class ArrivalListActivity extends BaseActivity implements HasComponent<Ar
     private void initializeActivity(Bundle savedInstanceState) {
         stopId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_ID);
         stopName = getIntent().getStringExtra(INTENT_EXTRA_PARAM_STOP_NAME);
+        if (stopName != null) {
+            getSupportActionBar().setTitle(stopName);
+        }
         if (savedInstanceState == null) {
             addFragment(R.id.fl_arrival_list_fragment, ArrivalListFragment.newInstance(stopId, stopName));
         }

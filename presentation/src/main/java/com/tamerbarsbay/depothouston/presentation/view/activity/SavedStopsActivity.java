@@ -8,9 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.SavedStopsFragment;
 
-public class SavedStopsActivity extends NavigationDrawerActivity {
+public class SavedStopsActivity
+        extends NavigationDrawerActivity
+        implements SavedStopsFragment.SavedStopsListener {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, SavedStopsActivity.class);
@@ -26,14 +29,13 @@ public class SavedStopsActivity extends NavigationDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_stops);
 
-        FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fl_saved_stops_fragment, SavedStopsFragment.newInstance());
         fragmentTransaction.commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_saved_stops, menu);
         return true;
     }
@@ -48,5 +50,12 @@ public class SavedStopsActivity extends NavigationDrawerActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStopClicked(SavedStopModel stop) {
+        if (stop != null) {
+            navigator.navigateToArrivalList(this, stop.getStopId(), stop.getName());
+        }
     }
 }

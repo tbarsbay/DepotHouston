@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.RouteViewHolder> {
+public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHolder> {
 
     public interface OnItemClickListener {
         void onRouteItemClicked(RouteModel routeModel);
@@ -27,7 +27,7 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.Rout
 
     private OnItemClickListener onItemClickListener;
 
-    public RouteListAdapter(Context context, Collection<RouteModel> routeModels) {
+    public RouteAdapter(Context context, Collection<RouteModel> routeModels) {
         this.validateRouteModels(routeModels);
         this.layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -40,14 +40,14 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.Rout
     }
 
     @Override
-    public RouteListAdapter.RouteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RouteAdapter.RouteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = this.layoutInflater.inflate(R.layout.list_item_route, viewGroup, false);
         RouteViewHolder routeViewHolder = new RouteViewHolder(view);
         return routeViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RouteListAdapter.RouteViewHolder routeViewHolder, int position) {
+    public void onBindViewHolder(RouteAdapter.RouteViewHolder routeViewHolder, int position) {
         final RouteModel routeModel = this.routeModels.get(position);
         routeViewHolder.tvName.setText(routeModel.getRouteName());
         routeViewHolder.tvLongName.setText(routeModel.getLongName());
@@ -55,8 +55,8 @@ public class RouteListAdapter extends RecyclerView.Adapter<RouteListAdapter.Rout
         routeViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (RouteListAdapter.this.onItemClickListener != null) {
-                    RouteListAdapter.this.onItemClickListener.onRouteItemClicked(routeModel);
+                if (RouteAdapter.this.onItemClickListener != null) {
+                    RouteAdapter.this.onItemClickListener.onRouteItemClicked(routeModel);
                 }
             }
         });

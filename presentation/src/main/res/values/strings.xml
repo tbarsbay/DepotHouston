@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Depot Houston</string>
 
-    <string name="exception_message_no_connection">No network connection</string>
+    <string name="exception_message_no_connection">No network connection available - try again later</string>
     <string name="exception_message_stop_not_found">Error - stop not found.</string>
     <string name="exception_message_generic">Error</string>
     <string name="error_invalid_user_location_tap_feature_remains">There was an error getting your location. You can still tap anywhere on the map to see stops.</string>
@@ -42,4 +42,11 @@
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="saved_group_name_examples">Examples: Work, Home, Weekend, etc.</string>
+    <string name="something_went_wrong_try_again">Oops - something went wrong!\nPlease tap to try again.</string>
+    <string name="save">Save</string>
+    <string name="save_stop_to_group">Save stop to group</string>
+    <string name="remove">Remove</string>
+    <string name="title_activity_recent_stops">Recent Stops</string>
+    <string name="no_recent_stops">No recent stops to show</string>
+    <string name="action_my_location">My Location</string>
 </resources>

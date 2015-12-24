@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primary"
+    android:elevation="4dp">
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_arrival_list_last_updated"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/text_secondary_light"-->
+        <!--android:paddingLeft="48dp"-->
+        <!--tools:text="Updated: 05:20pm"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageButton
+            android:id="@+id/ib_arrival_list_favorite"
+            android:src="@drawable/ic_star_outline"
+            style="@style/ArrivalList.HeaderButton"/>
+
+        <ImageButton
+            android:id="@+id/ib_arrival_list_map"
+            android:src="@drawable/ic_map"
+            style="@style/ArrivalList.HeaderButton"/>
+
+        <ImageButton
+            android:id="@+id/ib_arrival_list_notifications"
+            android:src="@drawable/ic_notifications"
+            style="@style/ArrivalList.HeaderButton"/>
+
+    </LinearLayout>
+
+</LinearLayout>

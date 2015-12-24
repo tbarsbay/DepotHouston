@@ -1,46 +1,110 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tamerbarsbay.depothouston.presentation.view.fragment.ArrivalListFragment">
 
+    <include
+        android:id="@+id/layout_arrival_list_actions"
+        layout="@layout/view_arrival_list_actions" />
+
+    <include
+        layout="@layout/view_save_stop"
+        android:id="@+id/layout_save_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_arrival_list_actions"/>
+
     <LinearLayout
+        android:id="@+id/layout_arrival_list_headers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@color/light_blue_100">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/light_blue_100"
+        android:layout_below="@id/layout_save_stop">
 
         <TextView
             android:layout_weight="@integer/arrival_route_name_weight"
             android:text="@string/route"
             android:gravity="center_horizontal"
-            style="@style/ArrivalList.Headings"/>
+            style="@style/ArrivalList.Heading"/>
 
         <TextView
             android:layout_weight="@integer/arrival_destination_name_weight"
             android:text="@string/destination"
-            style="@style/ArrivalList.Headings"/>
+            style="@style/ArrivalList.Heading"/>
 
         <TextView
             android:layout_weight="@integer/arrival_time_weight"
             android:text="@string/arriving"
             android:gravity="center_horizontal"
-            style="@style/ArrivalList.Headings"/>
+            style="@style/ArrivalList.Heading"/>
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_arrival_list"
-        android:scrollbars="vertical"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_arrival"/>
+        android:layout_below="@id/layout_arrival_list_headers">
 
-    <include layout="@layout/view_progress" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_arrival_list"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_item_arrival"
+            android:layout_below="@id/layout_arrival_list_headers"/>
 
-    <include layout="@layout/view_retry" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_arrival_list_headers"
+        android:visibility="gone"
+        android:background="@color/white">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_retry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_below="@id/layout_arrival_list_headers">
+
+        <Button
+            android:id="@+id/btn_retry"
+            style="@style/RetryButton"
+            android:text="@string/btn_text_retry" />
+
+    </RelativeLayout>
+
+    <com.tamerbarsbay.depothouston.presentation.view.FloatingActionButton
+        android:id="@+id/fab_arrival_list_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:fab_colorNormal="@color/pink_500"
+        app:fab_size="normal"
+        app:fab_colorPressed="@color/pink_200"
+        app:fab_icon="@drawable/ic_refresh"/>
+
+</RelativeLayout>

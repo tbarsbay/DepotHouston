@@ -14,6 +14,8 @@ import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,52 +48,49 @@ public class ArrivalListPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        this.getArrivalsByStopUseCase.unsubscribe();
+        getArrivalsByStopUseCase.unsubscribe();
     }
 
     public void initialize() {
-        this.loadArrivalList();
+        loadArrivalList();
     }
 
     private void loadArrivalList() {
-        this.hideViewRetry();
-        this.showViewLoading();
-        this.getArrivalList();
-    }
-
-    public void onArrivalClicked(ArrivalModel arrivalModel) {
-        //TODO necessary? followArrival?
+        hideViewRetry();
+        showViewLoading();
+        getArrivalList();
     }
 
     private void showViewLoading() {
-        this.arrivalListView.showLoadingView();
+        arrivalListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.arrivalListView.hideLoadingView();
+        arrivalListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.arrivalListView.showRetryView();
+        arrivalListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.arrivalListView.hideRetryView();
+        arrivalListView.hideRetryView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage = ErrorMessageFactory.create(this.arrivalListView.getContext(),
+        String errorMessage = ErrorMessageFactory.create(arrivalListView.getContext(),
                 errorBundle.getException());
-        this.arrivalListView.showError(errorMessage);
+        arrivalListView.showError(errorMessage);
     }
 
     private void showArrivalsInView(Collection<Arrival> arrivals) {
-        final Collection<ArrivalModel> arrivalModels = this.arrivalModelDataMapper.transform(arrivals);
-        this.arrivalListView.renderArrivalList(arrivalModels);
+        final Collection<ArrivalModel> arrivalModels = arrivalModelDataMapper.transform(arrivals);
+        Collections.sort((List<ArrivalModel>)arrivalModels, new ArrivalComparator());
+        arrivalListView.renderArrivalList(arrivalModels);
     }
 
     private void getArrivalList() {
-        this.getArrivalsByStopUseCase.execute(new ArrivalListSubscriber());
+        getArrivalsByStopUseCase.execute(new ArrivalListSubscriber());
     }
 
     private final class ArrivalListSubscriber extends DefaultSubscriber<List<Arrival>> {
@@ -113,6 +112,20 @@ public class ArrivalListPresenter implements Presenter {
             showViewRetry();
         }
 
+    }
+
+    private class ArrivalComparator implements Comparator<ArrivalModel> {
+
+        /**
+         * Sorts arrivals by arrival time (soonest to latest).
+         * @param arrival1
+         * @param arrival2
+         * @return
+         */
+        public int compare(ArrivalModel arrival1, ArrivalModel arrival2) {
+            return Long.valueOf(arrival1.getMinsUntilArrival())
+                    .compareTo(arrival2.getMinsUntilArrival());
+        }
     }
 
 }

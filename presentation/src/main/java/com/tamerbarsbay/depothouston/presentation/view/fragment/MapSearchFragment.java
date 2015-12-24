@@ -10,8 +10,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -36,6 +38,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MapSearchFragment
     extends BaseFragment implements UserLocationManager.UserLocationListener, MapSearchView {
@@ -43,11 +46,11 @@ public class MapSearchFragment
     @Bind(R.id.rv_map_search_stops)
     RecyclerView rvStops;
 
-    @Bind(R.id.tv_map_search_empty)
-    TextView tvEmptyStops;
+    @Bind(R.id.layout_map_search_empty)
+    LinearLayout layoutEmpty;
 
-    @Bind(R.id.tv_map_search_prompt)
-    TextView tvInitialPrompt;
+    @Bind(R.id.layout_map_search_prompt)
+    LinearLayout layoutPrompt;
 
     @Bind(R.id.tv_map_search_center_address)
     TextView tvCenterAddress;
@@ -61,6 +64,9 @@ public class MapSearchFragment
     @Bind(R.id.layout_progress)
     RelativeLayout layoutProgress;
 
+    @Bind(R.id.layout_map_search_retry)
+    LinearLayout layoutRetry;
+
     @Inject
     MapSearchPresenter mapSearchPresenter;
 
@@ -73,13 +79,16 @@ public class MapSearchFragment
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 100;
     public static final String DEFAULT_RADIUS_MILES = ".25"; //TODO get from user settings
 
-    // Coordinates for slightly outside the Houston borders
-    private static final double HOUSTON_SOUTHWEST_LAT = 29.393960;
-    private static final double HOUSTON_SOUTHWEST_LON = -95.083066;
+    private static final double HOUSTON_SOUTHWEST_LAT = 29.431005;
+    private static final double HOUSTON_SOUTHWEST_LON = -95.885714;
     private static final double HOUSTON_NORTHEAST_LAT = 30.204589;
     private static final double HOUSTON_NORTHEAST_LON = -94.871179;
     private static final double HOUSTON_CENTER_LAT = 29.760215;
     private static final double HOUSTON_CENTER_LON =  -95.370019;
+
+    /**
+     * Coordinates for slightly outside the Houston borders, used for centering the map on Houston
+     */
     private static final LatLngBounds HOUSTON_BOUNDS = new LatLngBounds(
             new LatLng(HOUSTON_SOUTHWEST_LAT, HOUSTON_SOUTHWEST_LON),
             new LatLng(HOUSTON_NORTHEAST_LAT, HOUSTON_NORTHEAST_LON)
@@ -92,11 +101,47 @@ public class MapSearchFragment
     public MapSearchFragment() {}
 
     public interface MapSearchListener {
+        /**
+         * Plot a collection of transit stops on the map using markers.
+         * @param stops
+         */
         void renderStopList(Collection<StopModel> stops);
+
+        /**
+         * Handle the user tapping on a specific transit stop. This will normally open up the
+         * arrivals screen for that stop.
+         * @param stop
+         */
         void viewStop(StopModel stop);
+
+        /**
+         * Clear the map of all markers and polylines.
+         */
         void clearMap();
+
+        /**
+         * Plot a marker on the map to designate the current center location around which
+         * nearby stops are being shown.
+         * @param lat
+         * @param lon
+         */
         void plotCenterMarker(double lat, double lon);
-        void centerMapOn(LatLng location);
+
+        /**
+         * Center the map on a specific location.
+         * @param location
+         */
+        void centerMapOn(LatLng location, int zoomLevel);
+
+        /**
+         * Expand the map's size on the screen when there are no stops to show in the list view.
+         */
+        void expandMapView();
+
+        /**
+         * Shrink the map's size on the screen when there is a list of stops to show to the user.
+         */
+        void collapseMapView();
     }
 
     private UserLocationManager getUserLocationManager() {
@@ -104,6 +149,12 @@ public class MapSearchFragment
             userLocationManager = new UserLocationManager(getContext(), this);
         }
         return userLocationManager;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -129,6 +180,44 @@ public class MapSearchFragment
         getComponent(MapSearchComponent.class).inject(this);
         mapSearchPresenter.setView(this);
         getUserLocationManager();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_map_search, menu);
+        menu.findItem(R.id.action_my_location).setVisible(hasUserGrantedLocationPermission());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_my_location:
+                forceCenterUserLocation();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_LOCATION_PERMISSION:
+                // If the request was cancelled, the results array is empty
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Granted, get the user's location and show nearby stops
+                    getUserLocationAndLoadNearbyStops();
+                    getActivity().invalidateOptionsMenu();
+                } else {
+                    // Denied, center on Houston
+                    centerMapOnHouston();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override
@@ -173,35 +262,50 @@ public class MapSearchFragment
         }
     }
 
-    private void getUserLocationAndLoadNearbyStops() {
+    /**
+     * Centers the map on the user location, regardless of whether or not they're in Houston.
+     */
+    private void forceCenterUserLocation() {
         Location userLocation = getUserLocationManager().getUserLocation();
         if (userLocation != null) {
-            Log.d("MapSearchFragment", "user location not null"); //TODO temp log
-            // If the user is in Houston, center on their location. If the user is outside of
-            // Houston, center on Houston.
-            if (HOUSTON_BOUNDS.contains(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))) {
-                // User is in Houston area
+            getNearbyStops(
+                    getString(R.string.your_location),
+                    userLocation.getLatitude(),
+                    userLocation.getLongitude(),
+                    DEFAULT_RADIUS_MILES);
+        }
+    }
+
+    private void getUserLocationAndLoadNearbyStops() {
+        Location userLocation = getUserLocationManager().getUserLocation();
+
+        if (userLocation != null) {
+            LatLng userLocationLatLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+            if (HOUSTON_BOUNDS.contains(userLocationLatLng)) {
+                // User is in Houston area, center on them
                 getNearbyStops(
                         getString(R.string.your_location),
                         userLocation.getLatitude(),
                         userLocation.getLongitude(),
                         DEFAULT_RADIUS_MILES);
-            } else {
-                // User is not in the Houston area - center the map on Houston.
-                if (mapSearchListener != null) {
-                    mapSearchListener.centerMapOn(new LatLng(HOUSTON_CENTER_LAT, HOUSTON_CENTER_LON));
-                }
+                return;
             }
         } else {
-            Log.d("MapSearchFragment", "user location null"); //TODO temp log
             showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
         }
+
+        // Center the map on Houston by default (in case user location is null or outside Houston)
+        centerMapOnHouston();
+    }
+
+    private void centerMapOnHouston() {
+        centerMapOn(HOUSTON_CENTER_LAT, HOUSTON_CENTER_LON, ZOOM_LEVEL_FAR);
     }
 
     public void getNearbyStops(String centerAddress, double lat, double lon, String radiusInMiles) {
         // Hide the initial user prompt as soon as a search is mad
-        if (tvInitialPrompt != null && tvInitialPrompt.getVisibility() == View.VISIBLE) {
-            tvInitialPrompt.setVisibility(View.GONE);
+        if (layoutPrompt != null && layoutPrompt.getVisibility() == View.VISIBLE) {
+            layoutPrompt.setVisibility(View.GONE);
         }
         if (mapSearchPresenter != null && adapter != null) {
             adapter.setCenterLocation(new LatLng(lat, lon));
@@ -216,8 +320,7 @@ public class MapSearchFragment
                     .setAction(R.string.OK, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ActivityCompat.requestPermissions(
-                                    getActivity(),
+                            requestPermissions(
                                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                     REQUEST_CODE_LOCATION_PERMISSION);
                         }
@@ -235,23 +338,24 @@ public class MapSearchFragment
             // Just get user location and load nearby stops
             getUserLocationAndLoadNearbyStops();
         } else {
-            if (ActivityCompat.checkSelfPermission(
-                    getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (!hasUserGrantedLocationPermission()) {
                 // User has not granted location permission
-                Log.d("MapSearch", "User has not granted permission"); //TODO temp logs
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    Log.d("MapSearch", "Should show permission rationale");
                     showPermissionRationale();
                 } else {
-                    Log.d("MapSearch", "Should not show permission rationale");
                     showEnablePermissionMessage();
+                    centerMapOnHouston();
                 }
             } else {
-                Log.d("MapSearch", "User has granted permission");
                 // User has granted location permission
                 getUserLocationAndLoadNearbyStops();
             }
         }
+    }
+
+    private boolean hasUserGrantedLocationPermission() {
+        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -263,6 +367,13 @@ public class MapSearchFragment
     public void clearMap() {
         if (mapSearchListener != null) {
             mapSearchListener.clearMap();
+        }
+    }
+
+    @Override
+    public void centerMapOn(double lat, double lon, int zoomLevel) {
+        if (mapSearchListener != null) {
+            mapSearchListener.centerMapOn(new LatLng(lat, lon), zoomLevel);
         }
     }
 
@@ -280,13 +391,8 @@ public class MapSearchFragment
             }
             adapter.setStopsCollection(stopModels);
             if (mapSearchListener != null) {
-                Log.d("MapSearchFragment", "listener not null"); //TODO temp
                 mapSearchListener.renderStopList(stopModels);
-            } else {
-                Log.d("MapSearchFragment", "listener null"); //TODO temp
             }
-        } else {
-            Log.d("MapSearchFragment", "stop models null"); //TODO temp
         }
     }
 
@@ -320,6 +426,7 @@ public class MapSearchFragment
     public void showLoadingView() {
         if (layoutProgress != null) {
             layoutProgress.setVisibility(View.VISIBLE);
+            expandMapView();
         }
     }
 
@@ -335,6 +442,7 @@ public class MapSearchFragment
         if (rvStops != null && layoutStopsHeader != null) {
             layoutStopsHeader.setVisibility(View.VISIBLE);
             rvStops.setVisibility(View.VISIBLE);
+            collapseMapView();
         }
     }
 
@@ -348,25 +456,52 @@ public class MapSearchFragment
 
     @Override
     public void showRetryView() {
-        //TODO
+        if (layoutRetry != null) {
+            layoutRetry.setVisibility(View.VISIBLE);
+            expandMapView();
+        }
     }
 
     @Override
     public void hideRetryView() {
-        //TODO
+        if (layoutRetry != null) {
+            layoutRetry.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void showEmptyView() {
-        if (tvEmptyStops != null) {
-            tvEmptyStops.setVisibility(View.VISIBLE);
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(View.VISIBLE);
+            expandMapView();
         }
     }
 
     @Override
     public void hideEmptyView() {
-        if (tvEmptyStops != null) {
-            tvEmptyStops.setVisibility(View.GONE);
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void expandMapView() {
+        if (mapSearchListener != null) {
+            mapSearchListener.expandMapView();
+        }
+    }
+
+    @Override
+    public void collapseMapView() {
+        if (mapSearchListener != null) {
+            mapSearchListener.collapseMapView();
+        }
+    }
+
+    @OnClick(R.id.layout_map_search_retry)
+    void onRetryClicked() {
+        if (mapSearchPresenter != null) {
+            mapSearchPresenter.initializePreviousRequest();
         }
     }
 

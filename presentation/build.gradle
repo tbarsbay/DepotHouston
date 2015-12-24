@@ -44,6 +44,7 @@ dependencies {
     compile presentationDependencies.androidSupportLib
     compile presentationDependencies.androidDesignSupportLib
     compile presentationDependencies.commonsLang
+    compile presentationDependencies.fab
     provided presentationDependencies.javaxAnnotation
     compile 'com.google.android.gms:play-services-maps:8.1.0'
     compile 'com.google.android.gms:play-services-analytics:8.1.0'

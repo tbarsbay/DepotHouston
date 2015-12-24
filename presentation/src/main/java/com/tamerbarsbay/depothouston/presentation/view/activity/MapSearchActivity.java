@@ -6,6 +6,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,20 +31,22 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MapSearchActivity extends NavigationDrawerActivity
         implements HasComponent<MapSearchComponent>, MapSearchFragment.MapSearchListener {
 
+    @Bind(R.id.layout_map_search_container)
+    FrameLayout layoutStops;
+
     MapSearchComponent mapSearchComponent;
 
     private GoogleMap mMap;
 
-    private static final int DEFAULT_ZOOM_LEVEL_PRIMARY = 15;
-    private static final int DEFAULT_ZOOM_LEVEL_SECONDARY = 12;
-
-
     private String centerLocationName = "";
+
+    private boolean isMapViewExpanded = true;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapSearchActivity.class);
@@ -161,11 +167,38 @@ public class MapSearchActivity extends NavigationDrawerActivity
         }
     }
 
+    private void showError(String message) {
+        MapSearchFragment fragment = getMapSearchFragment();
+        if (fragment != null) {
+            fragment.showError(message);
+        }
+    }
+
     @Override
-    public void centerMapOn(LatLng location) {
+    public void centerMapOn(LatLng location, int zoomLevel) {
         if (mMap != null) {
             mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL_SECONDARY));
+                    CameraUpdateFactory.newLatLngZoom(location, zoomLevel));
+        }
+    }
+
+    @Override
+    public void expandMapView() {
+        if (layoutStops != null && !isMapViewExpanded) {
+            Animation a = new ExpandAnimation(3, 1);
+            a.setDuration(300);
+            layoutStops.startAnimation(a);
+            isMapViewExpanded = !isMapViewExpanded;
+        }
+    }
+
+    @Override
+    public void collapseMapView() {
+        if (layoutStops != null && isMapViewExpanded) {
+            Animation a = new ExpandAnimation(1, 3);
+            a.setDuration(300);
+            layoutStops.startAnimation(a);
+            isMapViewExpanded = !isMapViewExpanded;
         }
     }
 
@@ -174,22 +207,52 @@ public class MapSearchActivity extends NavigationDrawerActivity
         public void onMapClick(final LatLng latLng) {
             clearMap();
 
-            // Use Google's Geocoder API to search for the tapped location
-            Geocoder geo = new Geocoder(getBaseContext(), Locale.US);
-            centerLocationName = "Error loading address"; // set default value in case Geocoder can't find address
-            try {
-                List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            // We check for a valid network connection in this particular spot because using
+            // Google's Geocoder API blocks the UI thread briefly and we'd rather not
+            // waste time on it if we already know the user has no network connection.
+            if (validNetworkConnection()) {
+                // Use Google's Geocoder API to search for the tapped location
+                Geocoder geo = new Geocoder(getBaseContext(), Locale.US);
+                centerLocationName = "Error loading address"; // set default value in case Geocoder can't find address
+                try {
+                    List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
 
-                if (!addresses.isEmpty()) {
-                    centerLocationName = addresses.get(0).getAddressLine(0);
+                    if (!addresses.isEmpty()) {
+                        centerLocationName = addresses.get(0).getAddressLine(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
-            mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL_PRIMARY));
+                getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
+            } else {
+                showError(getString(R.string.exception_message_no_connection));
+            }
         }
     };
+
+    private class ExpandAnimation extends Animation {
+
+        private final float mStartWeight;
+        private final float mDeltaWeight;
+
+        public ExpandAnimation(float startWeight, float endWeight) {
+            mStartWeight = startWeight;
+            mDeltaWeight = endWeight - startWeight;
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            if (layoutStops != null) {
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutStops.getLayoutParams();
+                lp.weight = (mStartWeight + (mDeltaWeight * interpolatedTime));
+                layoutStops.setLayoutParams(lp);
+            }
+        }
+
+        @Override
+        public boolean willChangeBounds() {
+            return true;
+        }
+    }
 }

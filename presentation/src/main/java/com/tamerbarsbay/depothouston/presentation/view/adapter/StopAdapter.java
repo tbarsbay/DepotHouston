@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopViewHolder> {
+public class StopAdapter extends RecyclerView.Adapter<StopAdapter.StopViewHolder> {
 
     public interface OnItemClickListener {
         void onStopItemClicked(StopModel stopModel);
@@ -27,7 +27,7 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
 
     private OnItemClickListener onItemClickListener;
 
-    public StopListAdapter(Context context, Collection<StopModel> stopModels) {
+    public StopAdapter(Context context, Collection<StopModel> stopModels) {
         validateStopModels(stopModels);
         layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -40,21 +40,21 @@ public class StopListAdapter extends RecyclerView.Adapter<StopListAdapter.StopVi
     }
 
     @Override
-    public StopListAdapter.StopViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public StopAdapter.StopViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View view = layoutInflater.inflate(R.layout.list_item_stop, viewGroup, false);
         StopViewHolder stopViewHolder = new StopViewHolder(view);
         return stopViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(StopListAdapter.StopViewHolder stopViewHolder, int position) {
+    public void onBindViewHolder(StopAdapter.StopViewHolder stopViewHolder, int position) {
         final StopModel stopModel = stopModels.get(position);
         stopViewHolder.tvName.setText(stopModel.getName());
         stopViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (StopListAdapter.this.onItemClickListener != null) {
-                    StopListAdapter.this.onItemClickListener.onStopItemClicked(stopModel);
+                if (StopAdapter.this.onItemClickListener != null) {
+                    StopAdapter.this.onItemClickListener.onStopItemClicked(stopModel);
                 }
             }
         });

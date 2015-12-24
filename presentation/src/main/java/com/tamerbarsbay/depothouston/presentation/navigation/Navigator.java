@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.tamerbarsbay.depothouston.presentation.view.activity.ArrivalListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.MapSearchActivity;
+import com.tamerbarsbay.depothouston.presentation.view.activity.RecentStopsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.SavedStopsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity;
@@ -49,7 +50,10 @@ public class Navigator {
     }
 
     public void navigateToRecentStops(Context context) {
-        //TODO
+        if (context != null) {
+            Intent intent = RecentStopsActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
     }
 
     public void navigateToSettings(Context context) {

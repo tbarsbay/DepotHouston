@@ -1,5 +1,8 @@
 package com.tamerbarsbay.depothouston.presentation.view.activity;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -78,6 +81,21 @@ public class BaseActivity extends ActionBarActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * Returns whether or not the user currently has a valid network connection.
+     * @return
+     */
+    protected boolean validNetworkConnection() {
+        boolean isConnected;
+
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
     }
 
 }
