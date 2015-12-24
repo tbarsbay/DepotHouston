@@ -46,4 +46,6 @@
     <string name="save">Save</string>
     <string name="save_stop_to_group">Save stop to group</string>
     <string name="remove">Remove</string>
+    <string name="title_activity_recent_stops">Recent Stops</string>
+    <string name="no_recent_stops">No recent stops to show</string>
 </resources>

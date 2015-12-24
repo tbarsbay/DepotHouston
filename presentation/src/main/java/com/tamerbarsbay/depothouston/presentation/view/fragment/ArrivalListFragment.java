@@ -21,11 +21,13 @@ import android.widget.Spinner;
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ArrivalComponent;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
+import com.tamerbarsbay.depothouston.presentation.model.RecentStopModel;
 import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.ArrivalListPresenter;
+import com.tamerbarsbay.depothouston.presentation.util.RecentStopUtils;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
-import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalListAdapter;
+import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,7 +94,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @Bind(R.id.btn_save_stop_save)
     Button btnSave;
 
-    private ArrivalListAdapter arrivalsAdapter;
+    private ArrivalAdapter arrivalsAdapter;
     private LinearLayoutManager arrivalsLayoutManager;
 
     private ArrivalListListener arrivalListListener;
@@ -185,10 +187,11 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
         if (getArguments() != null) {
             stopId = getArguments().getString(ARGUMENT_KEY_STOP_ID, null);
             stopName = getArguments().getString(ARGUMENT_KEY_STOP_NAME, null);
-
-            if (stopId != null) {
-                setFavoriteIcon();
+            if (stopId == null || stopName == null) {
+                return;
             }
+            RecentStopUtils.addRecentStop(getContext(), new RecentStopModel(stopId, stopName));
+            setFavoriteIcon();
         }
     }
 
@@ -196,7 +199,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     public void renderArrivalList(Collection<ArrivalModel> arrivalModels) {
         if (arrivalModels != null) {
             if (arrivalsAdapter == null) {
-                arrivalsAdapter = new ArrivalListAdapter(getActivity(), arrivalModels);
+                arrivalsAdapter = new ArrivalAdapter(getActivity(), arrivalModels);
             } else {
                 arrivalsAdapter.setArrivalsCollection(arrivalModels);
             }
@@ -343,8 +346,8 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
         loadArrivalList();
     }
 
-    private ArrivalListAdapter.OnItemClickListener onItemClickListener =
-            new ArrivalListAdapter.OnItemClickListener() {
+    private ArrivalAdapter.OnItemClickListener onItemClickListener =
+            new ArrivalAdapter.OnItemClickListener() {
                 @Override
                 public void onArrivalItemClicked(ArrivalModel arrivalModel) {
                     if (ArrivalListFragment.this.arrivalListPresenter != null && arrivalModel != null) {

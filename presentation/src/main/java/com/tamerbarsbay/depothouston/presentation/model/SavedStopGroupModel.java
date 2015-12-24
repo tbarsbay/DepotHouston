@@ -7,18 +7,18 @@ import java.util.ArrayList;
 /**
  * Represents a group of user-saved transit stops.
  */
-public class SavedGroupModel {
+public class SavedStopGroupModel {
 
     private final int id;
     private String name;
     private ArrayList<SavedStopModel> stops = new ArrayList<SavedStopModel>();
     private int nextChildId;
 
-    public SavedGroupModel(int id, @NonNull String name) {
+    public SavedStopGroupModel(int id, @NonNull String name) {
         this(id, name, new ArrayList<SavedStopModel>());
     }
 
-    public SavedGroupModel(int id, @NonNull String name, @NonNull ArrayList<SavedStopModel> stops) {
+    public SavedStopGroupModel(int id, @NonNull String name, @NonNull ArrayList<SavedStopModel> stops) {
         this.id = id;
         this.name = name;
         this.stops = stops;

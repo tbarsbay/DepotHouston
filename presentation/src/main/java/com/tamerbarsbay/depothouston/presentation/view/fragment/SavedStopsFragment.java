@@ -16,7 +16,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.tamerbarsbay.depothouston.R;
-import com.tamerbarsbay.depothouston.presentation.model.SavedGroupModel;
+import com.tamerbarsbay.depothouston.presentation.model.SavedStopGroupModel;
 import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.SavedStopAdapter;
@@ -57,7 +57,7 @@ public class SavedStopsFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<SavedGroupModel> groups = SavedStopUtils.getSavedStopGroups(getContext());
+        ArrayList<SavedStopGroupModel> groups = SavedStopUtils.getSavedStopGroups(getContext());
         adapter = new SavedStopAdapter(getContext(), groups);
         adapter.setOnClickListener(onClickListener);
 

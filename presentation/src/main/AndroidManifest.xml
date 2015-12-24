@@ -52,6 +52,10 @@
             android:name=".presentation.view.activity.SavedStopsActivity"
             android:label="@string/title_activity_saved_stops" >
         </activity>
+        <activity
+            android:name=".presentation.view.activity.RecentStopsActivity"
+            android:label="@string/title_activity_recent_stops" >
+        </activity>
     </application>
 
 </manifest>

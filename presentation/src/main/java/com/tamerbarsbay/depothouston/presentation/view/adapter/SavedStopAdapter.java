@@ -12,7 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.tamerbarsbay.depothouston.R;
-import com.tamerbarsbay.depothouston.presentation.model.SavedGroupModel;
+import com.tamerbarsbay.depothouston.presentation.model.SavedStopGroupModel;
 import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 
@@ -23,7 +23,7 @@ import java.util.List;
 public class SavedStopAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<SavedGroupModel> groups = new ArrayList<SavedGroupModel>();
+    private List<SavedStopGroupModel> groups = new ArrayList<SavedStopGroupModel>();
     private final LayoutInflater layoutInflater;
 
     private OnClickListener clickListener;
@@ -36,11 +36,11 @@ public class SavedStopAdapter extends BaseExpandableListAdapter {
         void onStopRemoved(int groupPosition, int childPosition);
     }
 
-    public SavedStopAdapter(Context context, @NonNull Collection<SavedGroupModel> groups) {
+    public SavedStopAdapter(Context context, @NonNull Collection<SavedStopGroupModel> groups) {
         this.context = context;
         layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.groups = (List<SavedGroupModel>) groups;
+        this.groups = (List<SavedStopGroupModel>) groups;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class SavedStopAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.list_item_saved_group, null);
         }
 
-        final SavedGroupModel group = groups.get(groupPosition);
+        final SavedStopGroupModel group = groups.get(groupPosition);
 
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -169,7 +169,7 @@ public class SavedStopAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void setData(@NonNull ArrayList<SavedGroupModel> groups) {
+    public void setData(@NonNull ArrayList<SavedStopGroupModel> groups) {
         this.groups = groups;
     }
 

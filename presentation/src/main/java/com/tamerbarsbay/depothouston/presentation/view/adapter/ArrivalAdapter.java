@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.ArrivalViewHolder> {
+public class ArrivalAdapter extends RecyclerView.Adapter<ArrivalAdapter.ArrivalViewHolder> {
 
     public interface OnItemClickListener {
         void onArrivalItemClicked(ArrivalModel arrivalModel);
@@ -30,7 +30,7 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
 
     private static final String ARRIVAL_IN_MINS_TEMPLATE = "%sm";
 
-    public ArrivalListAdapter(Context context, Collection<ArrivalModel> arrivalModels) {
+    public ArrivalAdapter(Context context, Collection<ArrivalModel> arrivalModels) {
         this.validateArrivalModels(arrivalModels);
         this.layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,14 +44,14 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
     }
 
     @Override
-    public ArrivalListAdapter.ArrivalViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public ArrivalAdapter.ArrivalViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View view = this.layoutInflater.inflate(R.layout.list_item_arrival, viewGroup, false);
         ArrivalViewHolder arrivalViewHolder = new ArrivalViewHolder(view);
         return arrivalViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ArrivalListAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
+    public void onBindViewHolder(ArrivalAdapter.ArrivalViewHolder arrivalViewHolder, int position) {
         final ArrivalModel arrivalModel = this.arrivalModels.get(position);
         arrivalViewHolder.tvMinutesUntilArrival.setText(getArrivalTextToShow(arrivalModel));
         arrivalViewHolder.tvMinutesUntilArrival.setTextColor(getArrivalTextColor(arrivalModel));
@@ -61,8 +61,8 @@ public class ArrivalListAdapter extends RecyclerView.Adapter<ArrivalListAdapter.
         arrivalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ArrivalListAdapter.this.onItemClickListener != null) {
-                    ArrivalListAdapter.this.onItemClickListener.onArrivalItemClicked(arrivalModel);
+                if (ArrivalAdapter.this.onItemClickListener != null) {
+                    ArrivalAdapter.this.onItemClickListener.onArrivalItemClicked(arrivalModel);
                 }
             }
         });

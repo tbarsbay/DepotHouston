@@ -15,7 +15,7 @@ import com.tamerbarsbay.depothouston.presentation.internal.di.components.StopCom
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.StopListPresenter;
 import com.tamerbarsbay.depothouston.presentation.view.StopListView;
-import com.tamerbarsbay.depothouston.presentation.view.adapter.StopListAdapter;
+import com.tamerbarsbay.depothouston.presentation.view.adapter.StopAdapter;
 
 import java.util.Collection;
 
@@ -46,7 +46,7 @@ public class StopListFragment extends BaseFragment implements StopListView {
     @Bind(R.id.btn_retry)
     Button btnRetry;
 
-    private StopListAdapter stopsAdapter;
+    private StopAdapter stopsAdapter;
     private LinearLayoutManager stopsLayoutManager;
 
     private StopListListener stopListListener;
@@ -127,7 +127,7 @@ public class StopListFragment extends BaseFragment implements StopListView {
     public void renderStopList(Collection<StopModel> stopModels) {
         if (stopModels != null) {
             if (stopsAdapter == null) {
-                stopsAdapter = new StopListAdapter(getActivity(), stopModels);
+                stopsAdapter = new StopAdapter(getActivity(), stopModels);
             } else {
                 stopsAdapter.setStopsCollection(stopModels);
             }
@@ -190,8 +190,8 @@ public class StopListFragment extends BaseFragment implements StopListView {
         StopListFragment.this.loadStopList();
     }
 
-    private StopListAdapter.OnItemClickListener onItemClickListener =
-            new StopListAdapter.OnItemClickListener() {
+    private StopAdapter.OnItemClickListener onItemClickListener =
+            new StopAdapter.OnItemClickListener() {
                 @Override
                 public void onStopItemClicked(StopModel stopModel) {
                     if (StopListFragment.this.stopListPresenter != null && stopModel != null) {

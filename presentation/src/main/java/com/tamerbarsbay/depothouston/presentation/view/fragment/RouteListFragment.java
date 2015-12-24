@@ -15,7 +15,7 @@ import com.tamerbarsbay.depothouston.presentation.internal.di.components.RouteCo
 import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.RouteListPresenter;
 import com.tamerbarsbay.depothouston.presentation.view.RouteListView;
-import com.tamerbarsbay.depothouston.presentation.view.adapter.RouteListAdapter;
+import com.tamerbarsbay.depothouston.presentation.view.adapter.RouteAdapter;
 
 import java.util.Collection;
 
@@ -46,7 +46,7 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     @Bind(R.id.btn_retry)
     Button btnRetry;
 
-    private RouteListAdapter routesAdapter;
+    private RouteAdapter routesAdapter;
     private LinearLayoutManager routesLayoutManager;
 
     private RouteListListener routeListListener;
@@ -132,7 +132,7 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
     public void renderRouteList(Collection<RouteModel> routeModels) {
         if (routeModels != null) {
             if (routesAdapter == null) {
-                routesAdapter = new RouteListAdapter(getActivity(), routeModels);
+                routesAdapter = new RouteAdapter(getActivity(), routeModels);
             } else {
                 routesAdapter.setRoutesCollection(routeModels);
             }
@@ -165,8 +165,8 @@ public class RouteListFragment extends BaseFragment implements RouteListView {
         RouteListFragment.this.loadRouteList();
     }
 
-    private RouteListAdapter.OnItemClickListener onItemClickListener =
-            new RouteListAdapter.OnItemClickListener() {
+    private RouteAdapter.OnItemClickListener onItemClickListener =
+            new RouteAdapter.OnItemClickListener() {
                 @Override
                 public void onRouteItemClicked(RouteModel routeModel) {
                     if (RouteListFragment.this.routeListPresenter != null && routeModel != null) {
