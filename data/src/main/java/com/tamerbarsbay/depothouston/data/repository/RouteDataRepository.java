@@ -57,4 +57,10 @@ public class RouteDataRepository implements RouteRepository {
         final RouteDataStore routeDataStore = this.routeDataStoreFactory.create(routeId);
         return routeDataStore.route(routeId).map(routeEntityMapper);
     }
+
+    @Override
+    public Observable<List<Route>> routesNearLocation(double lat, double lon, String radiusInMiles) {
+        final RouteDataStore routeDataStore = this.routeDataStoreFactory.createCloudDataStore();
+        return routeDataStore.routesNearLocation(lat, lon, radiusInMiles).map(routeEntityListMapper);
+    }
 }

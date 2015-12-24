@@ -14,6 +14,7 @@ import com.tamerbarsbay.depothouston.data.entity.RouteEntity;
 import com.tamerbarsbay.depothouston.data.entity.StopEntity;
 import com.tamerbarsbay.depothouston.data.entity.VehicleEntity;
 import com.tamerbarsbay.depothouston.data.exception.NetworkConnectionException;
+import com.tamerbarsbay.depothouston.data.util.DistanceUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
+import rx.functions.Func1;
 
 public class HoustonMetroApi {
 
@@ -58,6 +60,18 @@ public class HoustonMetroApi {
         }
     }
 
+    public Observable<List<RouteEntity>> routesNearLocation(final double lat,
+                                                            final double lon,
+                                                            final String radiusInMiles) {
+        if (validNetworkConnection()) {
+            return getRetrofit()
+                    .create(HoustonMetroApiService.class)
+                    .routesNearLocation(lat, lon, radiusInMiles);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
+    }
+
     public Observable<List<StopEntity>> stopsByRoute(final String routeId) {
         Log.d("RestApi", "Stops for route: " + routeId); //TODO temp
         return stopsByRouteAndDirection(routeId, "0"); //TODO temp
@@ -76,6 +90,46 @@ public class HoustonMetroApi {
         Log.d("RestApi", "Stops within " + radius + " miles of: " + lat + "," + lon); //TODO temp
         if (validNetworkConnection()) {
             return getRetrofit().create(HoustonMetroApiService.class).stopsNearLocation(lat, lon, radius);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
+    }
+
+    public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId,
+                                                                 final double lat,
+                                                                 final double lon,
+                                                                 final String radius) {
+        if (validNetworkConnection()) {
+            return getRetrofit()
+                    .create(HoustonMetroApiService.class).stopsByRoute(routeId)
+                    .flatMap(new Func1<List<StopEntity>, Observable<StopEntity>>() {
+                        @Override
+                        public Observable<StopEntity> call(final List<StopEntity> stopEntities) {
+                            return Observable.from(stopEntities).filter(new Func1<StopEntity, Boolean>() {
+                                @Override
+                                public Boolean call(StopEntity stopEntity) {
+                                    double threshold = .25;//TODO make default constant
+                                    try {
+                                        threshold = Double.parseDouble(radius);
+                                    } catch (NumberFormatException e) {
+                                        e.printStackTrace();
+                                    }
+                                    double distance =
+                                            DistanceUtils.calculateDistanceBetweenCoordinatesInMiles(
+                                                    lat,
+                                                    lon,
+                                                    stopEntity.getLat(),
+                                                    stopEntity.getLon());
+                                    //TODO temp logs
+                                    Log.d("HoustonMetroApi", "Between: (" + lat + "," + lon + ") and (" + stopEntity.getLat() + "," + stopEntity.getLon() + ")");
+                                    Log.d("HoustonMetroApi", "Threshold: " + threshold);
+                                    Log.d("HoustonMetroApi", "Distance: " + distance);
+                                    return distance < threshold;
+                                }
+                            });
+                        }
+                    })
+                    .toList();
         } else {
             return Observable.error(new NetworkConnectionException());
         }

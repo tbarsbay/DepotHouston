@@ -22,7 +22,11 @@ public class DiskStopDataStore implements StopDataStore {
 
     @Override
     public Observable<List<StopEntity>> stopsNearLocation(double lat, double lon, String radiusInMiles) {
-        //TODO
-        return null;
+        throw new UnsupportedOperationException("Operation not available.");
+    }
+
+    @Override
+    public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId, double lat, double lon, String radiusInMiles) {
+        throw new UnsupportedOperationException("Operation not available.");
     }
 }

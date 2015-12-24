@@ -14,4 +14,9 @@ public interface StopDataStore {
                                                    final double lon,
                                                    final String radiusInMiles);
 
+    Observable<List<StopEntity>> stopsNearLocationByRoute(final String routeId,
+                                                          final double lat,
+                                                          final double lon,
+                                                          final String radiusInMiles);
+
 }
