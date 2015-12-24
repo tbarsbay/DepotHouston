@@ -11,6 +11,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -149,6 +152,12 @@ public class MapSearchFragment
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof MapSearchListener) {
@@ -174,6 +183,25 @@ public class MapSearchFragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_map_search, menu);
+        menu.findItem(R.id.action_my_location).setVisible(hasUserGrantedLocationPermission());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_my_location:
+                forceCenterUserLocation();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE_LOCATION_PERMISSION:
@@ -181,6 +209,7 @@ public class MapSearchFragment
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Granted, get the user's location and show nearby stops
                     getUserLocationAndLoadNearbyStops();
+                    getActivity().invalidateOptionsMenu();
                 } else {
                     // Denied, center on Houston
                     centerMapOnHouston();
@@ -230,6 +259,20 @@ public class MapSearchFragment
                             Snackbar.LENGTH_LONG);
             snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_default));
             snackbar.show();
+        }
+    }
+
+    /**
+     * Centers the map on the user location, regardless of whether or not they're in Houston.
+     */
+    private void forceCenterUserLocation() {
+        Location userLocation = getUserLocationManager().getUserLocation();
+        if (userLocation != null) {
+            getNearbyStops(
+                    getString(R.string.your_location),
+                    userLocation.getLatitude(),
+                    userLocation.getLongitude(),
+                    DEFAULT_RADIUS_MILES);
         }
     }
 
@@ -295,8 +338,7 @@ public class MapSearchFragment
             // Just get user location and load nearby stops
             getUserLocationAndLoadNearbyStops();
         } else {
-            if (ActivityCompat.checkSelfPermission(
-                    getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (!hasUserGrantedLocationPermission()) {
                 // User has not granted location permission
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     showPermissionRationale();
@@ -309,6 +351,11 @@ public class MapSearchFragment
                 getUserLocationAndLoadNearbyStops();
             }
         }
+    }
+
+    private boolean hasUserGrantedLocationPermission() {
+        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
