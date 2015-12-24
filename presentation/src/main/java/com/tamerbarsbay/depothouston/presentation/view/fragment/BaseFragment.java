@@ -1,7 +1,10 @@
 package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +13,8 @@ import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.HasComponent;
 
 public abstract class BaseFragment extends Fragment {
+
+    protected static final int REQUEST_CODE_LOCATION_PERMISSION = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,33 @@ public abstract class BaseFragment extends Fragment {
             snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_default));
             snackbar.show();
         }
+    }
+
+    protected void showSnackbar(View parentView, int stringResId) {
+        showSnackbar(parentView, getString(stringResId));
+    }
+
+    protected void showPermissionRationale(View view, int stringResId) {
+        if (view != null) {
+            Snackbar snackbar = Snackbar
+                    .make(view, stringResId, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.OK, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            requestPermissions(
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    REQUEST_CODE_LOCATION_PERMISSION);
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(R.color.white));
+            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_default));
+            snackbar.show();
+        }
+    }
+
+    protected boolean hasUserGrantedLocationPermission() {
+        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     /**

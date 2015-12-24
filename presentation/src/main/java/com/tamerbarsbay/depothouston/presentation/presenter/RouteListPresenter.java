@@ -1,11 +1,13 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.tamerbarsbay.depothouston.domain.Route;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
 import com.tamerbarsbay.depothouston.domain.exception.ErrorBundle;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
+import com.tamerbarsbay.depothouston.domain.interactor.GetRoutesNearLocation;
 import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
@@ -25,12 +27,19 @@ public class RouteListPresenter implements Presenter {
     private RouteListView routeListView;
 
     private final UseCase getRouteListUseCase;
+    private final GetRoutesNearLocation getRoutesNearLocationUseCase;
     private final RouteModelDataMapper routeModelDataMapper;
+
+    private double lat;
+    private double lon;
+    private String radiusInMiles;
 
     @Inject
     RouteListPresenter(@Named("routeList") UseCase getRouteListUseCase,
+                       GetRoutesNearLocation getRoutesNearLocationUseCase,
                        RouteModelDataMapper routeModelDataMapper) {
         this.getRouteListUseCase = getRouteListUseCase;
+        this.getRoutesNearLocationUseCase = getRoutesNearLocationUseCase;
         this.routeModelDataMapper = routeModelDataMapper;
     }
 
@@ -43,58 +52,92 @@ public class RouteListPresenter implements Presenter {
     @Override public void pause() {}
 
     @Override public void destroy() {
-        this.getRouteListUseCase.unsubscribe();
+        getRouteListUseCase.unsubscribe();
     }
 
-    public void initialize() {
-        this.loadRouteList();
+    public void retryLastRequest() {
+        if (lat == -1 || lon == -1 || radiusInMiles == null) {
+            // Last request was to load ALL routes
+            loadRouteList();
+        } else {
+            loadNearbyRouteList(lat, lon, radiusInMiles);
+        }
     }
 
-    private void loadRouteList() {
-        this.hideViewRetry();
-        this.showViewLoading();
-        this.getRouteList();
+    public void loadRouteList() {
+        hideViewRetry();
+        hideViewEmpty();
+        showViewLoading();
+
+        lat = -1;
+        lon = -1;
+        radiusInMiles = null;
+
+        getRouteListUseCase.execute(new RouteListSubscriber());
+    }
+
+    public void loadNearbyRouteList(double lat, double lon, String radiusInMiles) {
+        hideViewRetry();
+        hideViewEmpty();
+        showViewLoading();
+
+        this.lat = lat;
+        this.lon = lon;
+        this.radiusInMiles = radiusInMiles;
+
+        getRoutesNearLocationUseCase.setParameters(lat, lon, radiusInMiles);
+        getRoutesNearLocationUseCase.execute(new RouteListSubscriber()); //TODO can we use the same subscriber
     }
 
     public void onRouteClicked(RouteModel routeModel) {
-        this.routeListView.viewRoute(routeModel);
+        routeListView.viewRoute(routeModel);
     }
 
     private void showViewLoading() {
-        this.routeListView.showLoadingView();
+        routeListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.routeListView.hideLoadingView();
+        routeListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.routeListView.showRetryView();
+        routeListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.routeListView.hideRetryView();
+        routeListView.hideRetryView();
+    }
+
+    private void showViewEmpty() {
+        routeListView.showEmptyView();
+    }
+
+    private void hideViewEmpty() {
+        routeListView.hideEmptyView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage = ErrorMessageFactory.create(this.routeListView.getContext(),
+        String errorMessage = ErrorMessageFactory.create(routeListView.getContext(),
                 errorBundle.getException());
-        this.routeListView.showError(errorMessage);
+        routeListView.showError(errorMessage);
     }
 
     private void showRoutesInView(Collection<Route> routes) {
-        final Collection<RouteModel> routeModels = this.routeModelDataMapper.transform(routes);
-        this.routeListView.renderRouteList(routeModels);
-    }
-
-    private void getRouteList() {
-        this.getRouteListUseCase.execute(new RouteListSubscriber());
+        final Collection<RouteModel> routeModels = routeModelDataMapper.transform(routes);
+        if (routeModels.isEmpty()) {
+            showViewEmpty();
+        } else {
+            hideViewEmpty();
+            routeListView.renderRouteList(routeModels);
+        };
     }
 
     private final class RouteListSubscriber extends DefaultSubscriber<List<Route>> {
 
         @Override
         public void onNext(List<Route> routes) {
+            Log.d("RouteListPresenter", "onNext: " + routes.size() + " routes"); //TODO temp
             showRoutesInView(routes);
         }
 

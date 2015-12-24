@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -76,7 +75,6 @@ public class MapSearchFragment
 
     private NearbyStopAdapter adapter;
 
-    private static final int REQUEST_CODE_LOCATION_PERMISSION = 100;
     public static final String DEFAULT_RADIUS_MILES = ".25"; //TODO get from user settings
 
     private static final double HOUSTON_SOUTHWEST_LAT = 29.431005;
@@ -179,7 +177,7 @@ public class MapSearchFragment
         super.onActivityCreated(savedInstanceState);
         getComponent(MapSearchComponent.class).inject(this);
         mapSearchPresenter.setView(this);
-        getUserLocationManager();
+        getUserLocationManager().connect();
     }
 
     @Override
@@ -251,17 +249,6 @@ public class MapSearchFragment
         rvStops.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
     }
 
-    private void showEnablePermissionMessage() {
-        if (layoutParent != null) {
-            Snackbar snackbar = Snackbar
-                    .make(layoutParent,
-                            R.string.enable_location_permission_to_see_nearby_stops,
-                            Snackbar.LENGTH_LONG);
-            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_default));
-            snackbar.show();
-        }
-    }
-
     /**
      * Centers the map on the user location, regardless of whether or not they're in Houston.
      */
@@ -313,24 +300,6 @@ public class MapSearchFragment
         }
     }
 
-    private void showPermissionRationale() {
-        if (layoutParent != null) {
-            Snackbar snackbar = Snackbar
-                    .make(layoutParent, R.string.location_permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.OK, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            requestPermissions(
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                    REQUEST_CODE_LOCATION_PERMISSION);
-                        }
-                    })
-                    .setActionTextColor(getResources().getColor(R.color.white));
-            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_default));
-            snackbar.show();
-        }
-    }
-
     @Override
     public void onConnected() {
         if (Build.VERSION.SDK_INT < 23) {
@@ -341,9 +310,9 @@ public class MapSearchFragment
             if (!hasUserGrantedLocationPermission()) {
                 // User has not granted location permission
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    showPermissionRationale();
+                    showPermissionRationale(layoutParent, R.string.location_permission_rationale_nearby_stops);
                 } else {
-                    showEnablePermissionMessage();
+                    showSnackbar(layoutParent, R.string.enable_location_permission_to_see_nearby_stops);
                     centerMapOnHouston();
                 }
             } else {
@@ -351,11 +320,6 @@ public class MapSearchFragment
                 getUserLocationAndLoadNearbyStops();
             }
         }
-    }
-
-    private boolean hasUserGrantedLocationPermission() {
-        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,6 +43,15 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        // Reset the toolbar in case the user is returning from the Stops screen
+        // where they may have turned off the NEARBY ONLY option.
+        invalidateOptionsMenu();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_route_list, menu);
         return true;
@@ -51,6 +61,7 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Log.d("RouteActivity", "Settings"); //TODO temp
             return true;
         }
         return super.onOptionsItemSelected(item);

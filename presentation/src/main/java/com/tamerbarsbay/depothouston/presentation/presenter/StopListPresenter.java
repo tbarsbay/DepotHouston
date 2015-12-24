@@ -25,12 +25,15 @@ public class StopListPresenter implements Presenter {
     private StopListView stopListView;
 
     private final UseCase getStopsByRouteUseCase;
+    private final UseCase getStopsNearLocationByRouteUseCase;
     private final StopModelDataMapper stopModelDataMapper;
 
     @Inject
     StopListPresenter(@Named("stopsByRoute") UseCase getStopsByRouteUseCase,
+                      @Named("stopsNearLocationByRoute") UseCase getStopsNearLocationByRouteUseCase,
                        StopModelDataMapper stopModelDataMapper) {
         this.getStopsByRouteUseCase = getStopsByRouteUseCase;
+        this.getStopsNearLocationByRouteUseCase = getStopsNearLocationByRouteUseCase;
         this.stopModelDataMapper = stopModelDataMapper;
     }
 

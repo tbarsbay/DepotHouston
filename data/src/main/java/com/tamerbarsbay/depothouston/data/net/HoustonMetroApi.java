@@ -63,6 +63,7 @@ public class HoustonMetroApi {
     public Observable<List<RouteEntity>> routesNearLocation(final double lat,
                                                             final double lon,
                                                             final String radiusInMiles) {
+        Log.d("RestApi", "routesNearLocation(" + lat + ", " + lon + ", " + radiusInMiles + ")"); //TODO temp
         if (validNetworkConnection()) {
             return getRetrofit()
                     .create(HoustonMetroApiService.class)
