@@ -46,11 +46,11 @@ public class MapSearchFragment
     @Bind(R.id.rv_map_search_stops)
     RecyclerView rvStops;
 
-    @Bind(R.id.tv_map_search_empty)
-    TextView tvEmptyStops;
+    @Bind(R.id.layout_map_search_empty)
+    LinearLayout layoutEmpty;
 
-    @Bind(R.id.tv_map_search_prompt)
-    TextView tvInitialPrompt;
+    @Bind(R.id.layout_map_search_prompt)
+    LinearLayout layoutPrompt;
 
     @Bind(R.id.tv_map_search_center_address)
     TextView tvCenterAddress;
@@ -304,8 +304,8 @@ public class MapSearchFragment
 
     public void getNearbyStops(String centerAddress, double lat, double lon, String radiusInMiles) {
         // Hide the initial user prompt as soon as a search is mad
-        if (tvInitialPrompt != null && tvInitialPrompt.getVisibility() == View.VISIBLE) {
-            tvInitialPrompt.setVisibility(View.GONE);
+        if (layoutPrompt != null && layoutPrompt.getVisibility() == View.VISIBLE) {
+            layoutPrompt.setVisibility(View.GONE);
         }
         if (mapSearchPresenter != null && adapter != null) {
             adapter.setCenterLocation(new LatLng(lat, lon));
@@ -471,16 +471,16 @@ public class MapSearchFragment
 
     @Override
     public void showEmptyView() {
-        if (tvEmptyStops != null) {
-            tvEmptyStops.setVisibility(View.VISIBLE);
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(View.VISIBLE);
             expandMapView();
         }
     }
 
     @Override
     public void hideEmptyView() {
-        if (tvEmptyStops != null) {
-            tvEmptyStops.setVisibility(View.GONE);
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(View.GONE);
         }
     }
 

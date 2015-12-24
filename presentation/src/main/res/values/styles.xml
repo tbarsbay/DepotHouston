@@ -127,11 +127,17 @@
 
     <style name="MapSearch.Text">
         <item name="android:paddingTop">16dp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/text_secondary_light</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:visibility">gone</item>
         <item name="android:background">@color/primary</item>
+    </style>
+
+    <style name="MapSearch.Text.WithIcon">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="MapSearch.TextButton" parent="MapSearch.Text">

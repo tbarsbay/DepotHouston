@@ -61,20 +61,53 @@
         android:layout_below="@id/layout_map_search_header"
         tools:listitem="@layout/list_item_nearby_stop"/>
 
-    <TextView
-        android:id="@+id/tv_map_search_prompt"
+    <LinearLayout
+        android:id="@+id/layout_map_search_prompt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/tap_to_see_nearby_stops"
-        style="@style/MapSearch.Text"
-        android:visibility="visible"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/primary">
 
-    <TextView
-        android:id="@+id/tv_map_search_empty"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_touch"
+            android:tint="@color/white"
+            android:scaleX=".75"
+            android:scaleY=".75"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tap_to_see_nearby_stops"
+            android:layout_marginTop="8dp"
+            style="@style/MapSearch.Text.WithIcon"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_map_search_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/no_nearby_stops"
-        style="@style/MapSearch.Text"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_place"
+            android:tint="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_nearby_stops"
+            android:layout_marginTop="8dp"
+            style="@style/MapSearch.Text.WithIcon"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_map_search_retry"
