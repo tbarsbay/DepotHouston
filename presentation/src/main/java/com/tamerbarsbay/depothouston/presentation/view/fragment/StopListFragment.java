@@ -1,19 +1,33 @@
 package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Typeface;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.StopComponent;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.StopListPresenter;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
+import com.tamerbarsbay.depothouston.presentation.util.UserLocationManager;
 import com.tamerbarsbay.depothouston.presentation.view.StopListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.StopAdapter;
 
@@ -25,7 +39,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StopListFragment extends BaseFragment implements StopListView {
+public class StopListFragment extends BaseFragment
+        implements StopListView, UserLocationManager.UserLocationListener {
 
     public interface StopListListener {
         void onStopClicked(final StopModel stopModel);
@@ -37,6 +52,9 @@ public class StopListFragment extends BaseFragment implements StopListView {
     @Bind(R.id.rv_stop_list)
     RecyclerView rvStops;
 
+    @Bind(R.id.layout_stop_list_parent)
+    RelativeLayout layoutParent;
+
     @Bind(R.id.layout_progress)
     RelativeLayout rlProgress;
 
@@ -46,12 +64,19 @@ public class StopListFragment extends BaseFragment implements StopListView {
     @Bind(R.id.btn_retry)
     Button btnRetry;
 
+    @Bind(R.id.layout_stop_list_empty)
+    LinearLayout layoutEmpty;
+
     private StopAdapter stopsAdapter;
     private LinearLayoutManager stopsLayoutManager;
 
     private StopListListener stopListListener;
 
-    private String routeId; //TODO we don't use this
+    private UserLocationManager userLocationManager;
+
+    private SwitchCompat nearbyToggle;
+
+    private String routeId;
 
     private static final String ARGUMENT_KEY_ROUTE_ID = "com.tamerbarsbay.depothouston.ARGUMENT_ROUTE_ID";
 
@@ -72,6 +97,12 @@ public class StopListFragment extends BaseFragment implements StopListView {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof StopListListener) {
@@ -84,20 +115,143 @@ public class StopListFragment extends BaseFragment implements StopListView {
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_stop_list, container, false);
         ButterKnife.bind(this, fragmentView);
-        setupUI();
+        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
         return fragmentView;
-    }
-
-    private void setupUI() {
-        stopsLayoutManager = new LinearLayoutManager(getContext());
-        rvStops.setLayoutManager(stopsLayoutManager);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();
-        loadStopList();
+
+        //TODO this seems iffy, how will it handle permission revocation?
+        if (PrefUtils.isFilterNearbyRoutesEnabled(getContext())) {
+            getUserLocationAndLoadNearbyStops();
+        } else {
+            loadStopList();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_LOCATION_PERMISSION:
+                // If the request was cancelled, the results array is empty
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Granted, get the user's location and show nearby stops
+                    getUserLocationAndLoadNearbyStops();
+                } else {
+                    // Denied, reset the nearby toggle
+                    resetNearbyToggle();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.findItem(R.id.action_filter_nearby);
+        if (item != null) {
+            nearbyToggle = (SwitchCompat) MenuItemCompat.getActionView(item);
+            styleNearbyToggle();
+            nearbyToggle.setOnCheckedChangeListener(onNearbyStopsToggledListener);
+            nearbyToggle.setChecked(PrefUtils.isFilterNearbyRoutesEnabled(getContext()));
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_filter_nearby) {
+            // User wants to filter for only nearby stops
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void styleNearbyToggle() {
+        nearbyToggle.setText(getString(R.string.nearby_only));
+        nearbyToggle.setTypeface(null, Typeface.BOLD);
+        nearbyToggle.setTextColor(getResources().getColor(R.color.white));
+
+        int sizeInDp = 16;
+        float scale = getResources().getDisplayMetrics().density;
+        int dpAsPixels = (int) (sizeInDp*scale + 0.5f);
+        nearbyToggle.setSwitchPadding(dpAsPixels);
+    }
+
+    private void onNearbyStopsToggled(boolean isChecked) {
+        PrefUtils.setFilterNearbyRoutesEnabled(getContext(), isChecked);
+        if (isChecked) {
+            getUserLocationManager().connect();
+        } else {
+            getUserLocationManager().disconnect();
+            loadStopList();
+        }
+    }
+
+    private void getUserLocationAndLoadNearbyStops() {
+        Location userLocation = getUserLocationManager().getUserLocation();
+
+//        //TODO temp for testing purposes
+//        userLocation.setLatitude(29.791032);
+//        userLocation.setLongitude(-95.404918);
+
+        if (userLocation != null) {
+            loadNearbyStopList(
+                    routeId,
+                    userLocation.getLatitude(),
+                    userLocation.getLongitude(),
+                    ".25"); //TODO temp, use prefs
+        } else {
+            showError(getString(R.string.error_invalid_user_location_showing_all_stops));
+            resetNearbyToggle();
+        }
+    }
+
+    private UserLocationManager getUserLocationManager() {
+        if (userLocationManager == null) {
+            userLocationManager = new UserLocationManager(getContext(), this);
+        }
+        return userLocationManager;
+    }
+
+    @Override
+    public void onConnected() {
+        if (Build.VERSION.SDK_INT < 23) {
+            // User has Lollipop or below, no need to request permissions
+            // Just get user location and load nearby stops
+            getUserLocationAndLoadNearbyStops();
+        } else {
+            if (!hasUserGrantedLocationPermission()) {
+                // User has not granted location permission
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    showPermissionRationale(layoutParent, R.string.location_permission_rationale_nearby_stops);
+                } else {
+                    showSnackbar(layoutParent, R.string.enable_location_permission_to_see_nearby_stops);
+                    resetNearbyToggle();
+                }
+            } else {
+                // User has granted location permission
+                getUserLocationAndLoadNearbyStops();
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionFailed() {
+        showError(getString(R.string.error_invalid_user_location_showing_all_stops));
+        resetNearbyToggle();
+    }
+
+    private void resetNearbyToggle() {
+        if (nearbyToggle != null) {
+            PrefUtils.setFilterNearbyRoutesEnabled(getContext(), false);
+            nearbyToggle.setChecked(false);
+        }
     }
 
     @Override
@@ -121,6 +275,12 @@ public class StopListFragment extends BaseFragment implements StopListView {
     private void initialize() {
         getComponent(StopComponent.class).inject(this);
         stopListPresenter.setView(this);
+        if (getArguments() != null) {
+            routeId = getArguments().getString(ARGUMENT_KEY_ROUTE_ID, null);
+            if (routeId == null) {
+                return;
+            }
+        }
     }
 
     @Override
@@ -165,29 +325,33 @@ public class StopListFragment extends BaseFragment implements StopListView {
 
     @Override
     public void showEmptyView() {
-        // TODO
+        layoutEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyView() {
-        // TODO
+        layoutEmpty.setVisibility(View.GONE);
     }
 
     @Override public void showError(String message) {
-        showToastMessage(message);
-    }
-
-    @Override public Context getContext() {
-        return getActivity().getApplicationContext();
+        showSnackbarError(layoutParent, message);
     }
 
     private void loadStopList() {
-        stopListPresenter.initialize();
+        stopListPresenter.loadStopList();
+    }
+
+    private void loadNearbyStopList(String routeId, double lat, double lon, String radiusInMiles) {
+        if (routeId == null || radiusInMiles == null) {
+            showError(getString(R.string.error_loading_nearby_stops));
+            return;
+        }
+        stopListPresenter.loadNearbyStopsByRoute(routeId, lat, lon, radiusInMiles);
     }
 
     @OnClick(R.id.btn_retry)
     void onButtonRetryClick() {
-        StopListFragment.this.loadStopList();
+        stopListPresenter.retryLastRequest();
     }
 
     private StopAdapter.OnItemClickListener onItemClickListener =
@@ -197,6 +361,14 @@ public class StopListFragment extends BaseFragment implements StopListView {
                     if (StopListFragment.this.stopListPresenter != null && stopModel != null) {
                         StopListFragment.this.stopListPresenter.onStopClicked(stopModel);
                     }
+                }
+            };
+
+    private CompoundButton.OnCheckedChangeListener onNearbyStopsToggledListener =
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    onNearbyStopsToggled(isChecked);
                 }
             };
 }

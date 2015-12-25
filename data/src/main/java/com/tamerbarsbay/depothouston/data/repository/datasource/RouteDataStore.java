@@ -12,4 +12,8 @@ public interface RouteDataStore {
 
     Observable<RouteEntity> route(final String routeId);
 
+    Observable<List<RouteEntity>> routesNearLocation(final double lat,
+                                                     final double lon,
+                                                     final String radiusInMiles);
+
 }

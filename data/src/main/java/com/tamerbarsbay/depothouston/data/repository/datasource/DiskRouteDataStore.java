@@ -28,4 +28,9 @@ public class DiskRouteDataStore implements RouteDataStore {
     public Observable<List<RouteEntity>> routes() {
         throw new UnsupportedOperationException("Operation not available.");
     }
+
+    @Override
+    public Observable<List<RouteEntity>> routesNearLocation(double lat, double lon, String radiusInMiles) {
+        throw new UnsupportedOperationException("Operation not available.");
+    }
 }

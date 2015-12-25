@@ -63,4 +63,10 @@ public class StopDataRepository implements StopRepository {
         final StopDataStore stopDataStore = this.stopDataStoreFactory.createCloudDataStore();
         return stopDataStore.stopsNearLocation(lat, lon, radiusInMiles).map(stopEntityListMapper);
     }
+
+    @Override
+    public Observable<List<Stop>> stopsNearLocationByRoute(String routeId, double lat, double lon, String radiusInMiles) {
+        final StopDataStore stopDataStore = this.stopDataStoreFactory.createCloudDataStore();
+        return stopDataStore.stopsNearLocationByRoute(routeId, lat, lon, radiusInMiles).map(stopEntityListMapper);
+    }
 }

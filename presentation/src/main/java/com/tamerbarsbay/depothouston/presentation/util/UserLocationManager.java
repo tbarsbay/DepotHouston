@@ -24,7 +24,12 @@ public class UserLocationManager implements GoogleApiClient.ConnectionCallbacks,
         this.listener = listener;
         this.context = context;
         googleApiClient = buildGoogleApiClient(context);
-        googleApiClient.connect();
+    }
+
+    public void connect() {
+        if (googleApiClient != null) {
+            googleApiClient.connect();
+        }
     }
 
     private GoogleApiClient buildGoogleApiClient(Context context) {

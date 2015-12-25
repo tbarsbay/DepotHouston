@@ -13,7 +13,8 @@ import rx.Observable;
 public interface RouteRepository {
 
     /**
-     * Get an {@link rx.Observable} which will emit a List of {@link Route} objects.
+     * Get an {@link rx.Observable} which will emit a List of {@link Route} objects
+     * representing all the routes serviced by the Houston Metro.
      */
     Observable<List<Route>> routes();
 
@@ -23,5 +24,17 @@ public interface RouteRepository {
      * @param routeId The route id used to retrieve route data.
      */
     Observable<Route> route(final String routeId);
+
+    /**
+     * Get an {@link rx.Observable} which will emit a List of {@link Route} objects
+     * within a certain mile radius of a given location.
+     * @param lat
+     * @param lon
+     * @param radiusInMiles
+     * @return
+     */
+    Observable<List<Route>> routesNearLocation(final double lat,
+                                               final double lon,
+                                               final String radiusInMiles);
 
 }

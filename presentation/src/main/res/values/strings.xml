@@ -27,9 +27,10 @@
     <string name="depot_capitalized">DEPOT</string>
     <string name="title_activity_map_search">MapSearchActivity</string>
     <string name="title_activity_maps">Map Search</string>
-    <string name="location_permission_rationale">Depot needs your location to show you nearby stops</string>
+    <string name="location_permission_rationale_nearby_stops">Depot needs your location to show you nearby stops</string>
     <string name="OK">OK</string>
     <string name="enable_location_permission_to_see_nearby_stops"><![CDATA[Enable the location permission to view nearby stops (go to Settings -> Apps)]]></string>
+    <string name="enable_location_permission_to_see_nearby_routes"><![CDATA[Enable the location permission to view nearby routes (go to Settings -> Apps)]]></string>
     <string name="no_nearby_stops">No nearby stops</string>
     <string name="tap_to_see_nearby_stops">Tap any location to see nearby stops</string>
     <string name="your_location">Your location</string>
@@ -49,4 +50,11 @@
     <string name="title_activity_recent_stops">Recent Stops</string>
     <string name="no_recent_stops">No recent stops to show</string>
     <string name="action_my_location">My Location</string>
+    <string name="nearby_only">Nearby Only</string>
+    <string name="location_permission_rationale_nearby_routes">Depot needs your location to show you nearby routes</string>
+    <string name="no_nearby_routes_with_tips">No nearby routes\n\nChange the distance threshold in the settings menu or use the toggle above to show all routes</string>
+    <string name="no_nearby_stops_with_tips">No nearby stops\n\nChange the distance threshold in the settings menu or use the toggle above to show all stops for this route</string>
+    <string name="error_invalid_user_location_showing_all_routes">There was an error getting your location - showing all routes instead</string>
+    <string name="error_invalid_user_location_showing_all_stops">There was an error getting your location - showing all stops instead</string>
+    <string name="error_loading_nearby_stops">Error loading nearby stops - please go back and try again</string>
 </resources>

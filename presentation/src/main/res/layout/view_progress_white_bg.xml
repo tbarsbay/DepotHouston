@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layout_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@color/white">
+
+    <ProgressBar
+        style="@style/ProgressBar"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

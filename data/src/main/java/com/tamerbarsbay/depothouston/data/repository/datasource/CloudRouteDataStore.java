@@ -31,11 +31,16 @@ public class CloudRouteDataStore implements RouteDataStore {
     @Override
     public Observable<List<RouteEntity>> routes() {
         //TODO also put in cache?
-        return this.houstonMetroApi.routes();
+        return houstonMetroApi.routes();
     }
 
     @Override
     public Observable<RouteEntity> route(String routeId) {
-        return this.houstonMetroApi.route(routeId).doOnNext(saveToCacheAction);
+        return houstonMetroApi.route(routeId).doOnNext(saveToCacheAction);
+    }
+
+    @Override
+    public Observable<List<RouteEntity>> routesNearLocation(double lat, double lon, String radiusInMiles) {
+        return houstonMetroApi.routesNearLocation(lat, lon, radiusInMiles);
     }
 }

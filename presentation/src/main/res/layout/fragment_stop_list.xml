@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_stop_list_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,11 +13,39 @@
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="16dp"
+        android:background="@color/white"
         tools:listitem="@layout/list_item_stop"/>
 
-    <include layout="@layout/view_progress" />
+    <include layout="@layout/view_progress_white_bg" />
 
-    <include layout="@layout/view_retry" />
+    <include layout="@layout/view_retry_white_bg" />
+
+    <LinearLayout
+        android:id="@+id/layout_stop_list_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_place"
+            android:tint="@color/primary"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary_dark"
+            android:paddingTop="8dp"
+            android:gravity="center"
+            android:text="@string/no_nearby_stops_with_tips"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

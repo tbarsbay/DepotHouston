@@ -39,6 +39,12 @@ public interface HoustonMetroApiService {
     Observable<List<RouteEntity>> routes();
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
+    @GET("GeoAreas(\'{lat}|{lon}|{radius}\')/Routes" + DEFAULT_PARAMS)
+    Observable<List<RouteEntity>> routesNearLocation(@Path("lat") final double lat,
+                                                     @Path("lon") final double lon,
+                                                     @Path("radius") final String radius);
+
+    @Headers(CONTENT_TYPE_JSON_HEADER)
     @GET("Routes(\'{id}\')" + DEFAULT_PARAMS)
     Observable<RouteEntity> route(@Path("id") final String routeId);
 

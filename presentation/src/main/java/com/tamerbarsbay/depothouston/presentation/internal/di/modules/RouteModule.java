@@ -4,6 +4,7 @@ import com.tamerbarsbay.depothouston.domain.executor.PostExecutionThread;
 import com.tamerbarsbay.depothouston.domain.executor.ThreadExecutor;
 import com.tamerbarsbay.depothouston.domain.interactor.GetRouteDetails;
 import com.tamerbarsbay.depothouston.domain.interactor.GetRouteList;
+import com.tamerbarsbay.depothouston.domain.interactor.GetRoutesNearLocation;
 import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.domain.repository.RouteRepository;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
@@ -39,6 +40,14 @@ public class RouteModule {
                                           PostExecutionThread postExecutionThread) {
         return new GetRouteDetails(this.routeId, routeRepository,
                 threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @PerActivity
+    GetRoutesNearLocation provideGetRoutesNearLocationUseCase(RouteRepository routeRepository,
+                                                              ThreadExecutor threadExecutor,
+                                                              PostExecutionThread postExecutionThread) {
+        return new GetRoutesNearLocation(routeRepository, threadExecutor, postExecutionThread);
     }
 
 }

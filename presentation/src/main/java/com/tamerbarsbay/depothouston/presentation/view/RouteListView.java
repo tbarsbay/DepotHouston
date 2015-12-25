@@ -8,5 +8,7 @@ public interface RouteListView extends LoadDataView {
 
     void renderRouteList(Collection<RouteModel> routeModelCollection);
     void viewRoute(RouteModel routeModel);
+    void showEmptyView();
+    void hideEmptyView();
 
 }
