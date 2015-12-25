@@ -57,4 +57,7 @@
     <string name="error_invalid_user_location_showing_all_routes">There was an error getting your location - showing all routes instead</string>
     <string name="error_invalid_user_location_showing_all_stops">There was an error getting your location - showing all stops instead</string>
     <string name="error_loading_nearby_stops">Error loading nearby stops - please go back and try again</string>
+    <string name="clear_recent_stops">Clear recent stops</string>
+    <string name="clear_stops_are_you_sure">Are you sure you want to clear all recently viewed stops?</string>
+    <string name="action_clear_recent_stops">Clear recent stops</string>
 </resources>

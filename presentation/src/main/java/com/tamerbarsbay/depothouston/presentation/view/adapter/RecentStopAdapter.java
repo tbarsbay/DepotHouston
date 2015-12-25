@@ -12,6 +12,7 @@ import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.model.RecentStopModel;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -67,6 +68,10 @@ public class RecentStopAdapter extends RecyclerView.Adapter<RecentStopAdapter.Vi
 
     public void setOnItemClickListener (OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void clearRecentStops() {
+        this.recentStops = Collections.emptyList();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

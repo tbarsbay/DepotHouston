@@ -1,10 +1,13 @@
 package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -42,10 +45,26 @@ public class RecentStopsFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof RecentStopsListener) {
             recentStopsListener = (RecentStopsListener) context;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_clear_recent_stops) {
+            showClearStopsConfirmationDialog();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -62,12 +81,39 @@ public class RecentStopsFragment extends BaseFragment {
             showEmptyView();
         } else {
             hideEmptyView();
-            RecentStopAdapter recentStopAdapter = new RecentStopAdapter(getContext(), recentStops);
+            recentStopAdapter = new RecentStopAdapter(getContext(), recentStops);
             recentStopAdapter.setOnItemClickListener(onItemClickListener);
             rvRecentStops.setAdapter(recentStopAdapter);
         }
 
         return fragmentView;
+    }
+
+    private void showClearStopsConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder
+                .setMessage(R.string.clear_stops_are_you_sure)
+                .setTitle(R.string.clear_recent_stops)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        clearRecentStops();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void clearRecentStops() {
+        showEmptyView();
+        RecentStopUtils.clearRecentStops(getContext());
+        recentStopAdapter.clearRecentStops();
+        //TODO animation down?
     }
 
     private void showEmptyView() {

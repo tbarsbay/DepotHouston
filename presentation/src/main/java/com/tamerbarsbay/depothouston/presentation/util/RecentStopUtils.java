@@ -40,6 +40,11 @@ public class RecentStopUtils {
         }
     }
 
+    public static void clearRecentStops(@NonNull Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().remove(PREFS_RECENT_STOPS).apply();
+    }
+
     private static void saveRecentStopsToSharedPreferences(@NonNull Context context,
                                                            ArrayList<RecentStopModel> stops) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

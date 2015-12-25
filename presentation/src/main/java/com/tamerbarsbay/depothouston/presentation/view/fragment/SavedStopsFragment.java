@@ -88,7 +88,7 @@ public class SavedStopsFragment extends BaseFragment {
     }
 
     private void showCreateGroupDialog() {
-        View dialogView = getLayoutInflater(null).inflate(R.layout.view_create_group, null);
+        View dialogView = getLayoutInflater(null).inflate(R.layout.dialog_create_group, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(dialogView);
