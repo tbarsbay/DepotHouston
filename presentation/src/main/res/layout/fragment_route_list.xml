@@ -16,32 +16,9 @@
         android:background="@color/white"
         tools:listitem="@layout/list_item_route"/>
 
-    <RelativeLayout
-        android:id="@+id/layout_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="gone" >
+    <include layout="@layout/view_progress_white_bg" />
 
-        <ProgressBar
-            style="@style/ProgressBar"
-            android:layout_centerInParent="true" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_retry"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:background="@color/white">
-
-        <Button
-            android:id="@+id/btn_retry"
-            style="@style/RetryButton"
-            android:text="@string/btn_text_retry" />
-
-    </RelativeLayout>
+    <include layout="@layout/view_retry_white_bg" />
 
     <LinearLayout
         android:id="@+id/layout_route_list_empty"

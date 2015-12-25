@@ -53,4 +53,8 @@
     <string name="nearby_only">Nearby Only</string>
     <string name="location_permission_rationale_nearby_routes">Depot needs your location to show you nearby routes</string>
     <string name="no_nearby_routes_with_tips">No nearby routes\n\nChange the distance threshold in the settings menu or use the toggle above to show all routes</string>
+    <string name="no_nearby_stops_with_tips">No nearby stops\n\nChange the distance threshold in the settings menu or use the toggle above to show all stops for this route</string>
+    <string name="error_invalid_user_location_showing_all_routes">There was an error getting your location - showing all routes instead</string>
+    <string name="error_invalid_user_location_showing_all_stops">There was an error getting your location - showing all stops instead</string>
+    <string name="error_loading_nearby_stops">Error loading nearby stops - please go back and try again</string>
 </resources>

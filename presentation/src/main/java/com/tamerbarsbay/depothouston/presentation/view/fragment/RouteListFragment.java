@@ -186,7 +186,7 @@ public class RouteListFragment extends BaseFragment
                     userLocation.getLongitude(),
                     ".25"); //TODO temp, use prefs
         } else {
-            showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
+            showError(getString(R.string.error_invalid_user_location_showing_all_routes));
             resetNearbyToggle();
         }
     }
@@ -222,7 +222,7 @@ public class RouteListFragment extends BaseFragment
 
     @Override
     public void onConnectionFailed() {
-        showError(getString(R.string.error_invalid_user_location_tap_feature_remains));
+        showError(getString(R.string.error_invalid_user_location_showing_all_routes));
         resetNearbyToggle();
     }
 
@@ -307,7 +307,7 @@ public class RouteListFragment extends BaseFragment
     }
 
     @Override public void showError(String message) {
-        showToastMessage(message);
+        showSnackbarError(layoutParent, message);
     }
 
     private void loadRouteList() {

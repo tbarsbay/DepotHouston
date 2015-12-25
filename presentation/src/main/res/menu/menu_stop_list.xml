@@ -9,6 +9,7 @@
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         android:title="@string/nearby_only"
         android:orderInCategory="99"/>
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

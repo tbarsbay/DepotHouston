@@ -37,6 +37,18 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    protected void showSnackbarError(View parentView, int stringResId) {
+        showSnackbarError(parentView, getString(stringResId));
+    }
+
+    protected void showSnackbarError(View parentView, String message) {
+        if (parentView != null && getResources() != null) {
+            Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_error));
+            snackbar.show();
+        }
+    }
+
     protected void showSnackbar(View parentView, int stringResId) {
         showSnackbar(parentView, getString(stringResId));
     }

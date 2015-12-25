@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -379,11 +378,7 @@ public class MapSearchFragment
 
     @Override
     public void showError(String message) {
-        if (layoutParent != null) {
-            Snackbar snackbar = Snackbar.make(layoutParent, message, Snackbar.LENGTH_LONG);
-            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.snackbar_error));
-            snackbar.show();
-        }
+        showSnackbarError(layoutParent, message);
     }
 
     @Override

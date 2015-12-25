@@ -1,7 +1,6 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.tamerbarsbay.depothouston.domain.Route;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
@@ -86,7 +85,7 @@ public class RouteListPresenter implements Presenter {
         this.radiusInMiles = radiusInMiles;
 
         getRoutesNearLocationUseCase.setParameters(lat, lon, radiusInMiles);
-        getRoutesNearLocationUseCase.execute(new RouteListSubscriber()); //TODO can we use the same subscriber
+        getRoutesNearLocationUseCase.execute(new RouteListSubscriber());
     }
 
     public void onRouteClicked(RouteModel routeModel) {
@@ -137,7 +136,6 @@ public class RouteListPresenter implements Presenter {
 
         @Override
         public void onNext(List<Route> routes) {
-            Log.d("RouteListPresenter", "onNext: " + routes.size() + " routes"); //TODO temp
             showRoutesInView(routes);
         }
 

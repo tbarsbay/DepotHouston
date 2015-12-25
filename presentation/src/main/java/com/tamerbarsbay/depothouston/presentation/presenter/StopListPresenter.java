@@ -6,6 +6,7 @@ import com.tamerbarsbay.depothouston.domain.Stop;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
 import com.tamerbarsbay.depothouston.domain.exception.ErrorBundle;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
+import com.tamerbarsbay.depothouston.domain.interactor.GetStopsNearLocationByRoute;
 import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
@@ -25,13 +26,18 @@ public class StopListPresenter implements Presenter {
     private StopListView stopListView;
 
     private final UseCase getStopsByRouteUseCase;
-    private final UseCase getStopsNearLocationByRouteUseCase;
+    private final GetStopsNearLocationByRoute getStopsNearLocationByRouteUseCase;
     private final StopModelDataMapper stopModelDataMapper;
+
+    private String routeId;
+    private double lat;
+    private double lon;
+    private String radiusInMiles;
 
     @Inject
     StopListPresenter(@Named("stopsByRoute") UseCase getStopsByRouteUseCase,
-                      @Named("stopsNearLocationByRoute") UseCase getStopsNearLocationByRouteUseCase,
-                       StopModelDataMapper stopModelDataMapper) {
+                      GetStopsNearLocationByRoute getStopsNearLocationByRouteUseCase,
+                      StopModelDataMapper stopModelDataMapper) {
         this.getStopsByRouteUseCase = getStopsByRouteUseCase;
         this.getStopsNearLocationByRouteUseCase = getStopsNearLocationByRouteUseCase;
         this.stopModelDataMapper = stopModelDataMapper;
@@ -46,55 +52,97 @@ public class StopListPresenter implements Presenter {
     @Override public void pause() {}
 
     @Override public void destroy() {
-        this.getStopsByRouteUseCase.unsubscribe();
+        getStopsByRouteUseCase.unsubscribe();
     }
 
-    public void initialize() {
-        this.loadStopList();
+    public void retryLastRequest() {
+        if (lat == -1 || lon == -1 || radiusInMiles == null) {
+            // Last request was to load ALL routes
+            loadStopList();
+        } else {
+            loadNearbyStopsByRoute(routeId, lat, lon, radiusInMiles);
+        }
     }
 
     /**
-     * Loads all routes.
+     * Loads all stops of the given route.
      */
-    private void loadStopList() {
-        this.hideViewRetry();
-        this.showViewLoading();
-        this.getRouteList();
+    public void loadStopList() {
+        hideViewRetry();
+        hideViewEmpty();
+        showViewLoading();
+
+        routeId = null;
+        lat = -1;
+        lon = -1;
+        radiusInMiles = null;
+
+        getStopsByRouteUseCase.execute(new StopListSubscriber());
+    }
+
+    /**
+     * Loads all stops of a given route that are near a given location.
+     * @param routeId
+     * @param lat
+     * @param lon
+     * @param radiusInMiles
+     */
+    public void loadNearbyStopsByRoute(String routeId, double lat, double lon, String radiusInMiles) {
+        hideViewRetry();
+        hideViewEmpty();
+        showViewLoading();
+
+        this.routeId = routeId;
+        this.lat = lat;
+        this.lon = lon;
+        this.radiusInMiles = radiusInMiles;
+
+        getStopsNearLocationByRouteUseCase.setParameters(routeId, lat, lon, radiusInMiles);
+        getStopsNearLocationByRouteUseCase.execute(new StopListSubscriber());
     }
 
     public void onStopClicked(StopModel stopModel) {
-        this.stopListView.viewStop(stopModel);
+        stopListView.viewStop(stopModel);
     }
 
     private void showViewLoading() {
-        this.stopListView.showLoadingView();
+        stopListView.showLoadingView();
     }
 
     private void hideViewLoading() {
-        this.stopListView.hideLoadingView();
+        stopListView.hideLoadingView();
     }
 
     private void showViewRetry() {
-        this.stopListView.showRetryView();
+        stopListView.showRetryView();
     }
 
     private void hideViewRetry() {
-        this.stopListView.hideRetryView();
+        stopListView.hideRetryView();
+    }
+
+    private void showViewEmpty() {
+        stopListView.showEmptyView();
+    }
+
+    private void hideViewEmpty() {
+        stopListView.hideEmptyView();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage = ErrorMessageFactory.create(this.stopListView.getContext(),
+        String errorMessage = ErrorMessageFactory.create(stopListView.getContext(),
                 errorBundle.getException());
-        this.stopListView.showError(errorMessage);
+        stopListView.showError(errorMessage);
     }
 
     private void showStopsInView(Collection<Stop> stops) {
-        final Collection<StopModel> stopModels = this.stopModelDataMapper.transform(stops);
-        this.stopListView.renderStopList(stopModels);
-    }
-
-    private void getRouteList() {
-        this.getStopsByRouteUseCase.execute(new StopListSubscriber());
+        final Collection<StopModel> stopModels = stopModelDataMapper.transform(stops);
+        if (stopModels.isEmpty()) {
+            showViewEmpty();
+        } else {
+            hideViewEmpty();
+            stopListView.renderStopList(stopModels);
+        };
     }
 
     private final class StopListSubscriber extends DefaultSubscriber<List<Stop>> {
