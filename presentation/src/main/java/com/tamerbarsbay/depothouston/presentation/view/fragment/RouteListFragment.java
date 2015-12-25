@@ -180,6 +180,10 @@ public class RouteListFragment extends BaseFragment
     private void getUserLocationAndLoadNearbyRoutes() {
         Location userLocation = getUserLocationManager().getUserLocation();
 
+//        //TODO temp for testing purposes
+//        userLocation.setLatitude(29.791032);
+//        userLocation.setLongitude(-95.404918);
+
         if (userLocation != null) {
             loadNearbyRouteList(
                     userLocation.getLatitude(),

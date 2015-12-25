@@ -102,7 +102,8 @@ public class HoustonMetroApi {
                                                                  final String radius) {
         if (validNetworkConnection()) {
             return getRetrofit()
-                    .create(HoustonMetroApiService.class).stopsByRoute(routeId)
+                    .create(HoustonMetroApiService.class)
+                    .stopsByRoute(routeId)
                     .flatMap(new Func1<List<StopEntity>, Observable<StopEntity>>() {
                         @Override
                         public Observable<StopEntity> call(final List<StopEntity> stopEntities) {
@@ -121,10 +122,6 @@ public class HoustonMetroApi {
                                                     lon,
                                                     stopEntity.getLat(),
                                                     stopEntity.getLon());
-                                    //TODO temp logs
-                                    Log.d("HoustonMetroApi", "Between: (" + lat + "," + lon + ") and (" + stopEntity.getLat() + "," + stopEntity.getLon() + ")");
-                                    Log.d("HoustonMetroApi", "Threshold: " + threshold);
-                                    Log.d("HoustonMetroApi", "Distance: " + distance);
                                     return distance < threshold;
                                 }
                             });
