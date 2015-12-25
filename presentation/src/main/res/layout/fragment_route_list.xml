@@ -29,7 +29,19 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/view_retry" />
+    <RelativeLayout
+        android:id="@+id/rl_retry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/btn_retry"
+            style="@style/RetryButton"
+            android:text="@string/btn_text_retry" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/layout_route_list_empty"

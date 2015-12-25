@@ -26,6 +26,7 @@ import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.RouteComponent;
 import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.RouteListPresenter;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
 import com.tamerbarsbay.depothouston.presentation.util.UserLocationManager;
 import com.tamerbarsbay.depothouston.presentation.view.RouteListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.RouteAdapter;
@@ -106,7 +107,13 @@ public class RouteListFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();
-        loadRouteList();
+
+        //TODO this seems iffy, how will it handle permission revocation?
+        if (PrefUtils.isFilterNearbyRoutesEnabled(getContext())) {
+            getUserLocationAndLoadNearbyRoutes();
+        } else {
+            loadRouteList();
+        }
     }
 
     @Override
@@ -134,8 +141,8 @@ public class RouteListFragment extends BaseFragment
         if (item != null) {
             nearbyToggle = (SwitchCompat) MenuItemCompat.getActionView(item);
             styleNearbyToggle();
-            //TODO set checked based on prefs, if checked last time
             nearbyToggle.setOnCheckedChangeListener(onNearbyRoutesToggledListener);
+            nearbyToggle.setChecked(PrefUtils.isFilterNearbyRoutesEnabled(getContext()));
         }
     }
 
@@ -161,6 +168,7 @@ public class RouteListFragment extends BaseFragment
     }
 
     private void onNearbyRoutesToggled(boolean isChecked) {
+        PrefUtils.setFilterNearbyRoutesEnabled(getContext(), isChecked);
         if (isChecked) {
             getUserLocationManager().connect();
         } else {
@@ -171,10 +179,6 @@ public class RouteListFragment extends BaseFragment
 
     private void getUserLocationAndLoadNearbyRoutes() {
         Location userLocation = getUserLocationManager().getUserLocation();
-
-//        //TODO temp for testing purposes
-//        userLocation.setLatitude(29.783133);
-//        userLocation.setLongitude(-95.409385);
 
         if (userLocation != null) {
             loadNearbyRouteList(
@@ -224,6 +228,7 @@ public class RouteListFragment extends BaseFragment
 
     private void resetNearbyToggle() {
         if (nearbyToggle != null) {
+            PrefUtils.setFilterNearbyRoutesEnabled(getContext(), false);
             nearbyToggle.setChecked(false);
         }
     }
