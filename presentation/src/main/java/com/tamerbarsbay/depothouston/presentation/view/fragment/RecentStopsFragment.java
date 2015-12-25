@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.tamerbarsbay.depothouston.R;
@@ -110,10 +112,43 @@ public class RecentStopsFragment extends BaseFragment {
     }
 
     private void clearRecentStops() {
-        showEmptyView();
         RecentStopUtils.clearRecentStops(getContext());
-        recentStopAdapter.clearRecentStops();
-        //TODO animation down?
+        int childCount = rvRecentStops.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View v = rvRecentStops.getChildAt(i);
+            animateStopExit(childCount, i, v);
+        }
+    }
+
+    private void animateStopExit(int stopCount, int position, View stopView) {
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_fade_out);
+        animation.setDuration(300);
+        // If there are more than 10 items, only offset the animation for the first ten.
+        if ((stopCount <= 10) || (position <= 10)) {
+            animation.setStartOffset(50*position);
+        } else {
+            animation.setStartOffset(50*10);
+        }
+        animation.setFillAfter(true);
+
+        if (position == 0) {
+            // After the last (first) item animates, update the adapter
+            animation.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    showEmptyView();
+                    recentStopAdapter.clearRecentStops();
+                }
+            });
+        }
+        stopView.startAnimation(animation);
     }
 
     private void showEmptyView() {
