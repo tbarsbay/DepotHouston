@@ -60,4 +60,9 @@
     <string name="clear_recent_stops">Clear recent stops</string>
     <string name="clear_stops_are_you_sure">Are you sure you want to clear all recently viewed stops?</string>
     <string name="action_clear_recent_stops">Clear recent stops</string>
+    <string name="enable_active_tracking">Enable Active Tracking</string>
+    <string name="vibrate_my_device">Vibrate my device</string>
+    <string name="play_a_notification_sound">Play a notification sound</string>
+    <string name="active_tracking_disclaimer">If for some reason the Houston Metro data feed skips the minute that you\'ve selected above, your device may not alert you.</string>
+    <string name="enable">Enable</string>
 </resources>

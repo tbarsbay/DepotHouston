@@ -33,6 +33,7 @@ import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.ActiveTrackingMenuView;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalAdapter;
+import com.tamerbarsbay.depothouston.presentation.view.adapter.SimpleRouteAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -354,6 +355,7 @@ public class ArrivalListFragment extends BaseFragment
 
     @Override
     public void renderActiveTrackingRouteOptions(Collection<RouteModel> routes) {
+        SimpleRouteAdapter adapter = new SimpleRouteAdapter(getContext(), routes);
 
         //TODO populate adapter and set to spinner
     }
