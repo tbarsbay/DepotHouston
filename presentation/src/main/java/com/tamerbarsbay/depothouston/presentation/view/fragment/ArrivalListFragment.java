@@ -3,6 +3,7 @@ package com.tamerbarsbay.depothouston.presentation.view.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ArrivalComponent;
@@ -25,10 +27,11 @@ import com.tamerbarsbay.depothouston.presentation.model.RecentStopModel;
 import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.ArrivalListPresenter;
+import com.tamerbarsbay.depothouston.presentation.service.ActiveTrackingService;
 import com.tamerbarsbay.depothouston.presentation.util.RecentStopUtils;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
-import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 import com.tamerbarsbay.depothouston.presentation.view.ActiveTrackingMenuView;
+import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalAdapter;
 
 import java.util.ArrayList;
@@ -351,6 +354,7 @@ public class ArrivalListFragment extends BaseFragment
 
     @Override
     public void renderActiveTrackingRouteOptions(Collection<RouteModel> routes) {
+
         //TODO populate adapter and set to spinner
     }
 
@@ -360,8 +364,24 @@ public class ArrivalListFragment extends BaseFragment
     }
 
     @Override
-    public void onActiveTrackingEnabled(String routeId, String stopId, String duration, String minutesAway, boolean isVibrateEnabled, boolean isRingEnabled) {
-        //TODO start service
+    public void onActiveTrackingEnabled(String routeId, String routeNum,
+                                        String stopId, String stopName,
+                                        String trackingDurationMins, int vehicleDistanceMins,
+                                        boolean isVibrateEnabled, boolean isRingEnabled) {
+        int trackingDurationMillis = Integer.parseInt(
+                trackingDurationMins.substring(0, trackingDurationMins.indexOf(" "))) * 60000; //TODO find a better way to do this
+        long endUpdatesTimeMillis = System.currentTimeMillis() + trackingDurationMillis;
+
+        int uniqueId = stopId.hashCode();
+
+        //TODO change to snackbar?
+        Toast.makeText(getContext(),
+                "Active tracking enabled for " + trackingDurationMins + " minutes - swipe away from notification shade to cancel.",
+                Toast.LENGTH_LONG).show();
+
+        Intent intent = ActiveTrackingService.getCallingIntent(getContext(), routeId,
+                routeNum, stopId, stopName, uniqueId, vehicleDistanceMins, endUpdatesTimeMillis, isRingEnabled, isVibrateEnabled);
+        getContext().startService(intent); //TODO move to activity?
     }
 
     @Override

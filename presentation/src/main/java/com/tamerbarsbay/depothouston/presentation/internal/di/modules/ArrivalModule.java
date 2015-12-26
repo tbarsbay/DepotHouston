@@ -37,7 +37,7 @@ public class ArrivalModule {
 
     @Provides
     @PerActivity
-    UseCase provideGetRoutesByStopUseCase(RouteRepository routeRepository,
+    GetRoutesByStop provideGetRoutesByStopUseCase(RouteRepository routeRepository,
                                           ThreadExecutor threadExecutor,
                                           PostExecutionThread postExecutionThread) {
         return new GetRoutesByStop(routeRepository, threadExecutor, postExecutionThread);

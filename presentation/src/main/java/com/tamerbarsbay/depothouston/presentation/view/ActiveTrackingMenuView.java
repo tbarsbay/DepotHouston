@@ -30,12 +30,13 @@ public interface ActiveTrackingMenuView {
      * @param routeId The route to track.
      * @param stopId The stop to track.
      * @param duration The duration for which to track arrivals.
-     * @param minutesAway (Optional) Ring or vibrate the device every time a vehicle is this many minutes away.
+     * @param vehicleDistanceMins (Optional) Ring or vibrate the device every time a vehicle is this many minutes away.
      * @param isVibrateEnabled (Optional) Does the user want device to vibrate whenever a vehicle is minutesAway minutes away?
      * @param isRingEnabled (Optional) Does the user want device to ring whenever a vehicle is minutesAway minutes away?
      */
-    void onActiveTrackingEnabled(String routeId, String stopId,
-                                 String duration, String minutesAway,
+    void onActiveTrackingEnabled(String routeId, String routeNum,
+                                 String stopId, String stopName,
+                                 String duration, int vehicleDistanceMins,
                                  boolean isVibrateEnabled, boolean isRingEnabled);
 
     /**
