@@ -37,4 +37,12 @@ public interface RouteRepository {
                                                final double lon,
                                                final String radiusInMiles);
 
+    /**
+     * Get an {@link rx.Observable} which will emit a List of {@link Route} objects
+     * that are serviced at a given stop.
+     * @param stopId The id of the stop for which to get routes.
+     * @return
+     */
+    Observable<List<Route>> routesByStop(final String stopId);
+
 }

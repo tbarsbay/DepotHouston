@@ -16,4 +16,6 @@ public interface RouteDataStore {
                                                      final double lon,
                                                      final String radiusInMiles);
 
+    Observable<List<RouteEntity>> routesByStop(final String stopId);
+
 }

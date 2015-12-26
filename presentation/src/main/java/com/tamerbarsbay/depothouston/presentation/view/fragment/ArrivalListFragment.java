@@ -22,11 +22,13 @@ import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.ArrivalComponent;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
 import com.tamerbarsbay.depothouston.presentation.model.RecentStopModel;
+import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.model.SavedStopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.ArrivalListPresenter;
 import com.tamerbarsbay.depothouston.presentation.util.RecentStopUtils;
 import com.tamerbarsbay.depothouston.presentation.util.SavedStopUtils;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
+import com.tamerbarsbay.depothouston.presentation.view.ActiveTrackingMenuView;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.ArrivalAdapter;
 
 import java.util.ArrayList;
@@ -43,7 +45,8 @@ import butterknife.OnTextChanged;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArrivalListFragment extends BaseFragment implements ArrivalListView {
+public class ArrivalListFragment extends BaseFragment
+        implements ArrivalListView, ActiveTrackingMenuView {
 
     public interface ArrivalListListener {
         void onArrivalClicked(ArrivalModel arrivalModel);
@@ -183,7 +186,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
 
     private void initialize() {
         getComponent(ArrivalComponent.class).inject(this);
-        arrivalListPresenter.setView(this);
+        arrivalListPresenter.setViews(this, this);
         if (getArguments() != null) {
             stopId = getArguments().getString(ARGUMENT_KEY_STOP_ID, null);
             stopName = getArguments().getString(ARGUMENT_KEY_STOP_NAME, null);
@@ -256,7 +259,7 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     }
 
     private void loadArrivalList() {
-        arrivalListPresenter.initialize();
+        arrivalListPresenter.loadArrivalList();
     }
 
     private void populateSavedGroupsSpinner() {
@@ -344,6 +347,41 @@ public class ArrivalListFragment extends BaseFragment implements ArrivalListView
     @OnClick(R.id.fab_arrival_list_refresh)
     void onRefreshClicked() {
         loadArrivalList();
+    }
+
+    @Override
+    public void renderActiveTrackingRouteOptions(Collection<RouteModel> routes) {
+        //TODO populate adapter and set to spinner
+    }
+
+    @Override
+    public void renderActiveTrackingDurationOptions(Collection<String> durationOptions) {
+        //TODO populate adapter and spinner
+    }
+
+    @Override
+    public void onActiveTrackingEnabled(String routeId, String stopId, String duration, String minutesAway, boolean isVibrateEnabled, boolean isRingEnabled) {
+        //TODO start service
+    }
+
+    @Override
+    public void showActiveTrackingRoutesErrorView() {
+        //TODO show error message "There was an error loading routes - please try again later"
+    }
+
+    @Override
+    public void hideActiveTrackingRoutesErrorView() {
+        //TODO
+    }
+
+    @Override
+    public void showActiveTrackingRoutesLoadingView() {
+        //TODO
+    }
+
+    @Override
+    public void hideActiveTrackingRoutesLoadingView() {
+        //TODO
     }
 
     private ArrivalAdapter.OnItemClickListener onItemClickListener =

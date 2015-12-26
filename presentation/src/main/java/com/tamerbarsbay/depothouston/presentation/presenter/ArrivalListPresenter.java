@@ -3,15 +3,20 @@ package com.tamerbarsbay.depothouston.presentation.presenter;
 import android.support.annotation.NonNull;
 
 import com.tamerbarsbay.depothouston.domain.Arrival;
+import com.tamerbarsbay.depothouston.domain.Route;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
 import com.tamerbarsbay.depothouston.domain.exception.ErrorBundle;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
+import com.tamerbarsbay.depothouston.domain.interactor.GetRoutesByStop;
 import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.mapper.ArrivalModelDataMapper;
+import com.tamerbarsbay.depothouston.presentation.mapper.RouteModelDataMapper;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
+import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
+import com.tamerbarsbay.depothouston.presentation.view.ActiveTrackingMenuView;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,19 +30,29 @@ import javax.inject.Named;
 public class ArrivalListPresenter implements Presenter {
 
     private ArrivalListView arrivalListView;
+    private ActiveTrackingMenuView activeTrackingMenuView;
+
+    private String stopId;
 
     private final UseCase getArrivalsByStopUseCase;
+    private GetRoutesByStop getRoutesByStopUseCase;
     private final ArrivalModelDataMapper arrivalModelDataMapper;
+    private final RouteModelDataMapper routeModelDataMapper;
 
     @Inject
     ArrivalListPresenter(@Named("arrivalsByStop") UseCase getArrivalsByStopUseCase,
-                         ArrivalModelDataMapper arrivalModelDataMapper) {
+                         GetRoutesByStop getRoutesByStopUseCase,
+                         ArrivalModelDataMapper arrivalModelDataMapper,
+                         RouteModelDataMapper routeModelDataMapper) {
         this.getArrivalsByStopUseCase = getArrivalsByStopUseCase;
+        this.getRoutesByStopUseCase = getRoutesByStopUseCase;
         this.arrivalModelDataMapper = arrivalModelDataMapper;
+        this.routeModelDataMapper = routeModelDataMapper;
     }
 
-    public void setView(@NonNull ArrivalListView arrivalListView) {
+    public void setViews(@NonNull ArrivalListView arrivalListView, ActiveTrackingMenuView activeTrackingMenuView) {
         this.arrivalListView = arrivalListView;
+        this.activeTrackingMenuView = activeTrackingMenuView;
     }
 
     @Override
@@ -51,13 +66,20 @@ public class ArrivalListPresenter implements Presenter {
         getArrivalsByStopUseCase.unsubscribe();
     }
 
-    public void initialize() {
-        loadArrivalList();
+    public void loadRoutesByStop(String stopId) {
+        activeTrackingMenuView.showActiveTrackingRoutesLoadingView();
+        activeTrackingMenuView.hideActiveTrackingRoutesErrorView();
+
+        this.stopId = stopId;
+
+        getRoutesByStopUseCase.setParameters(stopId);
+        getRoutesByStopUseCase.execute(new RoutesByStopSubscriber());
     }
 
-    private void loadArrivalList() {
+    public void loadArrivalList() {
         hideViewRetry();
         showViewLoading();
+        //TODO hide empty
         getArrivalList();
     }
 
@@ -89,6 +111,11 @@ public class ArrivalListPresenter implements Presenter {
         arrivalListView.renderArrivalList(arrivalModels);
     }
 
+    private void showRouteTrackingOptionsInView(Collection<Route> routes) {
+        Collection<RouteModel> routeModels = routeModelDataMapper.transform(routes);
+        activeTrackingMenuView.renderActiveTrackingRouteOptions(routeModels);
+    }
+
     private void getArrivalList() {
         getArrivalsByStopUseCase.execute(new ArrivalListSubscriber());
     }
@@ -111,7 +138,25 @@ public class ArrivalListPresenter implements Presenter {
             showErrorMessage(new DefaultErrorBundle((Exception) e));
             showViewRetry();
         }
+    }
 
+    private final class RoutesByStopSubscriber extends DefaultSubscriber<List<Route>> {
+
+        @Override
+        public void onNext(List<Route> routes) {
+            showRouteTrackingOptionsInView(routes);
+        }
+
+        @Override
+        public void onCompleted() {
+            activeTrackingMenuView.hideActiveTrackingRoutesLoadingView();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            activeTrackingMenuView.hideActiveTrackingRoutesLoadingView();
+            activeTrackingMenuView.showActiveTrackingRoutesErrorView();
+        }
     }
 
     private class ArrivalComparator implements Comparator<ArrivalModel> {
