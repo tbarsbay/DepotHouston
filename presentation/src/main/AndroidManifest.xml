@@ -41,6 +41,11 @@
             android:label="@string/title_activity_maps" >
         </activity>
 
+        <service
+            android:name=".presentation.service.ActiveTrackingService"
+            android:icon="@mipmap/app_icon"
+            android:label="@string/active_tracking_service_label" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

@@ -9,7 +9,7 @@
               android:paddingBottom="8dp"
               android:background="@color/primary"
               android:elevation="4dp"
-              android:visibility="visible">
+              android:visibility="gone">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,17 +24,67 @@
         android:textColor="@color/text_primary_light"
         android:background="@color/primary_dark"/>
 
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Track arrival times in your notification bar, updated automatically each minute."-->
+        <!--android:paddingLeft="16dp"-->
+        <!--android:paddingRight="16dp"-->
+        <!--android:paddingTop="8dp"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:textColor="@color/text_primary_light"/>-->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Track this stop in my notification bar for:"
+        android:text="1. Select a route to track:"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp"
+        android:textStyle="bold"
         android:textColor="@color/text_primary_light"/>
 
     <Spinner
         android:id="@+id/sp_active_tracking_routes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_active_tracking_routes_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loading_routes"
+        android:paddingLeft="32dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/text_primary_light"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/tv_active_tracking_routes_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/error_loading_routes_try_again"
+        android:paddingLeft="32dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/orange_400"
+        android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2. Select how long you want to track arrivals:"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary_light"/>
+
+    <Spinner
+        android:id="@+id/sp_active_tracking_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -71,6 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:textColor="@color/text_primary_light"
         android:text="@string/vibrate_my_device"/>
 
     <CheckBox
@@ -79,6 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:textColor="@color/text_primary_light"
         android:text="@string/play_a_notification_sound"/>
 
     <TextView
@@ -88,6 +140,7 @@
         android:paddingRight="16dp"
         android:paddingLeft="16dp"
         android:textColor="@color/text_primary_light"
+        android:textSize="12sp"
         android:text="@string/active_tracking_disclaimer"/>
 
     <LinearLayout

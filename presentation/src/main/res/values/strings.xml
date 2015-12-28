@@ -65,4 +65,8 @@
     <string name="play_a_notification_sound">Play a notification sound</string>
     <string name="active_tracking_disclaimer">If for some reason the Houston Metro data feed skips the minute that you\'ve selected above, your device may not alert you.</string>
     <string name="enable">Enable</string>
+    <string name="loading_routes">Loading routes...</string>
+    <string name="error_loading_routes_try_again">Error loading routes - please try again in a moment</string>
+    <string name="stop_saved_to_favorites">This stop has been saved to your favorites!</string>
+    <string name="active_tracking_service_label">Depot Houston Active Tracking</string>
 </resources>

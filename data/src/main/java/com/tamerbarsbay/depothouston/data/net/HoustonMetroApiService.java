@@ -49,7 +49,7 @@ public interface HoustonMetroApiService {
     Observable<RouteEntity> route(@Path("id") final String routeId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)
-    @GET("Stops(\'{id}\')/Routes")
+    @GET("Stops(\'{id}\')/Routes" + DEFAULT_PARAMS)
     Observable<List<RouteEntity>> routesByStop(@Path("id") final String stopId);
 
     @Headers(CONTENT_TYPE_JSON_HEADER)

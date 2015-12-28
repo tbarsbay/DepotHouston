@@ -17,6 +17,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_arrival_list_actions"/>
 
+    <include
+        layout="@layout/view_enable_active_tracking"
+        android:id="@+id/layout_enable_active_tracking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_arrival_list_actions"/>
+
     <LinearLayout
         android:id="@+id/layout_arrival_list_headers"
         android:layout_width="match_parent"

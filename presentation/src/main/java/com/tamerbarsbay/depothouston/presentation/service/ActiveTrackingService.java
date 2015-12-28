@@ -7,17 +7,27 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.domain.Arrival;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
 import com.tamerbarsbay.depothouston.domain.interactor.GetArrivalsByStopAndRoute;
+import com.tamerbarsbay.depothouston.presentation.AndroidApplication;
+import com.tamerbarsbay.depothouston.presentation.internal.di.components.ActiveTrackingComponent;
+import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerActiveTrackingComponent;
+import com.tamerbarsbay.depothouston.presentation.internal.di.modules.ActiveTrackingModule;
 import com.tamerbarsbay.depothouston.presentation.mapper.ArrivalModelDataMapper;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
 import com.tamerbarsbay.depothouston.presentation.view.activity.ArrivalListActivity;
@@ -34,10 +44,10 @@ import javax.inject.Inject;
 public class ActiveTrackingService extends IntentService {
 
     @Inject
-    GetArrivalsByStopAndRoute getArrivalsByStopAndRoute; //TODO will this work
+    GetArrivalsByStopAndRoute getArrivalsByStopAndRoute;
 
     @Inject
-    ArrivalModelDataMapper arrivalModelDataMapper; //TODO ?
+    ArrivalModelDataMapper arrivalModelDataMapper;
 
     private AlarmManager alarmManager;
     private NotificationManager ntfManager;
@@ -56,6 +66,7 @@ public class ActiveTrackingService extends IntentService {
     public static final String KEY_ENABLE_VIBRATE = "enable_vibrate"; // Optional: whether the device will vibrate when a vehicle is XX minutes away
     public static final String KEY_END_TIME = "end_time"; // Time that the active tracking will end
 
+    //TODO can we inject these
     private String routeId;
     private String routeNum;
     private String stopId;
@@ -95,8 +106,14 @@ public class ActiveTrackingService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("ActiveTrackingService", "onCreate"); //TODO temp log
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         ntfManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        ActiveTrackingComponent component = DaggerActiveTrackingComponent.builder()
+                .applicationComponent(((AndroidApplication)getApplication()).getApplicationComponent())
+                .activeTrackingModule(new ActiveTrackingModule())
+                .build();
+        component.inject(this);
     }
 
     @Override
@@ -111,7 +128,7 @@ public class ActiveTrackingService extends IntentService {
             PendingIntent pendingIntent = PendingIntent.getService(
                     this, REQUEST_CODE_START_SERVICE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.cancel(pendingIntent);
-            ntfManager.cancel(uid); //TODO create a uid
+            ntfManager.cancel(uid);
         }
     }
 
@@ -139,6 +156,7 @@ public class ActiveTrackingService extends IntentService {
     }
 
     private void updateData() {
+        getArrivalsByStopAndRoute.setParameters(routeId, stopId);
         getArrivalsByStopAndRoute.execute(new ActiveTrackingSubscriber());
     }
 
@@ -146,8 +164,23 @@ public class ActiveTrackingService extends IntentService {
         String ntfTitle = buildNotificationTitle((List<ArrivalModel>) arrivals);
         String ntfBody = buildNotificationBody(routeNum, stopName);
         boolean alertUser = isThereVehicleAtThresholdDistance((List<ArrivalModel>) arrivals, vehicleDistance);
-        //TODO issue a notification
-        //TODO if matchingArrival, make ring or noise depending on which options enabled
+        issueNotification(ntfTitle, ntfBody, uid, alertUser);
+        if (alertUser) {
+            if (enableRing) {
+                try {
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone r = RingtoneManager.getRingtone(this, notification);
+                    r.setStreamType(AudioManager.STREAM_ALARM);
+                    r.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (enableVibrate) {
+                Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(1000);
+            }
+        }
     }
 
     private String buildNotificationTitle(List<ArrivalModel> arrivals) {
@@ -241,7 +274,8 @@ public class ActiveTrackingService extends IntentService {
      */
     private void scheduleNextUpdate() {
         Intent intent = new Intent(this, ActiveTrackingService.class);
-        //TODO populate intent extras
+        intent = populateStopInfoExtras(intent);
+        intent = populateNotificationInfoExtras(intent);
         intent.setAction(ACTION_UPDATE);
         PendingIntent pendingIntent = PendingIntent.getService(this, REQUEST_CODE_START_SERVICE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -268,6 +302,7 @@ public class ActiveTrackingService extends IntentService {
         @Override
         public void onError(Throwable e) {
             //TODO show error message? show previous times?
+            Log.d("ActiveTrackingService", "onError: " + e.getMessage()); //TODO temp log
         }
     }
 }

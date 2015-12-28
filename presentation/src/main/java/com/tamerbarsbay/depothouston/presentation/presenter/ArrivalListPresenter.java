@@ -1,6 +1,7 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.tamerbarsbay.depothouston.domain.Arrival;
 import com.tamerbarsbay.depothouston.domain.Route;
@@ -74,6 +75,7 @@ public class ArrivalListPresenter implements Presenter {
 
         getRoutesByStopUseCase.setParameters(stopId);
         getRoutesByStopUseCase.execute(new RoutesByStopSubscriber());
+        Log.d("ArrivalListPresenter", "executing getRoutesByStop use case"); //TODO temp log
     }
 
     public void loadArrivalList() {
@@ -113,7 +115,7 @@ public class ArrivalListPresenter implements Presenter {
 
     private void showRouteTrackingOptionsInView(Collection<Route> routes) {
         Collection<RouteModel> routeModels = routeModelDataMapper.transform(routes);
-        activeTrackingMenuView.renderActiveTrackingRouteOptions(routeModels);
+        activeTrackingMenuView.populateActiveTrackingRouteOptions(routeModels);
     }
 
     private void getArrivalList() {
@@ -144,6 +146,7 @@ public class ArrivalListPresenter implements Presenter {
 
         @Override
         public void onNext(List<Route> routes) {
+            Log.d("ArrivalListPresenter", "onNext routes by stop: " + routes.size() + " routes"); //TODO temp log
             showRouteTrackingOptionsInView(routes);
         }
 
@@ -154,6 +157,7 @@ public class ArrivalListPresenter implements Presenter {
 
         @Override
         public void onError(Throwable e) {
+            Log.d("ArrivalListPresenter", "onError routes by stop: " + e.getMessage()); //TODO temp log
             activeTrackingMenuView.hideActiveTrackingRoutesLoadingView();
             activeTrackingMenuView.showActiveTrackingRoutesErrorView();
         }
