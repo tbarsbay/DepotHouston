@@ -32,7 +32,7 @@ public class SimpleRouteArrayAdapter extends ArrayAdapter<RouteModel> {
         View v = convertView;
 
         if (v == null) {
-            v = inflater.inflate(R.layout.list_item_simple, null);
+            v = inflater.inflate(R.layout.list_item_simple_white, null);
         }
 
         TextView tvName = (TextView) v.findViewById(R.id.tv_simple_list_item_name);
@@ -46,6 +46,18 @@ public class SimpleRouteArrayAdapter extends ArrayAdapter<RouteModel> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getView(position, convertView, parent);
+        View v = convertView;
+
+        if (v == null) {
+            v = inflater.inflate(R.layout.list_item_simple, null);
+        }
+
+        TextView tvName = (TextView) v.findViewById(R.id.tv_simple_list_item_name);
+        if (tvName != null) {
+            final RouteModel routeModel = routes.get(position);
+            tvName.setText(routeModel.getRouteName());
+        }
+
+        return v;
     }
 }

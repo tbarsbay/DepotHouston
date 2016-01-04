@@ -295,7 +295,8 @@ public class ArrivalListFragment extends BaseFragment
             ArrayList<String> groupNames = SavedStopUtils.getGroupNamesArray(getContext());
             groupNames.add(CREATE_NEW_GROUP);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    getContext(), R.layout.list_item_simple, R.id.tv_simple_list_item_name, groupNames);
+                    getContext(), R.layout.list_item_simple_white, R.id.tv_simple_list_item_name, groupNames);
+            adapter.setDropDownViewResource(R.layout.list_item_simple);
             spGroups.setAdapter(adapter);
         }
     }
@@ -416,9 +417,10 @@ public class ArrivalListFragment extends BaseFragment
         spActiveTrackingRoutes.setVisibility(View.VISIBLE);
         SimpleRouteArrayAdapter adapter = new SimpleRouteArrayAdapter(
                 getContext(),
-                R.layout.list_item_simple,
+                R.layout.list_item_simple_white,
                 R.id.tv_simple_list_item_name,
                 routes);
+        adapter.setDropDownViewResource(R.layout.list_item_simple);
         spActiveTrackingRoutes.setAdapter(adapter);
     }
 
@@ -426,9 +428,10 @@ public class ArrivalListFragment extends BaseFragment
     public void populateActiveTrackingDurationOptions(Collection<String> durationOptions) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getContext(),
-                R.layout.list_item_simple,
+                R.layout.list_item_simple_white,
                 R.id.tv_simple_list_item_name,
                 (List<String>) durationOptions);
+        adapter.setDropDownViewResource(R.layout.list_item_simple);
         if (spActiveTrackingDuration != null) {
             spActiveTrackingDuration.setAdapter(adapter);
         }
@@ -438,9 +441,10 @@ public class ArrivalListFragment extends BaseFragment
     public void populateActiveTrackingVehicleDistanceOptions(Collection<Integer> vehicleDistanceOptions) {
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(
                 getContext(),
-                R.layout.list_item_simple,
+                R.layout.list_item_simple_white,
                 R.id.tv_simple_list_item_name,
                 (List<Integer>) vehicleDistanceOptions);
+        adapter.setDropDownViewResource(R.layout.list_item_simple);
         if (spActiveTrackingVehicleDistance != null) {
             spActiveTrackingVehicleDistance.setAdapter(adapter);
             spActiveTrackingVehicleDistance.setSelection(DEFAULT_VEHICLE_DISTANCE_INDEX);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/layout_enable_active_tracking"
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -24,74 +25,88 @@
         android:textColor="@color/text_primary_light"
         android:background="@color/primary_dark"/>
 
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Track arrival times in your notification bar, updated automatically each minute."-->
-        <!--android:paddingLeft="16dp"-->
-        <!--android:paddingRight="16dp"-->
-        <!--android:paddingTop="8dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:textColor="@color/text_primary_light"/>-->
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1. Select a route to track:"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary_light"/>
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/sp_active_tracking_routes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_active_tracking_routes_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/loading_routes"
-        android:paddingLeft="32dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:textColor="@color/text_primary_light"
-        android:visibility="visible"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_a_route"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow_500"/>
 
-    <TextView
-        android:id="@+id/tv_active_tracking_routes_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/error_loading_routes_try_again"
-        android:paddingLeft="32dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:textStyle="bold"
-        android:textColor="@color/orange_400"
-        android:visibility="gone"/>
+            <Spinner
+                android:id="@+id/sp_active_tracking_routes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="2. Select how long you want to track arrivals:"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary_light"/>
+            <TextView
+                android:id="@+id/tv_active_tracking_routes_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_routes"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textColor="@color/text_primary_light"
+                android:visibility="visible"/>
 
-    <Spinner
-        android:id="@+id/sp_active_tracking_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_active_tracking_routes_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/error_loading_routes_try_again"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/orange_400"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_a_duration"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow_500"/>
+
+            <Spinner
+                android:id="@+id/sp_active_tracking_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/list_item_simple_white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Departure Alarm (Optional)"
+        android:text="@string/departure_alarm_header"
         android:textStyle="bold"
         android:textSize="16sp"
         android:paddingLeft="16dp"
@@ -101,19 +116,36 @@
         android:textColor="@color/text_primary_light"
         android:background="@color/primary_dark"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Whenever a vehicle is this many minutes away:"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:textColor="@color/text_primary_light"/>
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/sp_active_tracking_vehicle_distance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/whenever_a_vehicle_is"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/yellow_500"/>
+
+        <Spinner
+            android:id="@+id/sp_active_tracking_vehicle_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/list_item_simple_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minutes_away"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/yellow_500"/>
+
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/cb_active_tracking_enable_vibrate"
@@ -147,7 +179,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="right">
+        android:gravity="end">
 
         <Button
             style="@style/SavedStops.DialogButton"
