@@ -81,6 +81,8 @@ public class ActiveTrackingService extends IntentService {
     private static final int REQUEST_CODE_START_SERVICE = 1;
     private static final int REQUEST_CODE_STOP_SERVICE = 0;
 
+    private static final String LOG_TAG = "ActiveTrackingService";
+
     public ActiveTrackingService() {
         super("Active Tracking Service"); //TODO make into string constant
     }
@@ -290,6 +292,10 @@ public class ActiveTrackingService extends IntentService {
         @Override
         public void onNext(List<Arrival> arrivals) {
             Collection<ArrivalModel> arrivalModels = arrivalModelDataMapper.transform(arrivals);
+            Log.d(LOG_TAG, "Arrivals: " + arrivalModels.size()); //TODO temp logs
+            for (ArrivalModel arrivalModel : arrivalModels) {
+                Log.d(LOG_TAG, "Arrival for route " + arrivalModel.getRouteName() + " in " + arrivalModel.getMinsUntilArrival() + "m"); //TODO temp log
+            }
             onDataReceived(arrivalModels);
         }
 

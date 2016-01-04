@@ -120,6 +120,7 @@ public class HoustonMetroApi {
                             return Observable.from(stopEntities).filter(new Func1<StopEntity, Boolean>() {
                                 @Override
                                 public Boolean call(StopEntity stopEntity) {
+                                    // Filter for stops that are nearby to the given location
                                     double threshold = .25;//TODO make default constant
                                     try {
                                         threshold = Double.parseDouble(radius);
