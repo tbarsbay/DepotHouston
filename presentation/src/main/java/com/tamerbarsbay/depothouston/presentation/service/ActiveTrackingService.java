@@ -84,7 +84,7 @@ public class ActiveTrackingService extends IntentService {
     private static final String LOG_TAG = "ActiveTrackingService";
 
     public ActiveTrackingService() {
-        super("Active Tracking Service"); //TODO make into string constant
+        super("Active Tracking Service");
     }
 
     public static Intent getCallingIntent(@NonNull Context context, String routeId,
@@ -108,7 +108,6 @@ public class ActiveTrackingService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("ActiveTrackingService", "onCreate"); //TODO temp log
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         ntfManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         ActiveTrackingComponent component = DaggerActiveTrackingComponent.builder()
@@ -150,6 +149,12 @@ public class ActiveTrackingService extends IntentService {
         }
     }
 
+    /**
+     * Determines whether the Active Tracking feature should continue to update based on
+     * the tracking start time and how long the user wanted to track arrivals.
+     * @param intent
+     * @return
+     */
     private boolean shouldWeUpdate(Intent intent) {
         long currentTimeMillis = System.currentTimeMillis();
         boolean timeLeft = currentTimeMillis < endUpdatesTimeMillis;
@@ -157,11 +162,19 @@ public class ActiveTrackingService extends IntentService {
         return (timeLeft && !cancelled);
     }
 
+    /**
+     * Execute a request for new arrival data.
+     */
     private void updateData() {
         getArrivalsByStopAndRoute.setParameters(routeId, stopId);
         getArrivalsByStopAndRoute.execute(new ActiveTrackingSubscriber());
     }
 
+    /**
+     * Handle new arrival data by constructing and showing a new notification and alerting
+     * the user if necessary (if they enabled the Departure Alarm feature).
+     * @param arrivals
+     */
     private void onDataReceived(Collection<ArrivalModel> arrivals) {
         String ntfTitle = buildNotificationTitle((List<ArrivalModel>) arrivals);
         String ntfBody = buildNotificationBody(routeNum, stopName);
@@ -185,6 +198,12 @@ public class ActiveTrackingService extends IntentService {
         }
     }
 
+    /**
+     * Builds a String consisting of upcoming arrival times to be displayed as the
+     * Active Tracking notification title.
+     * @param arrivals
+     * @return
+     */
     private String buildNotificationTitle(List<ArrivalModel> arrivals) {
         String title = "--, --, --";
         int limit = Math.min(arrivals.size(), 3);
@@ -193,8 +212,9 @@ public class ActiveTrackingService extends IntentService {
         }
         for (int i = 0; i < limit ; i++) {
             ArrivalModel arrival = arrivals.get(i);
-            String minsUntilArrivalString = String.valueOf(arrival.getMinsUntilArrival()) + "m";
-            title = title.replaceFirst("--", minsUntilArrivalString);
+            String minsUntilArrival = String.valueOf(arrival.getMinsUntilArrival());
+            String stringToShow =  "0".equals(minsUntilArrival) ? "Due" : minsUntilArrival + "m";
+            title = title.replaceFirst("--", stringToShow);
         }
         return title;
     }
