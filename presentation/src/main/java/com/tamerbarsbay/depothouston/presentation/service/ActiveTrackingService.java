@@ -188,6 +188,9 @@ public class ActiveTrackingService extends IntentService {
     private String buildNotificationTitle(List<ArrivalModel> arrivals) {
         String title = "--, --, --";
         int limit = Math.min(arrivals.size(), 3);
+        if (limit == 0) {
+            return getString(R.string.no_upcoming_arrivals);
+        }
         for (int i = 0; i < limit ; i++) {
             ArrivalModel arrival = arrivals.get(i);
             String minsUntilArrivalString = String.valueOf(arrival.getMinsUntilArrival()) + "m";
@@ -292,10 +295,6 @@ public class ActiveTrackingService extends IntentService {
         @Override
         public void onNext(List<Arrival> arrivals) {
             Collection<ArrivalModel> arrivalModels = arrivalModelDataMapper.transform(arrivals);
-            Log.d(LOG_TAG, "Arrivals: " + arrivalModels.size()); //TODO temp logs
-            for (ArrivalModel arrivalModel : arrivalModels) {
-                Log.d(LOG_TAG, "Arrival for route " + arrivalModel.getRouteName() + " in " + arrivalModel.getMinsUntilArrival() + "m"); //TODO temp log
-            }
             onDataReceived(arrivalModels);
         }
 
