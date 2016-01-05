@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/layout_widget_parent"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_widget_title"
+        style="@style/Widget.TitleText"
+        tools:text="Green Line"/>
+
+    <LinearLayout
+        android:id="@+id/layout_widget_arrivals"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_widget_arrival_1"
+            style="@style/Widget.ArrivalText"/>
+
+        <ImageView
+            android:id="@+id/iv_widget_divider_1"
+            style="@style/Widget.Divider" />
+
+        <TextView
+            android:id="@+id/tv_widget_arrival_2"
+            style="@style/Widget.ArrivalText" />
+
+        <ImageView
+            android:id="@+id/iv_widget_divider_2"
+            style="@style/Widget.Divider"/>
+
+        <TextView
+            android:id="@+id/tv_widget_arrival_3"
+            style="@style/Widget.ArrivalText" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="16dp"
         android:scrollbarStyle="outsideOverlay"
         tools:listitem="@layout/list_item_recent_stop"/>
 

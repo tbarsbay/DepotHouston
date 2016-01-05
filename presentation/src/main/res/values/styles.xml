@@ -158,4 +158,46 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="WidgetConfiguration"></style>
+
+    <style name="WidgetConfiguration.StepIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleX">.4</item>
+        <item name="android:scaleY">.4</item>
+        <item name="android:src">@drawable/ic_circle_outline</item>
+    </style>
+
+    <style name="Widget"></style>
+
+    <style name="Widget.TitleText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Widget.Divider">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:alpha">.70</item>
+    </style>
+
+    <style name="Widget.ArrivalText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">@string/widget_arrival_default</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>

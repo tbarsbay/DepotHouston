@@ -75,4 +75,6 @@
     <string name="whenever_a_vehicle_is">Whenever a vehicle is</string>
     <string name="minutes_away">minutes away:</string>
     <string name="no_upcoming_arrivals">No upcoming arrivals</string>
+    <string name="title_activity_widget_configuration">WidgetConfigurationActivity</string>
+    <string name="widget_arrival_default">--</string>
 </resources>
