@@ -62,8 +62,8 @@
             android:label="@string/title_activity_recent_stops" >
         </activity>
         <activity
-            android:name=".presentation.view.activity.WidgetConfigurationActivity"
-            android:label="@string/title_activity_widget_configuration" >
+            android:name=".presentation.view.activity.WidgetConfiguration1x1Activity"
+            android:label="@string/title_activity_widget_configuration1x1" >
         </activity>
     </application>
 

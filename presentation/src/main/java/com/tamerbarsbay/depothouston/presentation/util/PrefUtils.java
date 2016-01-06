@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.tamerbarsbay.depothouston.presentation.model.WidgetModel;
+
 public class PrefUtils {
 
     private static final String PREFS_NEARBY_STOPS = "prefs_nearby_stops";
@@ -16,6 +18,10 @@ public class PrefUtils {
     public static boolean isFilterNearbyRoutesEnabled(Context context) {
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(context);
         return s.getBoolean(PREFS_NEARBY_STOPS, false);
+    }
+
+    public static void saveWidget(Context context, WidgetModel widgetModel) {
+
     }
 
 }

@@ -77,4 +77,6 @@
     <string name="no_upcoming_arrivals">No upcoming arrivals</string>
     <string name="title_activity_widget_configuration">WidgetConfigurationActivity</string>
     <string name="widget_arrival_default">--</string>
+    <string name="widget_refresh_hint">Tap the widget to update arrivals.</string>
+    <string name="title_activity_widget_configuration1x1">WidgetConfiguration1x1Activity</string>
 </resources>

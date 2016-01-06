@@ -89,6 +89,7 @@ public class StopListFragment extends BaseFragment
      * @return New StopListFragment object.
      */
     public static StopListFragment newInstance(String routeId) {
+        //TODO needs directionId
         StopListFragment fragment = new StopListFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_KEY_ROUTE_ID, routeId);
