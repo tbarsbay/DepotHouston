@@ -23,6 +23,24 @@
     <color name="text_primary_light">#FFFFFF</color>
     <color name="text_secondary_light">#90FFFFFF</color>
 
+    <color name="red">#C60C30</color>
+    <color name="blue">#00A1DE</color>
+    <color name="green">#009B3A</color>
+    <color name="orange">#F9461C</color>
+    <color name="navy">#033d50</color>
+    <color name="maroon">#821313</color>
+    <color name="dark_gray">#313131</color>
+
+    <color name="red_secondary">#90C60C30</color>
+    <color name="blue_secondary">#9000A1DE</color>
+    <color name="green_secondary">#90009B3A</color>
+    <color name="orange_secondary">#90F9461C</color>
+    <color name="navy_secondary">#90033d50</color>
+    <color name="maroon_secondary">#90821313</color>
+    <color name="dark_gray_secondary">#90313131</color>
+    <color name="black_secondary">#90000000</color>
+    <color name="white_secondary">#90FFFFFF</color>
+
     <!-- Material Design colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>

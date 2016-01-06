@@ -1,5 +1,7 @@
 package com.tamerbarsbay.depothouston.presentation.model;
 
+import android.support.annotation.IntRange;
+
 public class WidgetModel {
 
     private int widgetId;
@@ -7,14 +9,18 @@ public class WidgetModel {
     private String direction;
     private String stopId;
     private String title;
+    private int size;
     private int bgColor;
 
-    public WidgetModel(int widgetId, String routeId, String direction, String stopId, String title, int bgColor) {
+    public WidgetModel(int widgetId, String routeId, String direction, String stopId,
+                       String title, @IntRange(from=0, to=1) int size,
+                       @IntRange(from=0, to=8) int bgColor) {
         this.widgetId = widgetId;
         this.routeId = routeId;
         this.direction = direction;
         this.stopId = stopId;
         this.title = title;
+        this.size = size;
         this.bgColor = bgColor;
     }
 
@@ -26,39 +32,23 @@ public class WidgetModel {
         return bgColor;
     }
 
-    public void setBgColor(int bgColor) {
-        this.bgColor = bgColor;
+    public int getSize() {
+        return size;
     }
 
     public String getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
     public String getRouteId() {
         return routeId;
-    }
-
-    public void setRouteId(String routeId) {
-        this.routeId = routeId;
     }
 
     public String getStopId() {
         return stopId;
     }
 
-    public void setStopId(String stopId) {
-        this.stopId = stopId;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

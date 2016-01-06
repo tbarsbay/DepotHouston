@@ -5,14 +5,20 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.widget.RemoteViews;
 
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.model.WidgetModel;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
+import com.tamerbarsbay.depothouston.presentation.util.WidgetUtils;
 
 public abstract class WidgetProvider extends AppWidgetProvider {
 
     // Intent action to update widget
     private static final String ACTION_UPDATE_ARRIVALS = "com.tamerbarsbay.depothouston.presentation.WIDGET_UPDATE_ARRIVALS_1X1";
+
+    private static final String SET_BACKGROUND_COLOR = "setBackgroundColor";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -36,12 +42,38 @@ public abstract class WidgetProvider extends AppWidgetProvider {
     }
 
     public static void updateWidget(Context context, AppWidgetManager widgetManager, int widgetId) {
-        //TODO get all the values from shared prefs
+        WidgetModel widgetModel = PrefUtils.getWidget(context, widgetId);
+        if (widgetModel == null) {
+            return;
+        }
         //TODO get arrival times
-        RemoteViews updatedViews = new RemoteViews(context.getPackageName(), R.layout.); //TODO get the right layout by size
-        //TODO update remoteviews bg primary color
-        //TODO update remoteviews bg secondary color
-        //TODO if white bg, set text colors and divider colors
+
+        int layoutResId = widgetModel.getSize() == WidgetUtils.SIZE_1X1
+                ? R.layout.widget_layout_1x1
+                : R.layout.widget_layout_2x1;
+        RemoteViews updatedViews = new RemoteViews(context.getPackageName(), layoutResId);
+        updatedViews.setInt(
+                R.id.tv_widget_title,
+                SET_BACKGROUND_COLOR,
+                WidgetUtils.getPrimaryColorInt(context, widgetModel.getBgColor()));
+        updatedViews.setInt(
+                R.id.layout_widget_arrivals,
+                SET_BACKGROUND_COLOR,
+                WidgetUtils.getSecondaryColorInt(context, widgetModel.getBgColor()));
+
+        if (widgetModel.getBgColor() == WidgetUtils.BG_WHITE) {
+            updatedViews.setTextColor(R.id.tv_widget_title, Color.DKGRAY);
+            updatedViews.setTextColor(R.id.tv_widget_arrival_1, Color.DKGRAY);
+            updatedViews.setTextColor(R.id.tv_widget_arrival_2, Color.DKGRAY);
+            updatedViews.setInt(R.id.iv_widget_divider_1, SET_BACKGROUND_COLOR, Color.DKGRAY);
+            if (widgetModel.getSize() != WidgetUtils.SIZE_1X1) {
+                // There is a third arrival text to update
+                updatedViews.setTextColor(R.id.tv_widget_arrival_3, Color.DKGRAY);
+                updatedViews.setInt(R.id.iv_widget_divider_2, SET_BACKGROUND_COLOR, Color.DKGRAY);
+            }
+        }
+
+        //TODO how do we handle updating text after receiving data, without an asynctask??
         //TODO set arrival text
         //TODO set title text
         //TODO set on click pending intent for both arrival layout and title layout
