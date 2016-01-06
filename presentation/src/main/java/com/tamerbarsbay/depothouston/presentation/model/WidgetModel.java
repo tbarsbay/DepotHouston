@@ -2,18 +2,24 @@ package com.tamerbarsbay.depothouston.presentation.model;
 
 public class WidgetModel {
 
+    private int widgetId;
     private String routeId;
     private String direction;
     private String stopId;
     private String title;
     private int bgColor;
 
-    public WidgetModel(String routeId, String direction, String stopId, String title, int bgColor) {
+    public WidgetModel(int widgetId, String routeId, String direction, String stopId, String title, int bgColor) {
+        this.widgetId = widgetId;
         this.routeId = routeId;
         this.direction = direction;
         this.stopId = stopId;
         this.title = title;
         this.bgColor = bgColor;
+    }
+
+    public int getWidgetId() {
+        return widgetId;
     }
 
     public int getBgColor() {
