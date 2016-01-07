@@ -7,15 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tamerbarsbay.depothouston.R;
-import com.tamerbarsbay.depothouston.presentation.internal.di.HasComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerStopComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.StopComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.modules.StopModule;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.StopListFragment;
 
-public class StopListActivity extends BaseActivity implements HasComponent<StopComponent>,
-        StopListFragment.StopListListener {
+public class StopListActivity extends BaseActivity implements StopListFragment.StopListListener {
 
     private static final String INTENT_EXTRA_PARAM_ROUTE_ID = "com.tamerbarsbay.depothouston.INTENT_PARAM_ROUTE_ID";
     private static final String INSTANCE_STATE_PARAM_ROUTE_ID = "com.tamerbarsbay.depothouston.STATE_PARAM_ROUTE_ID";
@@ -86,7 +84,7 @@ public class StopListActivity extends BaseActivity implements HasComponent<StopC
     }
 
     @Override
-    public StopComponent getComponent() {
+    public StopComponent getStopComponent() {
         return stopComponent;
     }
 

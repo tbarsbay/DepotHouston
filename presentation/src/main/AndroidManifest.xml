@@ -65,6 +65,34 @@
             android:name=".presentation.view.activity.WidgetConfiguration1x1Activity"
             android:label="@string/title_activity_widget_configuration1x1" >
         </activity>
+        <activity
+            android:name=".presentation.view.activity.WidgetConfiguration2x1Activity"
+            android:label="@string/title_activity_widget_configuration2x1" >
+        </activity>
+        <receiver
+            android:name=".presentation.receiver.WidgetProvider1x1"
+            android:label="Arrival Times" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.tamerbarsbay.depothouston.presentation.WIDGET_UPDATE_ARRIVALS" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_1x1" />
+        </receiver>
+        <receiver
+            android:name=".presentation.receiver.WidgetProvider2x1"
+            android:label="Arrival Times" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.tamerbarsbay.depothouston.presentation.WIDGET_UPDATE_ARRIVALS" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_2x1" />
+        </receiver>
     </application>
 
 </manifest>

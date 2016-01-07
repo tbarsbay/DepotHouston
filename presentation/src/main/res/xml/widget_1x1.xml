@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="40dp"
+    android:minHeight="40dp"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/widget_layout_1x1"
+    android:resizeMode="none"
+    android:configure="com.tamerbarsbay.depothouston.presentation.view.activity.WidgetConfiguration1x1Activity"
+    android:previewImage="@drawable/widget_preview_1x1"
+    android:widgetCategory="home_screen" >
+</appwidget-provider>

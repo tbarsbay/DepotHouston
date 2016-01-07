@@ -12,6 +12,5 @@ import dagger.Component;
 public interface RouteComponent extends ActivityComponent {
 
     void inject(RouteListFragment routeListFragment);
-    //TODO routedetailsfragment?
 
 }

@@ -22,6 +22,18 @@ public class WidgetUtils {
     public static final int BG_WHITE = 7;
     public static final int BG_BLACK = 8;
 
+    public static final String[] BG_COLOR_STRINGS = new String[] {
+            "Navy",
+            "Dark Gray",
+            "Red",
+            "Blue",
+            "Green",
+            "Orange",
+            "Maroon",
+            "White",
+            "Black"
+    };
+
     private static final int[] PRIMARY_BG_COLOR_RES_ID = new int[] {
             R.color.navy,
             R.color.dark_gray,

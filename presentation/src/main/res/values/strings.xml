@@ -78,5 +78,14 @@
     <string name="title_activity_widget_configuration">WidgetConfigurationActivity</string>
     <string name="widget_arrival_default">--</string>
     <string name="widget_refresh_hint">Tap the widget to update arrivals.</string>
-    <string name="title_activity_widget_configuration1x1">WidgetConfiguration1x1Activity</string>
+    <string name="title_activity_widget_configuration1x1">Configure 1x1 Widget</string>
+    <string name="title_activity_widget_configuration2x1">Configure 2x1 Widget</string>
+    <string name="step_one">Step 1</string>
+    <string name="configure_widget_step_1_description">Select a route</string>
+    <string name="step_two">Step 2</string>
+    <string name="configure_widget_step_2_description">Select a direction</string>
+    <string name="step_three">Step 3</string>
+    <string name="configure_widget_step_3_description">Select a stop</string>
+    <string name="step_four">Step 4</string>
+    <string name="configure_widget_step_4_description">Customize your widget</string>
 </resources>

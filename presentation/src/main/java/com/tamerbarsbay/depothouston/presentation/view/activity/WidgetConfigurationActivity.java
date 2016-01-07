@@ -1,26 +1,48 @@
 package com.tamerbarsbay.depothouston.presentation.view.activity;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewStub;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerRouteComponent;
+import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerStopComponent;
+import com.tamerbarsbay.depothouston.presentation.internal.di.components.RouteComponent;
+import com.tamerbarsbay.depothouston.presentation.internal.di.components.StopComponent;
+import com.tamerbarsbay.depothouston.presentation.internal.di.modules.StopModule;
 import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
+import com.tamerbarsbay.depothouston.presentation.model.WidgetModel;
+import com.tamerbarsbay.depothouston.presentation.receiver.WidgetProvider;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
+import com.tamerbarsbay.depothouston.presentation.util.WidgetUtils;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.SimpleAdapter;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.RouteListFragment;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.StopListFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.Bind;
+import butterknife.BindDrawable;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
+import butterknife.OnTextChanged;
 
 /**
  * An Activity where the user can select the route and stop for which to track arrivals
@@ -28,6 +50,33 @@ import butterknife.OnClick;
  */
 public abstract class WidgetConfigurationActivity extends BaseActivity
     implements RouteListFragment.RouteListListener, StopListFragment.StopListListener {
+
+    @Bind(R.id.vf_configure_widget)
+    ViewFlipper vf;
+
+    @Bind(R.id.tv_configure_widget_step_number)
+    TextView tvStepNumber;
+
+    @Bind(R.id.tv_configure_widget_step_description)
+    TextView tvStepDescription;
+
+    @Bind(R.id.iv_configure_widget_step_one_icon)
+    ImageView ivStepOneIcon;
+
+    @Bind(R.id.iv_configure_widget_step_two_icon)
+    ImageView ivStepTwoIcon;
+
+    @Bind(R.id.iv_configure_widget_step_three_icon)
+    ImageView ivStepThreeIcon;
+
+    @Bind(R.id.iv_configure_widget_step_four_icon)
+    ImageView ivStepFourIcon;
+
+    @BindDrawable(R.drawable.ic_circle_filled)
+    Drawable circleFilledIcon;
+
+    @BindDrawable(R.drawable.ic_circle_outline)
+    Drawable circleOutlineIcon;
 
     @Bind(R.id.rv_configure_widget_directions)
     RecyclerView rvDirections;
@@ -38,11 +87,19 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
     @Bind(R.id.sp_configure_widget_background_colors)
     Spinner spBackgroundColors;
 
-    @Bind(R.id.tv_widget_title)
-    TextView tvWidgetTitle;
+    @Bind(R.id.vs_configure_widget_preview)
+    ViewStub vsWidgetPreview;
 
-    @Bind(R.id.layout_widget_arrivals)
-    LinearLayout layoutWidgetArrivals;
+    View widgetPreview;
+    TextView tvWidgetPreviewTitle;
+    LinearLayout layoutWidgetPreviewArrivals;
+
+    private final ImageView[] STEP_ICONS = new ImageView[] {
+            ivStepOneIcon,
+            ivStepTwoIcon,
+            ivStepThreeIcon,
+            ivStepFourIcon
+    };
 
     // Used to uniquely track each widget that the user places
     protected int widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -51,7 +108,8 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
     private String selectedDirection;
     private StopModel selectedStop;
 
-    private ArrayList<String> backgroundColorOptions = new ArrayList<String>();
+    private RouteComponent routeComponent;
+    private StopComponent stopComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +125,40 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
             return;
         }
 
-        //TODO temp, perhaps inject this?
-        backgroundColorOptions.add("Dark Gray");
-        backgroundColorOptions.add("White");
-        backgroundColorOptions.add("Black");
-        backgroundColorOptions.add("Navy");
-        backgroundColorOptions.add("Blue");
-        backgroundColorOptions.add("Red"); //TODO more colors
+        setResult(RESULT_CANCELED);
+
+        setContentView(R.layout.activity_widget_configuration);
+        ButterKnife.bind(this);
+
+        // Show the appropriate widget preview layout given the user's size selection
+        vsWidgetPreview.setLayoutResource(getWidgetSize() == WidgetUtils.SIZE_1X1
+                ? R.layout.widget_layout_1x1
+                : R.layout.widget_layout_2x1);
+        widgetPreview = vsWidgetPreview.inflate();
+        tvWidgetPreviewTitle = (TextView) widgetPreview.findViewById(R.id.tv_widget_title);
+        layoutWidgetPreviewArrivals = (LinearLayout) widgetPreview.findViewById(R.id.layout_widget_arrivals);
+
+        //TODO set focus to scrollview??
+
+        vf.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left_fade_in));
+        vf.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left_fade_out));
+
+        loadStepOne();
+    }
+
+    private void initializeRouteInjector() {
+        routeComponent = DaggerRouteComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+    }
+
+    private void initializeStopInjector() {
+        stopComponent = DaggerStopComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .stopModule(new StopModule(selectedRoute.getRouteId()))
+                .build();
     }
 
     @Override
@@ -97,7 +182,19 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      * In step 1, the user selects a route.
      */
     protected void loadStepOne() {
-        //TODO if the viewflipper is not on first page, move it
+        // Set step icons
+        ivStepOneIcon.setImageDrawable(circleFilledIcon);
+        ivStepTwoIcon.setImageDrawable(circleOutlineIcon);
+        ivStepThreeIcon.setImageDrawable(circleOutlineIcon);
+        ivStepFourIcon.setImageDrawable(circleOutlineIcon);
+
+        // Set step number and description
+        tvStepNumber.setText(R.string.step_one);
+        tvStepDescription.setText(R.string.configure_widget_step_1_description);
+
+        // Load UI of the first page
+        vf.setDisplayedChild(0);
+        initializeRouteInjector();
         addFragment(R.id.fl_configure_widget_routes, RouteListFragment.newInstance());
     }
 
@@ -106,6 +203,14 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      * @param route The route for which the user is selecting a direction
      */
     private void loadStepTwo(RouteModel route) {
+        // Set step icon
+        ivStepTwoIcon.setImageDrawable(circleFilledIcon);
+
+        // Set step number and description
+        tvStepNumber.setText(R.string.step_two);
+        tvStepDescription.setText(R.string.configure_widget_step_2_description);
+
+        // Populate direction options
         ArrayList<String> directions = new ArrayList<String>(); //TODO temp
         directions.add("0");
         directions.add("1");
@@ -113,10 +218,14 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         adapter.setOnItemClickListener(new SimpleAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(String direction) {
-                loadStepThree(selectedRoute, direction);
+                onDirectionClicked(direction);
             }
         });
+        rvDirections.setLayoutManager(new LinearLayoutManager(this));
         rvDirections.setAdapter(adapter);
+
+        // Load UI of the second page
+        vf.setDisplayedChild(1);
     }
 
     /**
@@ -125,6 +234,16 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      * @param direction The direction for which to load stops
      */
     private void loadStepThree(RouteModel route, String direction) {
+        // Set step icon
+        ivStepThreeIcon.setImageDrawable(circleFilledIcon);
+
+        // Set step number and description
+        tvStepNumber.setText(R.string.step_three);
+        tvStepDescription.setText(R.string.configure_widget_step_3_description);
+
+        // Load UI of the third page
+        vf.setDisplayedChild(2);
+        initializeStopInjector();
         addFragment(R.id.fl_configure_widget_stops, StopListFragment.newInstance(route.getRouteId()));
     }
 
@@ -135,8 +254,32 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      * @param stop The stop to be tracked in the widget
      */
     private void loadStepFour(RouteModel route, String direction, StopModel stop) {
-        etWidgetTitle.setText(route.getRouteName() + " - " + stop.getName()); //TODO limit length of et
+        // Set step icon
+        ivStepFourIcon.setImageDrawable(circleFilledIcon);
+
+        // Set step number and description
+        tvStepNumber.setText(R.string.step_four);
+        tvStepDescription.setText(R.string.configure_widget_step_4_description);
+
+        // Load UI of the fourth page
+        String defaultText = route.getRouteName() + " - " + stop.getName();
+        etWidgetTitle.setText(defaultText); //TODO limit length of et
+        updateWidgetPreviewTitle(defaultText);
+
         populateBackgroundColorOptions();
+        spBackgroundColors.setSelection(0);
+        vf.setDisplayedChild(3);
+    }
+
+    @OnTextChanged(R.id.et_configure_widget_title)
+    void updateWidgetPreviewTitle(CharSequence title) {
+        tvWidgetPreviewTitle.setText(title);
+    }
+
+    @OnItemSelected(R.id.sp_configure_widget_background_colors)
+    void updateWidgetPreviewBackgroundColors(int selectedBgIndex) {
+        tvWidgetPreviewTitle.setBackgroundColor(WidgetUtils.getPrimaryColorInt(this, selectedBgIndex));
+        layoutWidgetPreviewArrivals.setBackgroundColor(WidgetUtils.getSecondaryColorInt(this, selectedBgIndex));
     }
 
     private void populateBackgroundColorOptions() {
@@ -144,7 +287,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
                 this,
                 R.layout.list_item_simple_white,
                 R.id.tv_simple_list_item_name,
-                backgroundColorOptions);
+                new ArrayList<String>(Arrays.asList(WidgetUtils.BG_COLOR_STRINGS)));
         adapter.setDropDownViewResource(R.layout.list_item_simple);
         if (spBackgroundColors != null) {
             spBackgroundColors.setAdapter(adapter);
@@ -166,16 +309,50 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         Toast.makeText(this, R.string.widget_refresh_hint, Toast.LENGTH_LONG).show();
     }
 
+    //TODO onclick startoverbtn
     private void startOver() {
-        //TODO
+        loadStepOne();
     }
 
-    protected abstract String getWidgetSizeAsString();
-
+    protected abstract int getWidgetSize();
 
     /**
      * Build the widget and place it on the user's home screen.
      */
     @OnClick(R.id.btn_configure_widget_create)
-    protected abstract void buildWidget();
+    void buildWidget() {
+        //AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+
+        WidgetModel widgetModel = new WidgetModel(
+                widgetId,
+                selectedRoute.getRouteId(),
+                selectedDirection,
+                selectedStop.getStopId(),
+                etWidgetTitle.getText().toString(),
+                getWidgetSize(),
+                spBackgroundColors.getSelectedItemPosition());
+        PrefUtils.saveWidget(this, widgetModel);
+
+        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, WidgetProvider.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {widgetId});
+        sendBroadcast(intent);
+        //WidgetProvider.executeArrivalsRequest(this, widgetManager, widgetId);
+
+        showRefreshHint();
+
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+        setResult(RESULT_OK, resultValue);
+        finish();
+    }
+
+    @Override
+    public RouteComponent getRouteComponent() {
+        return routeComponent;
+    }
+
+    @Override
+    public StopComponent getStopComponent() {
+        return stopComponent;
+    }
 }

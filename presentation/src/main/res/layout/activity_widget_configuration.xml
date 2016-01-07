@@ -46,6 +46,10 @@
                 android:id="@+id/iv_configure_widget_step_three_icon"
                 style="@style/WidgetConfiguration.StepIcon" />
 
+            <ImageView
+                android:id="@+id/iv_configure_widget_step_four_icon"
+                style="@style/WidgetConfiguration.StepIcon" />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -143,11 +147,16 @@
                         android:layout_marginBottom="16dp"/>
 
                     <!-- TODO include both sizes, just hide the one that isn't relevant -->
+                    <ViewStub
+                        android:id="@+id/vs_configure_widget_preview"
+                        android:inflatedId="@+id/layout_configure_widget_preview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"/>
 
-                    <include layout="@layout/widget_layout_2x1"
-                             android:layout_width="96dp"
-                             android:layout_height="56dp"
-                             android:layout_gravity="center"/>
+                    <!--<include layout="@layout/widget_layout_2x1"-->
+                             <!--android:layout_width="96dp"-->
+                             <!--android:layout_height="56dp"-->
+                             <!--android:layout_gravity="center"/>-->
 
                 </LinearLayout>
             </ScrollView>
