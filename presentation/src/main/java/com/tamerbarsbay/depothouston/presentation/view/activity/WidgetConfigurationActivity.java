@@ -2,11 +2,12 @@ package com.tamerbarsbay.depothouston.presentation.view.activity;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -28,6 +29,8 @@ import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.model.WidgetModel;
 import com.tamerbarsbay.depothouston.presentation.receiver.WidgetProvider;
+import com.tamerbarsbay.depothouston.presentation.receiver.WidgetProvider1x1;
+import com.tamerbarsbay.depothouston.presentation.receiver.WidgetProvider2x1;
 import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
 import com.tamerbarsbay.depothouston.presentation.util.WidgetUtils;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.SimpleAdapter;
@@ -38,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import butterknife.Bind;
-import butterknife.BindDrawable;
+import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
@@ -72,12 +75,6 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
     @Bind(R.id.iv_configure_widget_step_four_icon)
     ImageView ivStepFourIcon;
 
-    @BindDrawable(R.drawable.ic_circle_filled)
-    Drawable circleFilledIcon;
-
-    @BindDrawable(R.drawable.ic_circle_outline)
-    Drawable circleOutlineIcon;
-
     @Bind(R.id.rv_configure_widget_directions)
     RecyclerView rvDirections;
 
@@ -90,23 +87,26 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
     @Bind(R.id.vs_configure_widget_preview)
     ViewStub vsWidgetPreview;
 
+    @BindDimen(R.dimen.widget_width_one_cell)
+    int widthOneCell;
+
+    @BindDimen(R.dimen.widget_width_two_cells)
+    int widthTwoCells;
+
     View widgetPreview;
     TextView tvWidgetPreviewTitle;
     LinearLayout layoutWidgetPreviewArrivals;
 
-    private final ImageView[] STEP_ICONS = new ImageView[] {
-            ivStepOneIcon,
-            ivStepTwoIcon,
-            ivStepThreeIcon,
-            ivStepFourIcon
-    };
+    private static final int ALPHA_OPAQUE = 255;
+    private static final int ALPHA_FADED = 75;
 
     // Used to uniquely track each widget that the user places
-    protected int widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private RouteModel selectedRoute;
     private String selectedDirection;
     private StopModel selectedStop;
+    private int previouslySelectedBgColor;
 
     private RouteComponent routeComponent;
     private StopComponent stopComponent;
@@ -130,20 +130,26 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         setContentView(R.layout.activity_widget_configuration);
         ButterKnife.bind(this);
 
-        // Show the appropriate widget preview layout given the user's size selection
-        vsWidgetPreview.setLayoutResource(getWidgetSize() == WidgetUtils.SIZE_1X1
-                ? R.layout.widget_layout_1x1
-                : R.layout.widget_layout_2x1);
-        widgetPreview = vsWidgetPreview.inflate();
-        tvWidgetPreviewTitle = (TextView) widgetPreview.findViewById(R.id.tv_widget_title);
-        layoutWidgetPreviewArrivals = (LinearLayout) widgetPreview.findViewById(R.id.layout_widget_arrivals);
-
-        //TODO set focus to scrollview??
+        inflateLivePreview();
 
         vf.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left_fade_in));
         vf.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left_fade_out));
 
         loadStepOne();
+    }
+
+    private void inflateLivePreview() {
+        vsWidgetPreview.setLayoutResource(getWidgetSize() == WidgetUtils.SIZE_1X1
+                ? R.layout.widget_layout_1x1
+                : R.layout.widget_layout_2x1);
+        ViewGroup.LayoutParams lp = vsWidgetPreview.getLayoutParams();
+        lp.width = getWidgetSize() == WidgetUtils.SIZE_1X1
+                ? widthOneCell
+                : widthTwoCells;
+        widgetPreview = vsWidgetPreview.inflate();
+        tvWidgetPreviewTitle = (TextView) widgetPreview.findViewById(R.id.tv_widget_title);
+        layoutWidgetPreviewArrivals = (LinearLayout) widgetPreview.findViewById(R.id.layout_widget_arrivals);
+
     }
 
     private void initializeRouteInjector() {
@@ -183,10 +189,10 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      */
     protected void loadStepOne() {
         // Set step icons
-        ivStepOneIcon.setImageDrawable(circleFilledIcon);
-        ivStepTwoIcon.setImageDrawable(circleOutlineIcon);
-        ivStepThreeIcon.setImageDrawable(circleOutlineIcon);
-        ivStepFourIcon.setImageDrawable(circleOutlineIcon);
+        ivStepOneIcon.setImageAlpha(ALPHA_OPAQUE);
+        ivStepTwoIcon.setImageAlpha(ALPHA_FADED);
+        ivStepThreeIcon.setImageAlpha(ALPHA_FADED);
+        ivStepFourIcon.setImageAlpha(ALPHA_FADED);
 
         // Set step number and description
         tvStepNumber.setText(R.string.step_one);
@@ -204,7 +210,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      */
     private void loadStepTwo(RouteModel route) {
         // Set step icon
-        ivStepTwoIcon.setImageDrawable(circleFilledIcon);
+        ivStepTwoIcon.setImageAlpha(ALPHA_OPAQUE);
 
         // Set step number and description
         tvStepNumber.setText(R.string.step_two);
@@ -235,7 +241,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      */
     private void loadStepThree(RouteModel route, String direction) {
         // Set step icon
-        ivStepThreeIcon.setImageDrawable(circleFilledIcon);
+        ivStepThreeIcon.setImageAlpha(ALPHA_OPAQUE);
 
         // Set step number and description
         tvStepNumber.setText(R.string.step_three);
@@ -255,7 +261,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      */
     private void loadStepFour(RouteModel route, String direction, StopModel stop) {
         // Set step icon
-        ivStepFourIcon.setImageDrawable(circleFilledIcon);
+        ivStepFourIcon.setImageAlpha(ALPHA_OPAQUE);
 
         // Set step number and description
         tvStepNumber.setText(R.string.step_four);
@@ -263,8 +269,8 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
 
         // Load UI of the fourth page
         String defaultText = route.getRouteName() + " - " + stop.getName();
-        etWidgetTitle.setText(defaultText); //TODO limit length of et
-        updateWidgetPreviewTitle(defaultText);
+        etWidgetTitle.setText(defaultText);
+        onTitleTextChanged(defaultText);
 
         populateBackgroundColorOptions();
         spBackgroundColors.setSelection(0);
@@ -272,20 +278,45 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
     }
 
     @OnTextChanged(R.id.et_configure_widget_title)
-    void updateWidgetPreviewTitle(CharSequence title) {
+    void onTitleTextChanged(CharSequence title) {
+        // Update the live preview title text to reflect what the user is typing
         tvWidgetPreviewTitle.setText(title);
     }
 
     @OnItemSelected(R.id.sp_configure_widget_background_colors)
-    void updateWidgetPreviewBackgroundColors(int selectedBgIndex) {
+    void onBackgroundColorSelected(int selectedBgIndex) {
+        // Update the background and other colors on the live preview to reflect the user's choice
         tvWidgetPreviewTitle.setBackgroundColor(WidgetUtils.getPrimaryColorInt(this, selectedBgIndex));
         layoutWidgetPreviewArrivals.setBackgroundColor(WidgetUtils.getSecondaryColorInt(this, selectedBgIndex));
+        if (selectedBgIndex == WidgetUtils.BG_WHITE) {
+            // Change the text and divider colors to be dark gray to show against the white
+            tvWidgetPreviewTitle.setTextColor(Color.DKGRAY);
+            for (int i=0; i < layoutWidgetPreviewArrivals.getChildCount(); i++) {
+                View child = layoutWidgetPreviewArrivals.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView)child).setTextColor(Color.DKGRAY);
+                } else if (child instanceof ImageView) {
+                    child.setBackgroundColor(Color.DKGRAY);
+                }
+            }
+        } else if (previouslySelectedBgColor == WidgetUtils.BG_WHITE) {
+            tvWidgetPreviewTitle.setTextColor(Color.WHITE);
+            for (int i=0; i < layoutWidgetPreviewArrivals.getChildCount(); i++) {
+                View child = layoutWidgetPreviewArrivals.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView)child).setTextColor(Color.WHITE);
+                } else if (child instanceof ImageView) {
+                    child.setBackgroundColor(Color.WHITE);
+                }
+            }
+        }
+        previouslySelectedBgColor = selectedBgIndex;
     }
 
     private void populateBackgroundColorOptions() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
-                R.layout.list_item_simple_white,
+                R.layout.list_item_simple,
                 R.id.tv_simple_list_item_name,
                 new ArrayList<String>(Arrays.asList(WidgetUtils.BG_COLOR_STRINGS)));
         adapter.setDropDownViewResource(R.layout.list_item_simple);
@@ -299,7 +330,6 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
      */
     @OnClick(R.id.btn_configure_widget_cancel)
     void cancel() {
-        //TODO send to google analytics
         finish();
     }
 
@@ -309,8 +339,8 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         Toast.makeText(this, R.string.widget_refresh_hint, Toast.LENGTH_LONG).show();
     }
 
-    //TODO onclick startoverbtn
-    private void startOver() {
+    @OnClick(R.id.btn_configure_widget_start_over)
+    void startOver() {
         loadStepOne();
     }
 
@@ -333,8 +363,15 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
                 spBackgroundColors.getSelectedItemPosition());
         PrefUtils.saveWidget(this, widgetModel);
 
-        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, WidgetProvider.class);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {widgetId});
+        //Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, WidgetProvider.class);
+        Intent intent = new Intent(
+                WidgetProvider.ACTION_UPDATE_ARRIVALS,
+                null,
+                this,
+                getWidgetSize() == WidgetUtils.SIZE_1X1
+                    ? WidgetProvider1x1.class
+                    : WidgetProvider2x1.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         sendBroadcast(intent);
         //WidgetProvider.executeArrivalsRequest(this, widgetManager, widgetId);
 

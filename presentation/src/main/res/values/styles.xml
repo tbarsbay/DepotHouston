@@ -182,7 +182,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:scaleX">.4</item>
         <item name="android:scaleY">.4</item>
-        <item name="android:src">@drawable/ic_circle_outline</item>
+        <item name="android:src">@drawable/ic_circle_filled</item>
     </style>
 
     <style name="WidgetConfiguration.Button">
@@ -201,7 +201,7 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">4</item>
         <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
+        <item name="android:ellipsize">none</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>

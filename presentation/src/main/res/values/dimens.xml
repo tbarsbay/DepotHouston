@@ -5,4 +5,7 @@
 
     <dimen name="nav_drawer_width">260dp</dimen>
     <dimen name="nav_drawer_item_height">48dp</dimen>
+
+    <dimen name="widget_width_one_cell">48dp</dimen>
+    <dimen name="widget_width_two_cells">96dp</dimen>
 </resources>

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.widget.RemoteViews;
 
+import com.fernandocejas.frodo.annotation.RxLogSubscriber;
 import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.domain.Arrival;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
@@ -36,7 +37,7 @@ public class WidgetProvider extends AppWidgetProvider {
     static ArrivalModelDataMapper arrivalModelDataMapper;
 
     // Intent action to update widget
-    private static final String ACTION_UPDATE_ARRIVALS = "com.tamerbarsbay.depothouston.presentation.WIDGET_UPDATE_ARRIVALS";
+    public static final String ACTION_UPDATE_ARRIVALS = "com.tamerbarsbay.depothouston.presentation.WIDGET_UPDATE_ARRIVALS";
 
     private static final String SET_BACKGROUND_COLOR = "setBackgroundColor";
 
@@ -45,6 +46,8 @@ public class WidgetProvider extends AppWidgetProvider {
             R.id.tv_widget_arrival_2,
             R.id.tv_widget_arrival_3
     };
+
+    private static final String LOG_TAG = "WidgetProvider";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -161,6 +164,7 @@ public class WidgetProvider extends AppWidgetProvider {
         return pendingIntent;
     }
 
+    @RxLogSubscriber
     private static final class WidgetArrivalsSubscriber extends DefaultSubscriber<List<Arrival>> {
 
         final Context context;

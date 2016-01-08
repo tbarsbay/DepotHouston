@@ -65,15 +65,6 @@
             android:id="@+id/fl_configure_widget_routes"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/rv_configure_widget_routes"-->
-            <!--android:scrollbars="vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:paddingLeft="16dp"-->
-            <!--android:paddingRight="16dp"-->
-            <!--android:scrollbarStyle="outsideOverlay"-->
-            <!--tools:listitem="@layout/list_item_route"/>-->
 
         <!-- Step 2: Select a direction -->
         <android.support.v7.widget.RecyclerView
@@ -88,15 +79,6 @@
         <!-- TODO consider a compass-style selection view -->
 
         <!-- Step 3: Select a stop -->
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/rv_configure_widget_stops"-->
-            <!--android:scrollbars="vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:paddingLeft="16dp"-->
-            <!--android:paddingRight="16dp"-->
-            <!--android:scrollbarStyle="outsideOverlay"-->
-            <!--tools:listitem="@layout/list_item_stop"/>-->
         <FrameLayout
             android:id="@+id/fl_configure_widget_stops"
             android:layout_width="match_parent"
@@ -120,18 +102,20 @@
                     android:paddingBottom="16dp">
 
                     <TextView
-                        android:text="Set a title"
+                        android:text="@string/set_a_title"
                         style="@style/WidgetConfiguration.CustomizeStyle.TextLabel"/>
 
                     <EditText
                         android:id="@+id/et_configure_widget_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="none"
                         android:layout_marginBottom="8dp"
                         android:layout_marginLeft="16dp"/>
 
                     <TextView
-                        android:text="Select a background color"
+                        android:text="@string/select_a_background_color"
                         style="@style/WidgetConfiguration.CustomizeStyle.TextLabel"/>
 
                     <Spinner
@@ -142,21 +126,16 @@
                         android:layout_marginLeft="16dp"/>
 
                     <TextView
-                        android:text="Widget Preview"
+                        android:text="@string/widget_preview"
                         style="@style/WidgetConfiguration.CustomizeStyle.TextLabel"
                         android:layout_marginBottom="16dp"/>
 
-                    <!-- TODO include both sizes, just hide the one that isn't relevant -->
                     <ViewStub
                         android:id="@+id/vs_configure_widget_preview"
                         android:inflatedId="@+id/layout_configure_widget_preview"
                         android:layout_width="wrap_content"
-                        android:layout_height="56dp"/>
-
-                    <!--<include layout="@layout/widget_layout_2x1"-->
-                             <!--android:layout_width="96dp"-->
-                             <!--android:layout_height="56dp"-->
-                             <!--android:layout_gravity="center"/>-->
+                        android:layout_height="56dp"
+                        android:layout_gravity="center_horizontal"/>
 
                 </LinearLayout>
             </ScrollView>
@@ -167,8 +146,19 @@
                 android:layout_height="48dp"
                 android:orientation="horizontal"
                 android:layout_alignParentBottom="true"
-                android:gravity="right|center_vertical"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
                 android:paddingRight="16dp">
+
+                <Button
+                    android:id="@+id/btn_configure_widget_start_over"
+                    android:text="@string/start_over"
+                    style="@style/WidgetConfiguration.Button"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
                 <Button
                     android:id="@+id/btn_configure_widget_cancel"

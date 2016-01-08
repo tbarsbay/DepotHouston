@@ -63,11 +63,13 @@
         </activity>
         <activity
             android:name=".presentation.view.activity.WidgetConfiguration1x1Activity"
-            android:label="@string/title_activity_widget_configuration1x1" >
+            android:label="@string/title_activity_widget_configuration1x1"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".presentation.view.activity.WidgetConfiguration2x1Activity"
-            android:label="@string/title_activity_widget_configuration2x1" >
+            android:label="@string/title_activity_widget_configuration2x1"
+            android:screenOrientation="portrait" >
         </activity>
         <receiver
             android:name=".presentation.receiver.WidgetProvider1x1"
