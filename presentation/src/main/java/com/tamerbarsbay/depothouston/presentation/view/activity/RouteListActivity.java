@@ -79,6 +79,6 @@ public class RouteListActivity extends NavigationDrawerActivity implements Route
 
     @Override
     public void onRouteClicked(RouteModel routeModel) {
-        this.navigator.navigateToStopList(this, routeModel.getRouteId());
+        this.navigator.navigateToStopList(this, routeModel.getRouteId(), "0"); //TODO
     }
 }

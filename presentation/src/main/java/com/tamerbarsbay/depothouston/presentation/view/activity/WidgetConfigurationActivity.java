@@ -163,7 +163,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         stopComponent = DaggerStopComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .stopModule(new StopModule(selectedRoute.getRouteId()))
+                .stopModule(new StopModule(selectedRoute.getRouteId(), selectedDirection))
                 .build();
     }
 
@@ -250,7 +250,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         // Load UI of the third page
         vf.setDisplayedChild(2);
         initializeStopInjector();
-        addFragment(R.id.fl_configure_widget_stops, StopListFragment.newInstance(route.getRouteId()));
+        addFragment(R.id.fl_configure_widget_stops, StopListFragment.newInstance(route.getRouteId(), direction));
     }
 
     /**

@@ -16,7 +16,7 @@ public class DiskStopDataStore implements StopDataStore {
     }
 
     @Override
-    public Observable<List<StopEntity>> stopsByRoute(String routeId) {
+    public Observable<List<StopEntity>> stopsByRoute(String routeId, String direction) {
         throw new UnsupportedOperationException("Operation not available.");
     }
 

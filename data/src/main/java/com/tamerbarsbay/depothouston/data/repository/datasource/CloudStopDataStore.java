@@ -29,8 +29,8 @@ public class CloudStopDataStore implements StopDataStore {
     }
 
     @Override
-    public Observable<List<StopEntity>> stopsByRoute(String routeId) {
-        return houstonMetroApi.stopsByRoute(routeId);
+    public Observable<List<StopEntity>> stopsByRoute(String routeId, String direction) {
+        return houstonMetroApi.stopsByRoute(routeId, direction);
     }
 
     @Override

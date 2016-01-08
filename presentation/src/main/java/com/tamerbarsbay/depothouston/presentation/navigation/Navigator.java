@@ -65,10 +65,9 @@ public class Navigator {
      * @param context Context.
      * @param routeId The id of the route for which we're loading stops.
      */
-    public void navigateToStopList(Context context, String routeId) {
-        //TODO convert all to nonnull annotation
+    public void navigateToStopList(Context context, String routeId, String direction) {
         if (context != null) {
-            Intent intent = StopListActivity.getCallingIntent(context, routeId);
+            Intent intent = StopListActivity.getCallingIntent(context, routeId, direction);
             context.startActivity(intent);
         }
     }

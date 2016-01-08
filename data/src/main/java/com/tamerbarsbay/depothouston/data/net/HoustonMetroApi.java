@@ -83,9 +83,9 @@ public class HoustonMetroApi {
         }
     }
 
-    public Observable<List<StopEntity>> stopsByRoute(final String routeId) {
+    public Observable<List<StopEntity>> stopsByRoute(final String routeId, final String direction) {
         Log.d("RestApi", "Stops for route: " + routeId); //TODO temp
-        return stopsByRouteAndDirection(routeId, "0"); //TODO temp
+        return stopsByRouteAndDirection(routeId, direction);
     }
 
     public Observable<List<StopEntity>> stopsByRouteAndDirection(String routeId, String dirId) {

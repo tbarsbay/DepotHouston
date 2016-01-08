@@ -78,8 +78,10 @@ public class StopListFragment extends BaseFragment
     private SwitchCompat nearbyToggle;
 
     private String routeId;
+    private String direction;
 
     private static final String ARGUMENT_KEY_ROUTE_ID = "com.tamerbarsbay.depothouston.ARGUMENT_ROUTE_ID";
+    private static final String ARGUMENT_KEY_DIRECTION = "com.tamerbarsbay.depothouston.ARGUMENT_DIRECTION";
 
     public StopListFragment() {}
 
@@ -89,11 +91,11 @@ public class StopListFragment extends BaseFragment
      * @param routeId The id of the route for which we are loading stops.
      * @return New StopListFragment object.
      */
-    public static StopListFragment newInstance(String routeId) {
-        //TODO needs directionId
+    public static StopListFragment newInstance(String routeId, String direction) {
         StopListFragment fragment = new StopListFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_KEY_ROUTE_ID, routeId);
+        args.putString(ARGUMENT_KEY_DIRECTION, direction);
         fragment.setArguments(args);
         return fragment;
     }
@@ -281,9 +283,7 @@ public class StopListFragment extends BaseFragment
         stopListPresenter.setView(this);
         if (getArguments() != null) {
             routeId = getArguments().getString(ARGUMENT_KEY_ROUTE_ID, null);
-            if (routeId == null) {
-                return;
-            }
+            direction = getArguments().getString(ARGUMENT_KEY_DIRECTION, null);
         }
     }
 

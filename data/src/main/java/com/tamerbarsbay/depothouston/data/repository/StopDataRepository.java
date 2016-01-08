@@ -46,10 +46,10 @@ public class StopDataRepository implements StopRepository {
     }
 
     @Override
-    public Observable<List<Stop>> stopsByRoute(String routeId) {
+    public Observable<List<Stop>> stopsByRoute(String routeId, String direction) {
         // Stop lists will always come from the Metro API and not the local cache
         final StopDataStore stopDataStore = this.stopDataStoreFactory.createCloudDataStore();
-        return stopDataStore.stopsByRoute(routeId).map(stopEntityListMapper);
+        return stopDataStore.stopsByRoute(routeId, direction).map(stopEntityListMapper);
     }
 
     @Override
