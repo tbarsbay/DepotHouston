@@ -44,6 +44,7 @@ public class RouteListFragment extends BaseFragment
 
     public interface RouteListListener {
         void onRouteClicked(final RouteModel routeModel);
+        RouteComponent getRouteComponent();
     }
 
     @Inject
@@ -256,7 +257,9 @@ public class RouteListFragment extends BaseFragment
     }
 
     private void initialize() {
-        getComponent(RouteComponent.class).inject(this);
+        if (routeListListener != null) {
+            routeListListener.getRouteComponent().inject(this);
+        }
         routeListPresenter.setView(this);
     }
 

@@ -2,6 +2,7 @@ package com.tamerbarsbay.depothouston.data.repository;
 
 import android.content.Context;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
 import com.tamerbarsbay.depothouston.data.entity.ArrivalEntity;
 import com.tamerbarsbay.depothouston.data.entity.mapper.ArrivalEntityDataMapper;
 import com.tamerbarsbay.depothouston.data.net.HoustonMetroApi;
@@ -44,6 +45,7 @@ public class ArrivalDataRepository implements ArrivalRepository {
         this.arrivalEntityDataMapper = arrivalEntityDataMapper;
     }
 
+    @RxLogObservable
     @Override
     public Observable<List<Arrival>> arrivalsByStop(String stopId) {
         // Arrival lists will always come from the Metro API and not the local cache.

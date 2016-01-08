@@ -9,14 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tamerbarsbay.depothouston.R;
-import com.tamerbarsbay.depothouston.presentation.internal.di.HasComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerRouteComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.RouteComponent;
 import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.RouteListFragment;
 
-public class RouteListActivity extends NavigationDrawerActivity implements HasComponent<RouteComponent>,
-        RouteListFragment.RouteListListener {
+public class RouteListActivity extends NavigationDrawerActivity implements RouteListFragment.RouteListListener {
 
     private RouteComponent routeComponent;
 
@@ -75,7 +73,7 @@ public class RouteListActivity extends NavigationDrawerActivity implements HasCo
     }
 
     @Override
-    public RouteComponent getComponent() {
+    public RouteComponent getRouteComponent() {
         return routeComponent;
     }
 

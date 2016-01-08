@@ -73,6 +73,16 @@ public class HoustonMetroApi {
         }
     }
 
+    public Observable<List<RouteEntity>> routesByStop(final String stopId) {
+        if (validNetworkConnection()) {
+            return getRetrofit()
+                    .create(HoustonMetroApiService.class)
+                    .routesByStop(stopId);
+        } else {
+            return Observable.error(new NetworkConnectionException());
+        }
+    }
+
     public Observable<List<StopEntity>> stopsByRoute(final String routeId) {
         Log.d("RestApi", "Stops for route: " + routeId); //TODO temp
         return stopsByRouteAndDirection(routeId, "0"); //TODO temp
@@ -110,6 +120,7 @@ public class HoustonMetroApi {
                             return Observable.from(stopEntities).filter(new Func1<StopEntity, Boolean>() {
                                 @Override
                                 public Boolean call(StopEntity stopEntity) {
+                                    // Filter for stops that are nearby to the given location
                                     double threshold = .25;//TODO make default constant
                                     try {
                                         threshold = Double.parseDouble(radius);

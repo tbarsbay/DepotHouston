@@ -43,4 +43,9 @@ public class CloudRouteDataStore implements RouteDataStore {
     public Observable<List<RouteEntity>> routesNearLocation(double lat, double lon, String radiusInMiles) {
         return houstonMetroApi.routesNearLocation(lat, lon, radiusInMiles);
     }
+
+    @Override
+    public Observable<List<RouteEntity>> routesByStop(String stopId) {
+        return houstonMetroApi.routesByStop(stopId);
+    }
 }

@@ -44,6 +44,7 @@ public class StopListFragment extends BaseFragment
 
     public interface StopListListener {
         void onStopClicked(final StopModel stopModel);
+        StopComponent getStopComponent();
     }
 
     @Inject
@@ -89,6 +90,7 @@ public class StopListFragment extends BaseFragment
      * @return New StopListFragment object.
      */
     public static StopListFragment newInstance(String routeId) {
+        //TODO needs directionId
         StopListFragment fragment = new StopListFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_KEY_ROUTE_ID, routeId);
@@ -273,7 +275,9 @@ public class StopListFragment extends BaseFragment
     }
 
     private void initialize() {
-        getComponent(StopComponent.class).inject(this);
+        if (stopListListener != null) {
+            stopListListener.getStopComponent().inject(this);
+        }
         stopListPresenter.setView(this);
         if (getArguments() != null) {
             routeId = getArguments().getString(ARGUMENT_KEY_ROUTE_ID, null);

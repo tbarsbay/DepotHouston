@@ -10,9 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * Created by Tamer on 7/23/2015.
- */
 @Singleton
 public class ArrivalEntityDataMapper {
 

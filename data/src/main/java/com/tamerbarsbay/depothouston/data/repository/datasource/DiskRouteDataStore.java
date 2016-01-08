@@ -7,9 +7,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by Tamer on 7/22/2015.
- */
 public class DiskRouteDataStore implements RouteDataStore {
 
     private final RouteCache routeCache;
@@ -31,6 +28,11 @@ public class DiskRouteDataStore implements RouteDataStore {
 
     @Override
     public Observable<List<RouteEntity>> routesNearLocation(double lat, double lon, String radiusInMiles) {
+        throw new UnsupportedOperationException("Operation not available.");
+    }
+
+    @Override
+    public Observable<List<RouteEntity>> routesByStop(String stopId) {
         throw new UnsupportedOperationException("Operation not available.");
     }
 }
