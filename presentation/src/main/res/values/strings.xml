@@ -92,4 +92,6 @@
     <string name="select_a_background_color">Select a background color</string>
     <string name="widget_preview">Widget Preview</string>
     <string name="start_over">Start Over</string>
+    <string name="okay">Okay</string>
+    <string name="changelog">Changelog</string>
 </resources>

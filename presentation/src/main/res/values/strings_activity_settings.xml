@@ -1,0 +1,41 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Setting for which screen the app should start on -->
+    <string name="pref_start_screen_title">Start app on screen</string>
+    <string-array name="pref_start_screen_options">
+        <item>Route List</item>
+        <item>Map Search</item>
+        <item>Saved Stops</item>
+        <item>Recent Stops</item>
+    </string-array>
+    <string-array name="pref_start_screen_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Setting for the distance threshold that determines "nearby" stops -->
+    <string name="pref_nearby_threshold_title">Threshold for nearby routes and stops</string>
+    <string-array name="pref_nearby_threshold_options">
+        <item>.5 miles</item>
+        <item>.4 miles</item>
+        <item>.3 miles</item>
+        <item>.2 miles</item>
+        <item>.1 miles</item>
+    </string-array>
+    <string-array name="pref_nearby_threshold_values">
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+
+    <string name="pref_summary_rate_app">Enjoying the app? Consider leaving a rating on the Play Store!</string>
+    <string name="pref_summary_changelog">View changelog</string>
+    <string name="pref_summary_about">About</string>
+</resources>
