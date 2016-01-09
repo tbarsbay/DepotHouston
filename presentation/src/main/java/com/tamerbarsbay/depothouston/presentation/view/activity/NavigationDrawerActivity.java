@@ -214,16 +214,16 @@ public class NavigationDrawerActivity extends BaseActivity {
     protected void goToNavDrawerItem(int item) {
         switch (item) {
             case NAVDRAWER_ITEM_ROUTE_LIST:
-                navigator.navigateToRouteList(this);
+                navigator.navigateToRouteList(this, -1);
                 break;
             case NAVDRAWER_ITEM_MAP_SEARCH:
-                navigator.navigateToMapSearch(this);
+                navigator.navigateToMapSearch(this, -1);
                 break;
             case NAVDRAWER_ITEM_SAVED_STOPS:
-                navigator.navigateToSavedStops(this);
+                navigator.navigateToSavedStops(this, -1);
                 break;
             case NAVDRAWER_ITEM_RECENT_STOPS:
-                navigator.navigateToRecentStops(this);
+                navigator.navigateToRecentStops(this, -1);
                 break;
             case NAVDRAWER_ITEM_SETTINGS:
                 navigator.navigateToSettings(this);

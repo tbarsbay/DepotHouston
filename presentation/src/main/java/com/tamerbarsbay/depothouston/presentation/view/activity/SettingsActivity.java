@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tamerbarsbay.depothouston.R;
-import com.tamerbarsbay.depothouston.presentation.util.SettingsUtils;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
 import com.tamerbarsbay.depothouston.presentation.view.adapter.ChangelogAdapter;
 
 public class SettingsActivity extends BaseActivity {
@@ -106,23 +106,17 @@ public class SettingsActivity extends BaseActivity {
 
     public static class SettingsFragment extends PreferenceFragment {
 
-        private static final String PREF_START_SCREEN = "pref_start_screen";
-        private static final String PREF_NEARBY_THRESHOLD = "pref_nearby_threshold";
-        private static final String PREF_CHANGELOG = "pref_changelog";
-        private static final String PREF_RATE_APP = "pref_rate_app";
-        private static final String PREF_ABOUT = "pref_about";
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
 
-            bindPreferenceSummaryToValue(findPreference(PREF_START_SCREEN));
-            bindPreferenceSummaryToValue(findPreference(PREF_NEARBY_THRESHOLD));
+            bindPreferenceSummaryToValue(findPreference(PrefUtils.PREF_START_SCREEN));
+            bindPreferenceSummaryToValue(findPreference(PrefUtils.PREF_NEARBY_THRESHOLD));
 
-            Preference ratePref = findPreference(PREF_RATE_APP);
-            Preference aboutPref = findPreference(PREF_ABOUT);
-            Preference changelogPref = findPreference(PREF_CHANGELOG);
+            Preference ratePref = findPreference(PrefUtils.PREF_RATE_APP);
+            Preference aboutPref = findPreference(PrefUtils.PREF_ABOUT);
+            Preference changelogPref = findPreference(PrefUtils.PREF_CHANGELOG);
 
             ratePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -160,7 +154,7 @@ public class SettingsActivity extends BaseActivity {
             contactText.setPaintFlags(contactText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             TextView versionText = (TextView)dLayout.findViewById(R.id.tv_about_dialog_version);
-            String version = SettingsUtils.getVersionName(getActivity());
+            String version = PrefUtils.getVersionName(getActivity());
             if ("".equals(version)) {
                 versionText.setVisibility(View.GONE);
             } else {
@@ -179,7 +173,7 @@ public class SettingsActivity extends BaseActivity {
             Button btnOkay = (Button)dLayout.findViewById(R.id.btn_changelog_okay);
             RecyclerView rvChanges = (RecyclerView)dLayout.findViewById(R.id.rv_changelog);
 
-            ChangelogAdapter adapter = new ChangelogAdapter(getActivity(), SettingsUtils.getChangelogItems());
+            ChangelogAdapter adapter = new ChangelogAdapter(getActivity(), PrefUtils.getChangelogItems());
             rvChanges.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvChanges.setAdapter(adapter);
 

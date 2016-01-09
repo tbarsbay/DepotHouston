@@ -21,38 +21,42 @@ public class Navigator {
     @Inject
     public Navigator() {};
 
-    public void navigateToRouteList(Context context) {
+    public void navigateToRouteList(Context context, int flags) {
         if (context != null) {
             Intent intent = RouteListActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
-    public void navigateToRouteListAsNewTask(Context context) {
-        if (context != null) {
-            Intent intent = RouteListActivity.getCallingIntent(context);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
-        }
-    }
-
-    public void navigateToMapSearch(Context context) {
+    public void navigateToMapSearch(Context context, int flags) {
         if (context != null) {
             Intent intent = MapSearchActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
-    public void navigateToSavedStops(Context context) {
+    public void navigateToSavedStops(Context context, int flags) {
         if (context != null) {
             Intent intent = SavedStopsActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
-    public void navigateToRecentStops(Context context) {
+    public void navigateToRecentStops(Context context, int flags) {
         if (context != null) {
             Intent intent = RecentStopsActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
