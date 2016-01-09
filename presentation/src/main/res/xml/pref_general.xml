@@ -20,7 +20,7 @@
 
     <Preference
         android:key="pref_rate_app"
-        android:title="@string/pref_summary_rate_app"
+        android:title="@string/pref_title_rate_app"
         android:summary="@string/pref_summary_rate_app" />
 
     <Preference

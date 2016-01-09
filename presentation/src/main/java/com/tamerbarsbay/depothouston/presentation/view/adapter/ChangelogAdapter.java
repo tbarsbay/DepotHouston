@@ -43,8 +43,8 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.View
     @Override
     public void onBindViewHolder(ChangelogAdapter.ViewHolder viewHolder, int position) {
         final ChangelogItemModel change = changes.get(position);
-        viewHolder.tvVersion.setText(change.getVersion());
-        viewHolder.tvDate.setText(change.getDate());
+        viewHolder.tvVersion.setText("v" + change.getVersion());
+        viewHolder.tvDate.setText("(" + change.getDate() + ")");
         viewHolder.tvChanges.setText(change.getChanges());
     }
 

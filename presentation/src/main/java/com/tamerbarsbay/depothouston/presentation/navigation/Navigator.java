@@ -9,6 +9,7 @@ import com.tamerbarsbay.depothouston.presentation.view.activity.MapSearchActivit
 import com.tamerbarsbay.depothouston.presentation.view.activity.RecentStopsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.SavedStopsActivity;
+import com.tamerbarsbay.depothouston.presentation.view.activity.SettingsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity;
 
 import javax.inject.Inject;
@@ -57,7 +58,10 @@ public class Navigator {
     }
 
     public void navigateToSettings(Context context) {
-        //TODO
+        if (context != null) {
+            Intent intent = SettingsActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
     }
 
     /**
