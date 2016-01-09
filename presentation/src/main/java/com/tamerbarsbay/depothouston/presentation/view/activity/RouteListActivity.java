@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -59,7 +58,6 @@ public class RouteListActivity extends NavigationDrawerActivity implements Route
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Log.d("RouteActivity", "Settings"); //TODO temp
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -79,6 +77,6 @@ public class RouteListActivity extends NavigationDrawerActivity implements Route
 
     @Override
     public void onRouteClicked(RouteModel routeModel) {
-        this.navigator.navigateToStopList(this, routeModel.getRouteId());
+        this.navigator.navigateToStopList(this, routeModel.getRouteId(), "0"); //TODO temp direction
     }
 }

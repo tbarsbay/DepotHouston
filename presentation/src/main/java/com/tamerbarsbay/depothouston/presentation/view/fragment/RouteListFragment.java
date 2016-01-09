@@ -189,7 +189,7 @@ public class RouteListFragment extends BaseFragment
             loadNearbyRouteList(
                     userLocation.getLatitude(),
                     userLocation.getLongitude(),
-                    ".25"); //TODO temp, use prefs
+                    PrefUtils.getNearbyThresholdInMiles(getContext()));
         } else {
             showError(getString(R.string.error_invalid_user_location_showing_all_routes));
             resetNearbyToggle();

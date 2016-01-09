@@ -1,10 +1,10 @@
 package com.tamerbarsbay.depothouston.presentation.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.tamerbarsbay.depothouston.R;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -12,22 +12,24 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        navigator.navigateToRouteListAsNewTask(this);
+        checkStartScreen();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+    private void checkStartScreen() {
+        switch (PrefUtils.getStartScreen(this)) {
+            case PrefUtils.START_SCREEN_ROUTE_LIST:
+                navigator.navigateToRouteList(this, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
+            case PrefUtils.START_SCREEN_MAP_SEARCH:
+                navigator.navigateToMapSearch(this, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
+            case PrefUtils.START_SCREEN_SAVED_STOPS:
+                navigator.navigateToSavedStops(this, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
+            case PrefUtils.START_SCREEN_RECENT_STOPS:
+                navigator.navigateToRecentStops(this, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
         }
-        return super.onOptionsItemSelected(item);
     }
 
 }

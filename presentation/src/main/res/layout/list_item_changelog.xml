@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_changelog_item_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:paddingRight="8dp"
+        android:textColor="@color/text_primary_dark"
+        tools:text="v2.4"/>
+
+    <TextView
+        android:id="@+id/tv_changelog_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/text_primary_dark"
+        android:layout_toRightOf="@id/tv_changelog_item_version"
+        tools:text="(October 2, 2015)"/>
+
+    <TextView
+        android:id="@+id/tv_changelog_item_changes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_changelog_item_version"
+        tools:text="- Improvements and bug fixes\n- Improvements and bug fixes\n- Improvements and bug fixes"/>
+
+</RelativeLayout>

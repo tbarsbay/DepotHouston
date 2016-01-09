@@ -15,7 +15,7 @@ public interface StopRepository {
     /**
      * Get an {@link rx.Observable} which will emit a List of {@link Stop} objects.
      */
-    Observable<List<Stop>> stopsByRoute(final String routeId);
+    Observable<List<Stop>> stopsByRoute(final String routeId, final String direction);
 
     /**
      * Get an {@link rx.Observable} which will emit a {@link Stop}.

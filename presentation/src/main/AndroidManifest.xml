@@ -64,13 +64,14 @@
         <activity
             android:name=".presentation.view.activity.WidgetConfiguration1x1Activity"
             android:label="@string/title_activity_widget_configuration1x1"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".presentation.view.activity.WidgetConfiguration2x1Activity"
             android:label="@string/title_activity_widget_configuration2x1"
             android:screenOrientation="portrait" >
         </activity>
+
         <receiver
             android:name=".presentation.receiver.WidgetProvider1x1"
             android:label="Arrival Times" >
@@ -95,6 +96,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_2x1" />
         </receiver>
+
+        <activity
+            android:name=".presentation.view.activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

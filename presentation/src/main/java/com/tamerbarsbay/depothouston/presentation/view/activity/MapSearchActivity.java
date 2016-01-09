@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.FrameLayout;
@@ -24,6 +23,7 @@ import com.tamerbarsbay.depothouston.presentation.internal.di.components.DaggerM
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.MapSearchComponent;
 import com.tamerbarsbay.depothouston.presentation.internal.di.modules.MapSearchModule;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
 import com.tamerbarsbay.depothouston.presentation.view.fragment.MapSearchFragment;
 
 import java.io.IOException;
@@ -116,7 +116,6 @@ public class MapSearchActivity extends NavigationDrawerActivity
 
     @Override
     public void renderStopList(Collection<StopModel> stopModels) {
-        Log.d("MapSearchAct", "renderStopList: " + stopModels.size() + " stops"); //TODO temp
         if (mMap == null) {
             return;
         }
@@ -224,7 +223,11 @@ public class MapSearchActivity extends NavigationDrawerActivity
                     e.printStackTrace();
                 }
 
-                getNearbyStops(centerLocationName, latLng.latitude, latLng.longitude, MapSearchFragment.DEFAULT_RADIUS_MILES);
+                getNearbyStops(
+                        centerLocationName,
+                        latLng.latitude,
+                        latLng.longitude,
+                        PrefUtils.getNearbyThresholdInMiles(MapSearchActivity.this));
             } else {
                 showError(getString(R.string.exception_message_no_connection));
             }

@@ -16,9 +16,12 @@ import com.tamerbarsbay.depothouston.presentation.view.fragment.StopListFragment
 public class StopListActivity extends BaseActivity implements StopListFragment.StopListListener {
 
     private static final String INTENT_EXTRA_PARAM_ROUTE_ID = "com.tamerbarsbay.depothouston.INTENT_PARAM_ROUTE_ID";
+    private static final String INTENT_EXTRA_PARAM_DIRECTION = "com.tamerbarsbay.depothouson.INTENT_PARAM_DIRECTION";
     private static final String INSTANCE_STATE_PARAM_ROUTE_ID = "com.tamerbarsbay.depothouston.STATE_PARAM_ROUTE_ID";
+    private static final String INSTANCE_STATE_PARAM_DIRECTION = "com.tamerbarsbay.depothouston.STATE_PARAM_DIRECTION";
 
     private String routeId;
+    private String direction;
     private StopComponent stopComponent;
 
     /**
@@ -26,9 +29,10 @@ public class StopListActivity extends BaseActivity implements StopListFragment.S
      * @param routeId The id of the route for which we are loading stops.
      * @return An Intent to open this activity.
      */
-    public static Intent getCallingIntent(Context context, String routeId) {
+    public static Intent getCallingIntent(Context context, String routeId, String direction) {
         Intent intent = new Intent(context, StopListActivity.class);
         intent.putExtra(INTENT_EXTRA_PARAM_ROUTE_ID, routeId);
+        intent.putExtra(INTENT_EXTRA_PARAM_DIRECTION, direction);
         return intent;
     }
 
@@ -47,6 +51,7 @@ public class StopListActivity extends BaseActivity implements StopListFragment.S
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
             outState.putString(INSTANCE_STATE_PARAM_ROUTE_ID, routeId);
+            outState.putString(INSTANCE_STATE_PARAM_DIRECTION, direction);
         }
         super.onSaveInstanceState(outState);
     }
@@ -54,9 +59,11 @@ public class StopListActivity extends BaseActivity implements StopListFragment.S
     private void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             routeId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_ROUTE_ID);
-            addFragment(R.id.fl_stop_list_fragment, StopListFragment.newInstance(routeId));
+            direction = getIntent().getStringExtra(INTENT_EXTRA_PARAM_DIRECTION);
+            addFragment(R.id.fl_stop_list_fragment, StopListFragment.newInstance(routeId, direction));
         } else {
             routeId = getIntent().getStringExtra(INTENT_EXTRA_PARAM_ROUTE_ID);
+            direction = getIntent().getStringExtra(INTENT_EXTRA_PARAM_DIRECTION);
         }
     }
 
@@ -64,7 +71,7 @@ public class StopListActivity extends BaseActivity implements StopListFragment.S
         stopComponent = DaggerStopComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .stopModule(new StopModule(routeId))
+                .stopModule(new StopModule(routeId, direction))
                 .build();
     }
 

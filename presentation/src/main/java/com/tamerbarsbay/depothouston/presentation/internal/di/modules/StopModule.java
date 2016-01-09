@@ -17,11 +17,13 @@ import dagger.Provides;
 public class StopModule {
 
     private String stopId = "";
+    private String direction = "";
 
     public StopModule() {}
 
-    public StopModule(String stopId) {
+    public StopModule(String stopId, String direction) {
         this.stopId = stopId;
+        this.direction = direction;
     }
 
     @Provides
@@ -30,7 +32,7 @@ public class StopModule {
     UseCase provideGetStopsByRouteUseCase(StopRepository stopRepository,
                                           ThreadExecutor threadExecutor,
                                           PostExecutionThread postExecutionThread) {
-        return new GetStopsByRoute(stopId, stopRepository,
+        return new GetStopsByRoute(stopId, direction, stopRepository,
                 threadExecutor, postExecutionThread);
     }
 

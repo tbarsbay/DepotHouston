@@ -9,6 +9,7 @@ import com.tamerbarsbay.depothouston.presentation.view.activity.MapSearchActivit
 import com.tamerbarsbay.depothouston.presentation.view.activity.RecentStopsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.RouteListActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.SavedStopsActivity;
+import com.tamerbarsbay.depothouston.presentation.view.activity.SettingsActivity;
 import com.tamerbarsbay.depothouston.presentation.view.activity.StopListActivity;
 
 import javax.inject.Inject;
@@ -20,44 +21,51 @@ public class Navigator {
     @Inject
     public Navigator() {};
 
-    public void navigateToRouteList(Context context) {
+    public void navigateToRouteList(Context context, int flags) {
         if (context != null) {
             Intent intent = RouteListActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
-    public void navigateToRouteListAsNewTask(Context context) {
-        if (context != null) {
-            Intent intent = RouteListActivity.getCallingIntent(context);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
-        }
-    }
-
-    public void navigateToMapSearch(Context context) {
+    public void navigateToMapSearch(Context context, int flags) {
         if (context != null) {
             Intent intent = MapSearchActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
-    public void navigateToSavedStops(Context context) {
+    public void navigateToSavedStops(Context context, int flags) {
         if (context != null) {
             Intent intent = SavedStopsActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
-    public void navigateToRecentStops(Context context) {
+    public void navigateToRecentStops(Context context, int flags) {
         if (context != null) {
             Intent intent = RecentStopsActivity.getCallingIntent(context);
+            if (flags != -1) {
+                intent.setFlags(flags);
+            }
             context.startActivity(intent);
         }
     }
 
     public void navigateToSettings(Context context) {
-        //TODO
+        if (context != null) {
+            Intent intent = SettingsActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
     }
 
     /**
@@ -65,10 +73,9 @@ public class Navigator {
      * @param context Context.
      * @param routeId The id of the route for which we're loading stops.
      */
-    public void navigateToStopList(Context context, String routeId) {
-        //TODO convert all to nonnull annotation
+    public void navigateToStopList(Context context, String routeId, String direction) {
         if (context != null) {
-            Intent intent = StopListActivity.getCallingIntent(context, routeId);
+            Intent intent = StopListActivity.getCallingIntent(context, routeId, direction);
             context.startActivity(intent);
         }
     }
