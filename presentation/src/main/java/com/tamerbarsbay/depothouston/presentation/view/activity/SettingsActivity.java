@@ -5,7 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -15,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tamerbarsbay.depothouston.R;
@@ -106,6 +105,8 @@ public class SettingsActivity extends BaseActivity {
         private static final String PREF_RATE_APP = "pref_rate_app";
         private static final String PREF_ABOUT = "pref_about";
 
+        //TODO inject changelog items, version number
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -131,8 +132,7 @@ public class SettingsActivity extends BaseActivity {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    String versionName = getVersionName(getActivity());
-                    showAboutDialog(versionName);
+                    showAboutDialog();
                     return true;
                 }
             });
@@ -147,18 +147,40 @@ public class SettingsActivity extends BaseActivity {
             });
         }
 
-        private void showChangelog() {
-            View dLayout = getActivity().getLayoutInflater().inflate(R.layout.changelog, null);
-            Button okayBtn = (Button)dLayout.findViewById(R.id.changelog_okay_btn);
-            TextView titleText = (TextView)dLayout.findViewById(R.id.changelog_title);
-            ImageView iconImage = (ImageView)dLayout.findViewById(R.id.changelog_icon);
+        private void showAboutDialog() {
+            View dLayout = getActivity().getLayoutInflater().inflate(R.layout.view_about, null);
+
+            TextView contactText = (TextView)dLayout.findViewById(R.id.tv_about_dialog_email);
+            contactText.setOnClickListener(devEmailClickListener);
+            contactText.setPaintFlags(contactText.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+
+            TextView versionText = (TextView)dLayout.findViewById(R.id.tv_about_dialog_version);
+            String version = getVersionName(getActivity());
+            if ("".equals(version)) {
+                versionText.setVisibility(View.GONE);
+            } else {
+                versionText.setVisibility(View.VISIBLE);
+                versionText.setText("v" + version);
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setView(dLayout).setCancelable(false);
+            builder.setView(dLayout);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+        private void showChangelog() {
+            View dLayout = getActivity().getLayoutInflater().inflate(R.layout.view_changelog, null);
+            Button btnOkay = (Button)dLayout.findViewById(R.id.btn_changelog_okay);
+
+            //TODO populate recyclerview
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setView(dLayout);
             final AlertDialog dialog = builder.create();
             dialog.show();
 
-            okayBtn.setOnClickListener(new View.OnClickListener() {
+            btnOkay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
@@ -186,5 +208,16 @@ public class SettingsActivity extends BaseActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getActivity().getPackageName())));
             }
         }
+
+        private View.OnClickListener devEmailClickListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent Email = new Intent(Intent.ACTION_SEND);
+                Email.setType("text/email");
+                Email.putExtra(Intent.EXTRA_EMAIL, new String[] { getString(R.string.contact_email) });
+                startActivity(Intent.createChooser(Email, getString(R.string.contact_the_developer_of_depot)));
+            }
+        };
     }
 }
