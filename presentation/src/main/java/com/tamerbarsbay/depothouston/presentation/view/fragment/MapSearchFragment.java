@@ -24,6 +24,7 @@ import com.tamerbarsbay.depothouston.R;
 import com.tamerbarsbay.depothouston.presentation.internal.di.components.MapSearchComponent;
 import com.tamerbarsbay.depothouston.presentation.model.StopModel;
 import com.tamerbarsbay.depothouston.presentation.presenter.MapSearchPresenter;
+import com.tamerbarsbay.depothouston.presentation.util.PrefUtils;
 import com.tamerbarsbay.depothouston.presentation.util.UserLocationManager;
 import com.tamerbarsbay.depothouston.presentation.view.DividerItemDecoration;
 import com.tamerbarsbay.depothouston.presentation.view.MapSearchView;
@@ -73,8 +74,6 @@ public class MapSearchFragment
     private MapSearchListener mapSearchListener;
 
     private NearbyStopAdapter adapter;
-
-    public static final String DEFAULT_RADIUS_MILES = ".25"; //TODO get from user settings
 
     private static final double HOUSTON_SOUTHWEST_LAT = 29.431005;
     private static final double HOUSTON_SOUTHWEST_LON = -95.885714;
@@ -258,16 +257,16 @@ public class MapSearchFragment
                     getString(R.string.your_location),
                     userLocation.getLatitude(),
                     userLocation.getLongitude(),
-                    DEFAULT_RADIUS_MILES);
+                    PrefUtils.getNearbyThresholdInMiles(getContext()));
         }
     }
 
     private void getUserLocationAndLoadNearbyStops() {
         Location userLocation = getUserLocationManager().getUserLocation();
 
-//        //TODO temp for testing purposes
-//        userLocation.setLatitude(29.791032);
-//        userLocation.setLongitude(-95.404918);
+        //TODO temp for testing purposes
+        userLocation.setLatitude(29.791032);
+        userLocation.setLongitude(-95.404918);
 
         if (userLocation != null) {
             LatLng userLocationLatLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
@@ -277,7 +276,7 @@ public class MapSearchFragment
                         getString(R.string.your_location),
                         userLocation.getLatitude(),
                         userLocation.getLongitude(),
-                        DEFAULT_RADIUS_MILES);
+                        PrefUtils.getNearbyThresholdInMiles(getContext()));
                 return;
             }
         } else {

@@ -181,15 +181,15 @@ public class RouteListFragment extends BaseFragment
     private void getUserLocationAndLoadNearbyRoutes() {
         Location userLocation = getUserLocationManager().getUserLocation();
 
-//        //TODO temp for testing purposes
-//        userLocation.setLatitude(29.791032);
-//        userLocation.setLongitude(-95.404918);
+        //TODO temp for testing purposes
+        userLocation.setLatitude(29.791032);
+        userLocation.setLongitude(-95.404918);
 
         if (userLocation != null) {
             loadNearbyRouteList(
                     userLocation.getLatitude(),
                     userLocation.getLongitude(),
-                    ".25"); //TODO temp, use prefs
+                    PrefUtils.getNearbyThresholdInMiles(getContext()));
         } else {
             showError(getString(R.string.error_invalid_user_location_showing_all_routes));
             resetNearbyToggle();

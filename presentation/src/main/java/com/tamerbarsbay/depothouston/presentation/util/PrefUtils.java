@@ -42,9 +42,9 @@ public class PrefUtils {
         return s.getBoolean(PREFS_KEY_NEARBY_STOPS, false);
     }
 
-    public static String getNearbyThreshold(Context context) {
+    public static String getNearbyThresholdInMiles(Context context) {
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(context);
-        return s.getString(PREF_NEARBY_THRESHOLD, DEFAULT_NEARBY_THRESHOLD_INDEX);
+        return "." + s.getString(PREF_NEARBY_THRESHOLD, DEFAULT_NEARBY_THRESHOLD_INDEX);
     }
 
     public static int getStartScreen(Context context) {
