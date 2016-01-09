@@ -210,10 +210,11 @@ public class SettingsActivity extends BaseActivity {
         }
 
         private View.OnClickListener devEmailClickListener = new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                Intent Email = new Intent(Intent.ACTION_SEND);
+                Intent Email = new Intent(
+                        Intent.ACTION_SENDTO,
+                        Uri.fromParts("mailto", getString(R.string.contact_email), null));
                 Email.setType("text/email");
                 Email.putExtra(Intent.EXTRA_EMAIL, new String[] { getString(R.string.contact_email) });
                 startActivity(Intent.createChooser(Email, getString(R.string.contact_the_developer_of_depot)));

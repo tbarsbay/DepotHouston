@@ -21,6 +21,6 @@ public class ChangelogItemModel {
     }
 
     public String getVersion() {
-        return version;
+        return "v" + version;
     }
 }
