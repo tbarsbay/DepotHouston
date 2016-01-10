@@ -35,4 +35,9 @@ dependencies {
     compile dataDependencies.retrofitGson
     compile dataDependencies.retrofitRxJava
     provided dataDependencies.javaxAnnotation
+
+    compile dataTestDependencies.junit
+    compile dataTestDependencies.mockito
+    compile dataTestDependencies.assertJ
+    compile dataTestDependencies.robolectric
 }

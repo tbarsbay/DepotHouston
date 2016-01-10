@@ -21,4 +21,7 @@ dependencies {
 
     compile domainDependencies.dagger
     compile domainDependencies.rxJava
+
+    compile domainTestDependencies.junit
+    compile domainTestDependencies.mockito
 }

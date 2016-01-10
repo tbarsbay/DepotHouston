@@ -12,23 +12,34 @@ ext {
     androidCompileSdkVersion = 23
 
     //Android libraries
-    androidSupportLibVersion = '23.0.0'
-    androidDesignSupportLibVersion = '23.0.0'
-    androidAnnotationsVersion = '23.0.0'
-    recyclerViewVersion = '23.0.0'
-    cardViewVersion = '23.0.0'
+    androidSupportLibVersion = '23.1.1'
+    androidDesignSupportLibVersion = '23.1.1'
+    androidAnnotationsVersion = '23.1.1'
+    recyclerViewVersion = '23.1.1'
+    cardViewVersion = '23.1.1'
+    gpsMapsVersion = '8.3.0'
+    gpsAnalyticsVersion = '8.3.0'
+    gpsLocationVersion = '8.3.0'
 
     //Libraries
     daggerVersion = '2.0'
     butterKnifeVersion = '7.0.1'
-    rxJavaVersion = '1.0.14'
-    rxAndroidVersion = '1.0.1'
+    rxJavaVersion = '1.1.0'
+    rxAndroidVersion = '1.1.0'
     javaxAnnotationVersion = '10.0-b28'
     gsonVersion = '2.3.1'
     fabVersion = '1.10.1'
     okHttpVersion = '2.5.0'
     commonsLangVersion = '3.4'
     retrofitVersion = '2.0.0-beta2'
+
+    //Testing
+    mockitoVersion = '1.10.19'
+    espressoVersion = '2.0'
+    testingSupportLibVersion = '0.1'
+    assertJVersion = '1.7.1'
+    jUnitVersion = '4.12'
+    robolectricVersion = '3.0'
 
     presentationDependencies = [
             daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -40,9 +51,19 @@ ext {
             rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
             javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
             androidSupportLib:  "com.android.support:appcompat-v7:${androidSupportLibVersion}",
+            androidSupportV4Lib:"com.android.support:support-v4:${androidSupportLibVersion}",
             androidDesignSupportLib:    "com.android.support:design:${androidDesignSupportLibVersion}",
             commonsLang:        "org.apache.commons:commons-lang3:${commonsLangVersion}",
             fab:                "com.getbase:floatingactionbutton:${fabVersion}",
+            gpsMaps:            "com.google.android.gms:play-services-maps:${gpsMapsVersion}",
+            gpsAnalytics:       "com.google.android.gms:play-services-analytics:${gpsAnalyticsVersion}",
+            gpsLocation:        "com.google.android.gms:play-services-location:${gpsLocationVersion}",
+    ]
+
+    presentationTestDependencies = [
+            mockito:            "org.mockito:mockito-core:${mockitoVersion}",
+            espresso:           "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            testingSupportLib:  "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
     ]
 
     domainDependencies = [
@@ -50,6 +71,11 @@ ext {
             dagger:             "com.google.dagger:dagger:${daggerVersion}",
             javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
             rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+    ]
+
+    domainTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "org.mockito:mockito-core:${mockitoVersion}",
     ]
 
     dataDependencies = [
@@ -64,5 +90,12 @@ ext {
             retrofit:           "com.squareup.retrofit:retrofit:${retrofitVersion}",
             retrofitGson:       "com.squareup.retrofit:converter-gson:${retrofitVersion}",
             retrofitRxJava:     "com.squareup.retrofit:adapter-rxjava:${retrofitVersion}",
+    ]
+
+    dataTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "org.mockito:mockito-core:${mockitoVersion}",
+            assertJ:            "org.assertj:assertj-core:${assertJVersion}",
+            robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
     ]
 }

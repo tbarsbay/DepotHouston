@@ -43,16 +43,19 @@ dependencies {
     compile presentationDependencies.rxJava
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.androidSupportLib
+    compile presentationDependencies.androidSupportV4Lib
     compile presentationDependencies.androidDesignSupportLib
+    compile presentationDependencies.gpsMaps
+    compile presentationDependencies.gpsAnalytics
+    compile presentationDependencies.gpsLocation
     compile presentationDependencies.commonsLang
     compile presentationDependencies.fab
     provided presentationDependencies.javaxAnnotation
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.4@aar') {
         transitive = true
     }
-    compile 'com.google.android.gms:play-services-maps:8.1.0'
-    compile 'com.google.android.gms:play-services-analytics:8.1.0'
-    compile 'com.google.android.gms:play-services-location:8.1.0'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+
+    compile presentationTestDependencies.mockito
+    compile presentationTestDependencies.espresso
+    compile presentationTestDependencies.testingSupportLib
 }
