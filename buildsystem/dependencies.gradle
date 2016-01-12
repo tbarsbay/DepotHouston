@@ -40,6 +40,7 @@ ext {
     assertJVersion = '1.7.1'
     jUnitVersion = '4.12'
     robolectricVersion = '3.0'
+    dexmakerVersion = '1.2'
 
     presentationDependencies = [
             daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -64,6 +65,8 @@ ext {
             mockito:            "org.mockito:mockito-core:${mockitoVersion}",
             espresso:           "com.android.support.test.espresso:espresso-core:${espressoVersion}",
             testingSupportLib:  "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
+            dexmaker:           "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito:    "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
     ]
 
     domainDependencies = [

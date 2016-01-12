@@ -36,8 +36,8 @@ dependencies {
     compile dataDependencies.retrofitRxJava
     provided dataDependencies.javaxAnnotation
 
-    compile dataTestDependencies.junit
-    compile dataTestDependencies.mockito
-    compile dataTestDependencies.assertJ
-    compile dataTestDependencies.robolectric
+    testCompile dataTestDependencies.junit
+    testCompile dataTestDependencies.mockito
+    testCompile dataTestDependencies.assertJ
+    testCompile dataTestDependencies.robolectric
 }

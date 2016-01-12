@@ -41,7 +41,7 @@ public class ArrivalListPresenter implements Presenter {
     private final RouteModelDataMapper routeModelDataMapper;
 
     @Inject
-    ArrivalListPresenter(@Named("arrivalsByStop") UseCase getArrivalsByStopUseCase,
+    public ArrivalListPresenter(@Named("arrivalsByStop") UseCase getArrivalsByStopUseCase,
                          GetRoutesByStop getRoutesByStopUseCase,
                          ArrivalModelDataMapper arrivalModelDataMapper,
                          RouteModelDataMapper routeModelDataMapper) {
@@ -75,7 +75,6 @@ public class ArrivalListPresenter implements Presenter {
 
         getRoutesByStopUseCase.setParameters(stopId);
         getRoutesByStopUseCase.execute(new RoutesByStopSubscriber());
-        Log.d("ArrivalListPresenter", "executing getRoutesByStop use case"); //TODO temp log
     }
 
     public void loadArrivalList() {

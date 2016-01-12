@@ -20,6 +20,7 @@ android {
         versionCode globalConfiguration.getAt("androidVersionCode")
         versionName globalConfiguration.getAt("androidVersionName")
         testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
+        testApplicationId globalConfiguration.getAt("testApplicationId")
     }
     buildTypes {
         release {
@@ -55,7 +56,9 @@ dependencies {
         transitive = true
     }
 
-    compile presentationTestDependencies.mockito
-    compile presentationTestDependencies.espresso
-    compile presentationTestDependencies.testingSupportLib
+    androidTestCompile presentationTestDependencies.mockito
+    androidTestCompile presentationTestDependencies.espresso
+    androidTestCompile presentationTestDependencies.testingSupportLib
+    androidTestCompile presentationTestDependencies.dexmaker
+    androidTestCompile presentationTestDependencies.dexmakerMockito
 }
