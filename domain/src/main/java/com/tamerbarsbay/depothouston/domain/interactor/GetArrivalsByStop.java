@@ -10,21 +10,28 @@ import rx.Observable;
 
 public class GetArrivalsByStop extends UseCase {
 
-    private final String stopId;
-    private final ArrivalRepository arrivalRepository;
+    private String stopId;
+    private ArrivalRepository arrivalRepository;
+    public boolean areParametersSet = false;
 
     @Inject
-    public GetArrivalsByStop(String stopId,
-                             ArrivalRepository arrivalRepository,
+    public GetArrivalsByStop(ArrivalRepository arrivalRepository,
                              ThreadExecutor threadExecutor,
                              PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
-        this.stopId = stopId;
         this.arrivalRepository = arrivalRepository;
     }
 
+    public void setParameters(String stopId) {
+        this.stopId = stopId;
+        areParametersSet = stopId != null;
+    }
+
     @Override
-    protected Observable buildUseCaseObservable() {
+    public Observable buildUseCaseObservable() {
+        if (!areParametersSet) {
+            throw new IllegalStateException("Required parameters have not been set.");
+        }
         return this.arrivalRepository.arrivalsByStop(this.stopId);
     }
 }

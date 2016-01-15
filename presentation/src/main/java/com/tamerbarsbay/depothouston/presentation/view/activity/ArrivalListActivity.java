@@ -72,7 +72,7 @@ public class ArrivalListActivity extends BaseActivity implements HasComponent<Ar
         arrivalComponent = DaggerArrivalComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .arrivalModule(new ArrivalModule(stopId))
+                .arrivalModule(new ArrivalModule())
                 .build();
     }
 

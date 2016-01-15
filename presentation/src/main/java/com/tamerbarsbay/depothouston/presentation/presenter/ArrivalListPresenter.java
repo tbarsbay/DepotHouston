@@ -1,23 +1,22 @@
 package com.tamerbarsbay.depothouston.presentation.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.tamerbarsbay.depothouston.domain.Arrival;
 import com.tamerbarsbay.depothouston.domain.Route;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
 import com.tamerbarsbay.depothouston.domain.exception.ErrorBundle;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
+import com.tamerbarsbay.depothouston.domain.interactor.GetArrivalsByStop;
 import com.tamerbarsbay.depothouston.domain.interactor.GetRoutesByStop;
-import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.mapper.ArrivalModelDataMapper;
 import com.tamerbarsbay.depothouston.presentation.mapper.RouteModelDataMapper;
 import com.tamerbarsbay.depothouston.presentation.model.ArrivalModel;
 import com.tamerbarsbay.depothouston.presentation.model.RouteModel;
-import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 import com.tamerbarsbay.depothouston.presentation.view.ActiveTrackingMenuView;
+import com.tamerbarsbay.depothouston.presentation.view.ArrivalListView;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +24,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 @PerActivity
 public class ArrivalListPresenter implements Presenter {
@@ -35,16 +33,16 @@ public class ArrivalListPresenter implements Presenter {
 
     private String stopId;
 
-    private final UseCase getArrivalsByStopUseCase;
-    private GetRoutesByStop getRoutesByStopUseCase;
+    private final GetArrivalsByStop getArrivalsByStopUseCase;
+    private final GetRoutesByStop getRoutesByStopUseCase;
     private final ArrivalModelDataMapper arrivalModelDataMapper;
     private final RouteModelDataMapper routeModelDataMapper;
 
     @Inject
-    public ArrivalListPresenter(@Named("arrivalsByStop") UseCase getArrivalsByStopUseCase,
-                         GetRoutesByStop getRoutesByStopUseCase,
-                         ArrivalModelDataMapper arrivalModelDataMapper,
-                         RouteModelDataMapper routeModelDataMapper) {
+    public ArrivalListPresenter(GetArrivalsByStop getArrivalsByStopUseCase,
+                                GetRoutesByStop getRoutesByStopUseCase,
+                                ArrivalModelDataMapper arrivalModelDataMapper,
+                                RouteModelDataMapper routeModelDataMapper) {
         this.getArrivalsByStopUseCase = getArrivalsByStopUseCase;
         this.getRoutesByStopUseCase = getRoutesByStopUseCase;
         this.arrivalModelDataMapper = arrivalModelDataMapper;
@@ -77,11 +75,15 @@ public class ArrivalListPresenter implements Presenter {
         getRoutesByStopUseCase.execute(new RoutesByStopSubscriber());
     }
 
-    public void loadArrivalList() {
+    public void loadArrivalsByStop(String stopId) {
         hideViewRetry();
         showViewLoading();
         //TODO hide empty
-        getArrivalList();
+
+        this.stopId = stopId;
+
+        getArrivalsByStopUseCase.setParameters(stopId);
+        getArrivalsByStopUseCase.execute(new ArrivalListSubscriber());
     }
 
     private void showViewLoading() {
@@ -117,10 +119,6 @@ public class ArrivalListPresenter implements Presenter {
         activeTrackingMenuView.populateActiveTrackingRouteOptions(routeModels);
     }
 
-    private void getArrivalList() {
-        getArrivalsByStopUseCase.execute(new ArrivalListSubscriber());
-    }
-
     private final class ArrivalListSubscriber extends DefaultSubscriber<List<Arrival>> {
 
         @Override
@@ -145,7 +143,6 @@ public class ArrivalListPresenter implements Presenter {
 
         @Override
         public void onNext(List<Route> routes) {
-            Log.d("ArrivalListPresenter", "onNext routes by stop: " + routes.size() + " routes"); //TODO temp log
             showRouteTrackingOptionsInView(routes);
         }
 
@@ -156,7 +153,6 @@ public class ArrivalListPresenter implements Presenter {
 
         @Override
         public void onError(Throwable e) {
-            Log.d("ArrivalListPresenter", "onError routes by stop: " + e.getMessage()); //TODO temp log
             activeTrackingMenuView.hideActiveTrackingRoutesLoadingView();
             activeTrackingMenuView.showActiveTrackingRoutesErrorView();
         }

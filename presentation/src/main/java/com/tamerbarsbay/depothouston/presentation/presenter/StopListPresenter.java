@@ -6,8 +6,8 @@ import com.tamerbarsbay.depothouston.domain.Stop;
 import com.tamerbarsbay.depothouston.domain.exception.DefaultErrorBundle;
 import com.tamerbarsbay.depothouston.domain.exception.ErrorBundle;
 import com.tamerbarsbay.depothouston.domain.interactor.DefaultSubscriber;
+import com.tamerbarsbay.depothouston.domain.interactor.GetStopsByRoute;
 import com.tamerbarsbay.depothouston.domain.interactor.GetStopsNearLocationByRoute;
-import com.tamerbarsbay.depothouston.domain.interactor.UseCase;
 import com.tamerbarsbay.depothouston.presentation.exception.ErrorMessageFactory;
 import com.tamerbarsbay.depothouston.presentation.internal.di.PerActivity;
 import com.tamerbarsbay.depothouston.presentation.mapper.StopModelDataMapper;
@@ -18,27 +18,27 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 @PerActivity
 public class StopListPresenter implements Presenter {
 
     private StopListView stopListView;
 
-    private final UseCase getStopsByRouteUseCase;
+    private final GetStopsByRoute getStopsByRoute;
     private final GetStopsNearLocationByRoute getStopsNearLocationByRouteUseCase;
     private final StopModelDataMapper stopModelDataMapper;
 
     private String routeId;
+    private String direction;
     private double lat;
     private double lon;
     private String radiusInMiles;
 
     @Inject
-    StopListPresenter(@Named("stopsByRoute") UseCase getStopsByRouteUseCase,
+    public StopListPresenter(GetStopsByRoute getStopsByRoute,
                       GetStopsNearLocationByRoute getStopsNearLocationByRouteUseCase,
                       StopModelDataMapper stopModelDataMapper) {
-        this.getStopsByRouteUseCase = getStopsByRouteUseCase;
+        this.getStopsByRoute = getStopsByRoute;
         this.getStopsNearLocationByRouteUseCase = getStopsNearLocationByRouteUseCase;
         this.stopModelDataMapper = stopModelDataMapper;
     }
@@ -52,32 +52,34 @@ public class StopListPresenter implements Presenter {
     @Override public void pause() {}
 
     @Override public void destroy() {
-        getStopsByRouteUseCase.unsubscribe();
+        getStopsByRoute.unsubscribe();
     }
 
     public void retryLastRequest() {
         if (lat == -1 || lon == -1 || radiusInMiles == null) {
             // Last request was to load ALL routes
-            loadStopList();
+            loadStopsByRoute(routeId, direction);
         } else {
-            loadNearbyStopsByRoute(routeId, lat, lon, radiusInMiles);
+            loadNearbyStopsByRoute(routeId, direction, lat, lon, radiusInMiles);
         }
     }
 
     /**
      * Loads all stops of the given route.
      */
-    public void loadStopList() {
+    public void loadStopsByRoute(String routeId, String direction) {
         hideViewRetry();
         hideViewEmpty();
         showViewLoading();
 
-        routeId = null;
+        this.routeId = routeId;
+        this.direction = direction;
         lat = -1;
         lon = -1;
         radiusInMiles = null;
 
-        getStopsByRouteUseCase.execute(new StopListSubscriber());
+        getStopsByRoute.setParameters(routeId, direction);
+        getStopsByRoute.execute(new StopListSubscriber());
     }
 
     /**
@@ -87,17 +89,20 @@ public class StopListPresenter implements Presenter {
      * @param lon
      * @param radiusInMiles
      */
-    public void loadNearbyStopsByRoute(String routeId, double lat, double lon, String radiusInMiles) {
+    public void loadNearbyStopsByRoute(String routeId, String direction,
+                                       double lat, double lon, String radiusInMiles) {
         hideViewRetry();
         hideViewEmpty();
         showViewLoading();
 
         this.routeId = routeId;
+        this.direction = direction;
         this.lat = lat;
         this.lon = lon;
         this.radiusInMiles = radiusInMiles;
 
-        getStopsNearLocationByRouteUseCase.setParameters(routeId, lat, lon, radiusInMiles);
+        getStopsNearLocationByRouteUseCase.setParameters(
+                routeId, direction, lat, lon, radiusInMiles);
         getStopsNearLocationByRouteUseCase.execute(new StopListSubscriber());
     }
 

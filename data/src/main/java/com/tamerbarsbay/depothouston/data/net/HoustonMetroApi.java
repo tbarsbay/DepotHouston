@@ -107,13 +107,14 @@ public class HoustonMetroApi {
     }
 
     public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId,
+                                                                 String direction,
                                                                  final double lat,
                                                                  final double lon,
                                                                  final String radius) {
         if (validNetworkConnection()) {
             return getRetrofit()
                     .create(HoustonMetroApiService.class)
-                    .stopsByRoute(routeId)
+                    .stopsByRouteAndDirection(routeId, direction)
                     .flatMap(new Func1<List<StopEntity>, Observable<StopEntity>>() {
                         @Override
                         public Observable<StopEntity> call(final List<StopEntity> stopEntities) {

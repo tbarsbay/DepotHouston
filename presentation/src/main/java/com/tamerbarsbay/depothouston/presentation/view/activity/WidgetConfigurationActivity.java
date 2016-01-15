@@ -149,7 +149,6 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         widgetPreview = vsWidgetPreview.inflate();
         tvWidgetPreviewTitle = (TextView) widgetPreview.findViewById(R.id.tv_widget_title);
         layoutWidgetPreviewArrivals = (LinearLayout) widgetPreview.findViewById(R.id.layout_widget_arrivals);
-
     }
 
     private void initializeRouteInjector() {
@@ -163,7 +162,7 @@ public abstract class WidgetConfigurationActivity extends BaseActivity
         stopComponent = DaggerStopComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .stopModule(new StopModule(selectedRoute.getRouteId(), selectedDirection))
+                .stopModule(new StopModule())
                 .build();
     }
 

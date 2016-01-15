@@ -71,7 +71,7 @@ public class StopListActivity extends BaseActivity implements StopListFragment.S
         stopComponent = DaggerStopComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .stopModule(new StopModule(routeId, direction))
+                .stopModule(new StopModule())
                 .build();
     }
 

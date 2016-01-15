@@ -10,24 +10,30 @@ import rx.Observable;
 
 public class GetStopsByRoute extends UseCase {
 
-    private final String routeId;
-    private final String direction;
+    private String routeId;
+    private String direction;
     private final StopRepository stopRepository;
+    public boolean areParametersSet = false;
 
     @Inject
-    public GetStopsByRoute(String routeId,
-                           String direction,
-                           StopRepository stopRepository,
+    public GetStopsByRoute(StopRepository stopRepository,
                            ThreadExecutor threadExecutor,
                            PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
+        this.stopRepository = stopRepository;
+    }
+
+    public void setParameters(String routeId, String direction) {
         this.routeId = routeId;
         this.direction = direction;
-        this.stopRepository = stopRepository;
+        areParametersSet = routeId != null && direction != null;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
+        if (!areParametersSet) {
+            throw new IllegalStateException("Required parameters have not been set.");
+        }
         return this.stopRepository.stopsByRoute(this.routeId, this.direction);
     }
 }

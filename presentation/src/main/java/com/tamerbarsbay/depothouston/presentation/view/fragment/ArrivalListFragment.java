@@ -287,7 +287,7 @@ public class ArrivalListFragment extends BaseFragment
     }
 
     private void loadArrivalList() {
-        arrivalListPresenter.loadArrivalList();
+        arrivalListPresenter.loadArrivalsByStop(stopId);
     }
 
     private void populateSavedGroupsSpinner() {

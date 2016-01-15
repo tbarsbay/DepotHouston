@@ -11,6 +11,7 @@ import rx.Observable;
 public class GetStopsNearLocationByRoute extends UseCase {
 
     private String routeId;
+    private String direction;
     private double lat;
     private double lon;
     private String radiusInMiles;
@@ -25,12 +26,13 @@ public class GetStopsNearLocationByRoute extends UseCase {
         this.stopRepository = stopRepository;
     }
 
-    public void setParameters(String routeId, double lat, double lon, String radiusInMiles) {
+    public void setParameters(String routeId, String direction, double lat, double lon, String radiusInMiles) {
         this.routeId = routeId;
+        this.direction = direction;
         this.lat = lat;
         this.lon = lon;
         this.radiusInMiles = radiusInMiles;
-        areParametersSet = true;
+        areParametersSet = routeId != null && direction != null && radiusInMiles != null;
     }
 
     @Override
@@ -38,6 +40,6 @@ public class GetStopsNearLocationByRoute extends UseCase {
         if (!areParametersSet) {
             throw new IllegalStateException("Required parameters have not been set.");
         }
-        return stopRepository.stopsNearLocationByRoute(routeId, lat, lon, radiusInMiles);
+        return stopRepository.stopsNearLocationByRoute(routeId, direction, lat, lon, radiusInMiles);
     }
 }

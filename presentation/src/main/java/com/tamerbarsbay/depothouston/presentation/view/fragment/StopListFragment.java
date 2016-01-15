@@ -207,6 +207,7 @@ public class StopListFragment extends BaseFragment
         if (userLocation != null) {
             loadNearbyStopList(
                     routeId,
+                    direction,
                     userLocation.getLatitude(),
                     userLocation.getLongitude(),
                     PrefUtils.getNearbyThresholdInMiles(getContext()));
@@ -342,15 +343,16 @@ public class StopListFragment extends BaseFragment
     }
 
     private void loadStopList() {
-        stopListPresenter.loadStopList();
+        stopListPresenter.loadStopsByRoute(routeId, direction);
     }
 
-    private void loadNearbyStopList(String routeId, double lat, double lon, String radiusInMiles) {
-        if (routeId == null || radiusInMiles == null) {
+    private void loadNearbyStopList(String routeId, String direction,
+                                    double lat, double lon, String radiusInMiles) {
+        if (routeId == null || direction == null || radiusInMiles == null) {
             showError(getString(R.string.error_loading_nearby_stops));
             return;
         }
-        stopListPresenter.loadNearbyStopsByRoute(routeId, lat, lon, radiusInMiles);
+        stopListPresenter.loadNearbyStopsByRoute(routeId, direction, lat, lon, radiusInMiles);
     }
 
     @OnClick(R.id.btn_retry)

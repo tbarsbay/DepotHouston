@@ -39,7 +39,9 @@ public class CloudStopDataStore implements StopDataStore {
     }
 
     @Override
-    public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId, double lat, double lon, String radiusInMiles) {
-        return houstonMetroApi.stopsNearLocationByRoute(routeId, lat, lon, radiusInMiles);
+    public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId, String direction,
+                                                                 double lat, double lon,
+                                                                 String radiusInMiles) {
+        return houstonMetroApi.stopsNearLocationByRoute(routeId, direction, lat, lon, radiusInMiles);
     }
 }

@@ -26,7 +26,9 @@ public class DiskStopDataStore implements StopDataStore {
     }
 
     @Override
-    public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId, double lat, double lon, String radiusInMiles) {
+    public Observable<List<StopEntity>> stopsNearLocationByRoute(String routeId, String direction,
+                                                                 double lat, double lon,
+                                                                 String radiusInMiles) {
         throw new UnsupportedOperationException("Operation not available.");
     }
 }

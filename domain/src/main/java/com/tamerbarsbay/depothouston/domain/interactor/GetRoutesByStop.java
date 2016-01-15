@@ -24,7 +24,7 @@ public class GetRoutesByStop extends UseCase {
 
     public void setParameters(String stopId) {
         this.stopId = stopId;
-        areParametersSet = true;
+        areParametersSet = stopId != null;
     }
 
     @Override
